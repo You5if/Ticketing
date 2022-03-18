@@ -1,0 +1,277 @@
+.welcome {
+  font-size: 32px !important;
+  font-weight: bolder;
+}
+
+.sec {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+.add_btnD {
+  width: 30px;
+  display: flex;
+  padding-top: 1px;
+  padding-left: 2px;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  cursor: pointer;
+  background: #03878c;
+  border-radius: 25px;
+  outline: none;
+  border: none;
+  color: white;
+}
+
+.example-card {
+  width: 100%;
+  margin: 10px 0;
+}
+
+.showDetails {
+  width: 90%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  // align-items: center;
+  // outline: solid green 1px;
+}
+
+.commentcolumn {
+  width: 100%;
+}
+
+.comment_title {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.profileimg {
+  border-radius: 50%;
+  border: solid 5px;
+  margin-right: 15px;
+}
+
+.attach:nth-child(odd) {
+  .commentedCard {
+    background-color: white;
+  }
+
+  .commentedCard .comment_title mat-card-title {
+    // color: #971a30;
+    color: black;
+    font-weight: bold;
+  }
+}
+
+.attach:nth-child(even) {
+  .commentedCard {
+    background-color: hsl(48, 46%, 93%);
+  }
+  .commentedCard .comment_title mat-card-title {
+    // color: #179d84;
+    color: black;
+    font-weight: bold;
+  }
+}
+.ticketDets {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 10px;
+  overflow: hidden;
+  overflow-y: scroll;
+  height: 530px;
+}
+.ticketDets::-webkit-scrollbar {
+  width: 0px;
+}
+.ticketDets::-webkit-scrollbar-thumb {
+  border-radius: 50px;
+
+  background-color: #e9e9e9;
+}
+
+.commentedCard {
+  // width: 370px;
+  margin-bottom: 5px;
+}
+.textCom {
+  width: 100%;
+  height: auto;
+  display: flex;
+}
+
+.userComment {
+  width: 100%;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.img_profile {
+  margin-bottom: 10px;
+}
+.commentBtn {
+  width: 120px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  align-items: center;
+  border-radius: 5px;
+  font-weight: bolder;
+  color: #ffff;
+  background: #03878c;
+}
+
+.btnClass {
+  margin-top: -500px;
+}
+
+.tickets {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 410px;
+  overflow: hidden;
+  overflow-y: scroll;
+  height: 530px;
+}
+.tickets::-webkit-scrollbar {
+  width: 0px;
+}
+.tickets::-webkit-scrollbar-thumb {
+  border-radius: 50px;
+
+  background-color: #e9e9e9;
+}
+::ng-deep .mat-tab-label {
+  height: 48px;
+  width: 50px;
+  padding: 0 24px;
+  cursor: pointer;
+  box-sizing: border-box;
+  opacity: 0.6;
+  min-width: 65px !important;
+  // font-size: 14px !important;
+  text-align: center;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+  position: relative;
+}
+
+.tabGroup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.tabs {
+  width: 250px;
+}
+.tabChild {
+  width: 125px;
+}
+.card {
+  width: 250px;
+  height: 230px;
+
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: row;
+}
+
+.circle {
+  width: 50px;
+  height: 50px;
+  margin-top: 20px;
+  background: #971a30;
+  border-radius: 25px;
+  color: #ffff;
+  font-size: 22px !important;
+  font-weight: bolder;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mat-badge-content {
+  background: #971a30;
+  color: #ffff;
+}
+
+.circleDiv {
+  margin-top: 20px;
+}
+
+.ticketDiv {
+  padding: 0 10px;
+}
+
+.idClass {
+  color: lightblue;
+  font-size: 14px !important;
+  font-weight: bolder;
+}
+
+.ticketTitle {
+  font-weight: bolder;
+  font-size: 20px !important;
+}
+
+.ticketDes {
+  color: lightgrey;
+}
+.ticketPC {
+  color: black;
+}
+
+.ticketActive {
+  color: lightgreen;
+  font-size: 14px !important;
+  font-weight: bolder;
+}
+.ticketDate {
+  font-size: 14px !important;
+  font-weight: bolder;
+}
+
+.ticketTop {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+}
+.icon {
+  margin-bottom: 10px;
+}
+.Btn {
+  outline: none;
+  border: none;
+}
+
+.accept_btn {
+  // background: #20bf6b;
+  background: #fdcb6e;
+  margin-bottom: 5px;
+  outline: none;
+  border: none;
+  color: white;
+}
+.assigned_btn {
+  background: #6f1e51;
+  margin-bottom: 5px;
+  outline: none;
+  border: none;
+  color: white;
+}

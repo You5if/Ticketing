@@ -1,0 +1,233 @@
+<mat-drawer-container autosize  [dir]="direction" (window:resize)="onResize($event)"  class="example-container">
+  <!-- <mat-drawer   #drawer class="example-sidenav" mode="side" [opened]="break"> -->
+  <mat-drawer   #drawer class="example-sidenav" [style.width]='navWidth' mode="side" [(opened)]="open"
+  mwlResizable
+  
+              
+              >
+
+    <div fxLayout class="logo_container">
+      
+        <div *ngIf="direction == 'ltr'" class="{{opened == true ? 'user' : 'user2'}}" (click)="onChangeSite('United Insurance')"  routerLink="Home">
+          <img  class="user_img" src="../../../assets/images/svg/logo-png.png" alt="">
+          
+          
+        </div>
+        <div *ngIf="direction == 'rtl'" class="{{opened == true ? 'userArabic' : 'userArabic2'}}" (click)="onChangeSite('United Insurance')"  routerLink="Home">
+          <img  class="user_img" src="../../../assets/images/svg/logo-png.png" alt="">
+          
+          
+        </div>
+      
+      <div  fxFlex fxLayout fxLayoutAlign="flex-start">
+        <div *ngIf="direction==='ltr'" >
+          <img class="arrow" *ngIf="opened" (click)="onlogonav()"  src="../../../assets/images/new images/arrow-point-to-down.png" alt="">
+        </div>
+        <div *ngIf="direction==='rtl'">
+          <img class="arrowR" *ngIf="opened" (click)="onlogonav()"  src="../../../assets/images/new images/arrow-point-to-down copy.png" alt="">
+        </div>
+        <!-- <button class="toggle_btn3" type="button"  mat-icon-button (click)="opened=!opened">
+
+          <mat-icon *ngIf="langa" class="chevron">chevron_left</mat-icon>
+          <mat-icon *ngIf="!langa" class="chevron">chevron_right</mat-icon>
+         
+        </button> -->
+      </div>
+    </div>
+
+    
+
+    <div class="menu_item">
+      <ul class="side_list" id="myDIV">
+        
+        <!-- <mat-divider></mat-divider> -->
+        <div  *ngIf="role === '2'">
+          <div  *ngIf="opened" class="main_title">
+            <span class="fon">{{subSystem}}</span>
+          </div>
+        </div>
+        <mat-divider *ngIf="role === '2'"></mat-divider>
+        
+      <div *ngIf="role === '2'">
+        <li *ngIf="opened" class="side_list_item" (click)="onChangeSite('Customers')" routerLink="UnCustomer" routerLinkActive="is-active"><a><i class="fa fa-users"></i>{{customers}}</a></li>
+        <li *ngIf="!opened" class="side_list_item_slim" (click)="onChangeSite('Customers')" routerLink="UnCustomer" routerLinkActive="is-active"><a><i class="fa fa-users"></i><div class="textIcons">{{customers}}</div></a></li>
+      </div>
+        <mat-divider *ngIf="role === '2'"></mat-divider>
+     <div *ngIf="role === '2'">
+      <li *ngIf="opened" class="side_list_item" (click)="onChangeSite('Policies')" routerLink="Policy" routerLinkActive="is-active"><a><i class="fa fa-landmark"></i>{{policies}}</a></li>
+      <li *ngIf="!opened" class="side_list_item_slim" (click)="onChangeSite('Policies')" routerLink="Policy" routerLinkActive="is-active"><a><i class="fa fa-landmark"></i><div class="textIcons">{{policies}}</div></a></li>
+     </div>
+      <mat-divider *ngIf="role === '2'"></mat-divider>
+      <div *ngIf="role === '2'">
+        <li *ngIf="opened" class="side_list_item" (click)="onChangeSite('Endorsements')" routerLink="Endorsement" routerLinkActive="is-active"><a><i class="fa fa-check"></i>{{endorsements}}</a></li>
+      <li *ngIf="!opened" class="side_list_item_slim" (click)="onChangeSite('Endorsements')" routerLink="Endorsement" routerLinkActive="is-active"><a><i class="fa fa-check"></i><div class="textIcons">{{endorsements}}</div></a></li>
+      </div>
+        <mat-divider *ngIf="role === '2'"></mat-divider>
+        <div *ngIf="role === '2'">
+          <div  *ngIf="opened" class="main_title">
+            <span class="fon">{{userManagement}}</span>
+          </div>
+        </div>
+        <mat-divider *ngIf="role === '2'"></mat-divider>
+        
+       <div *ngIf="role === '2'">
+        <li *ngIf="opened" class="side_list_item" (click)="onChangeSite('Users')" routerLink="Users" routerLinkActive="is-active"><a><i class="fa fa-user"></i>{{users}}</a></li>
+        <li *ngIf="!opened" class="side_list_item_slim" (click)="onChangeSite('Users')" routerLink="Users" routerLinkActive="is-active"><a><i class="fa fa-user"></i><div class="textIcons">{{users}}</div></a></li>
+       </div>
+        <mat-divider *ngIf="role === '2'"></mat-divider>
+      <!-- <li class="side_list_item"><a href=""><i class="fa fa-pie-chart"></i>Dashboard</a></li>
+      <mat-divider ></mat-divider>
+      <li class="side_list_item"><a href=""><i class="fa fa-ticket"></i>Tickets</a></li>
+      <mat-divider></mat-divider> -->
+     <div *ngIf="role === '2'">
+      <div  *ngIf="opened" class="main_title">
+        <span class="fon">{{customerManagement}}</span>
+      </div>
+     </div>
+      <mat-divider *ngIf="role === '2'"></mat-divider>
+   <div *ngIf="role === '2'">
+    <li *ngIf="opened" class="side_list_item" (click)="onChangeSite('Catagotries')" routerLink="ProblemCat" routerLinkActive="is-active"><a><i class="fa fa-cubes"></i>{{catagotries}}</a></li>
+    <li *ngIf="!opened" class="side_list_item_slim" (click)="onChangeSite('Catagotries')" routerLink="ProblemCat" routerLinkActive="is-active"><a><i class="fa fa-cubes"></i><div class="textIcons">{{catagotries}}</div></a></li>
+   </div>
+    <mat-divider *ngIf="role === '2'"></mat-divider>
+    <div *ngIf="role === '2'">
+      <li *ngIf="opened" class="side_list_item" (click)="onChangeSite('Supervisor')" routerLink="ProbSub" routerLinkActive="is-active"><a><i class="fa fa-user-tie"></i>{{supervisors}}</a></li>
+    <li *ngIf="!opened" class="side_list_item_slim" (click)="onChangeSite('Supervisor')" routerLink="ProbSub" routerLinkActive="is-active"><a><i class="fa fa-user-tie"></i><div class="textIcons">{{supervisors}}</div></a></li>
+    </div>
+    <mat-divider *ngIf="role === '2'"></mat-divider>
+   <div *ngIf="role === '2'">
+    <li *ngIf="opened" class="side_list_item" (click)="onChangeSite('Technician')" routerLink="ProbTech" routerLinkActive="is-active"><a><i class="fas fa-male"></i>{{technicians}}</a></li>
+    <li *ngIf="!opened" class="side_list_item_slim" (click)="onChangeSite('Technician')" routerLink="ProbTech" routerLinkActive="is-active"><a><i class="fas fa-male"></i><div class="textIcons">{{technicians}}</div></a></li>
+   </div>
+    <mat-divider *ngIf="role === '2'"></mat-divider>
+   <div *ngIf="role === '2'">
+    <li *ngIf="opened" class="side_list_item" (click)="onChangeSite('Departments')" routerLink="UnDepartment" routerLinkActive="is-active"><a><i class="fa fa-door-open"></i>{{departments}}</a></li>
+    <li *ngIf="!opened" class="side_list_item_slim" (click)="onChangeSite('Departments')" routerLink="UnDepartment" routerLinkActive="is-active"><a><i class="fa fa-door-open"></i><div class="textIcons">{{departments}}</div></a></li>
+   </div>
+    <mat-divider *ngIf="role === '2'"></mat-divider>
+    <div *ngIf="role === '2'">
+      <li *ngIf="opened" class="side_list_item" (click)="onChangeSite('Agent')" routerLink="Agent" routerLinkActive="is-active"><a><i class="fas fa-user-circle"></i>{{Agent}}</a></li>
+    <li *ngIf="!opened" class="side_list_item_slim" (click)="onChangeSite('Agent')" routerLink="Agent" routerLinkActive="is-active"><a><i class="fas fa-user-circle"></i><div class="textIcons">{{Agent}}</div></a></li>
+    </div>
+    <!-- <mat-divider ></mat-divider>
+    <li *ngIf="opened" class="side_list_item" (click)="onChangeSite('Call-Center')" routerLink="CallCenter" routerLinkActive="is-active"><a><i class="fas fa-user-circle"></i>{{callCenter}}</a></li>
+    <li *ngIf="!opened" class="side_list_item_slim" (click)="onChangeSite('Call-Center')" routerLink="CallCenter" routerLinkActive="is-active"><a><i class="fas fa-user-circle"></i><div class="textIcons">{{callCenter}}</div></a></li> -->
+    <mat-divider *ngIf="role === '2' || role === '3' || role === '4' || role === '5' "></mat-divider>
+    <div  *ngIf="role === '2' || role === '3' || role === '4' || role === '5' || role === '6' ">
+      <li *ngIf="opened" class="side_list_item" (click)="onChangeSite('Tickets')" routerLink="Ticket" routerLinkActive="is-active"><a><i class="fa fa-ticket"></i>{{tickets}}</a></li>
+    <li *ngIf="!opened" class="side_list_item_slim" (click)="onChangeSite('Tickets')" routerLink="Ticket" routerLinkActive="is-active"><a><i class="fa fa-ticket"></i><div class="textIcons">{{tickets}}</div></a></li>
+    </div>
+
+    <!-- <li class="side_list_item" routerLink="ProblemCat">ProblemCat</li>
+          <li class="side_list_item" routerLink="ProbSub">ProbSub</li>
+          <li class="side_list_item" routerLink="ProbTech">ProbTech</li>
+          <li class="side_list_item" routerLink="UnDepartment" >UnDepartment</li>
+          <li class="side_list_item" routerLink="Ticket" >Ticket</li> -->
+          
+        
+        <mat-divider *ngIf="role === '2'"></mat-divider>
+        
+      </ul>
+    </div>
+
+
+   
+
+    <div class="markon_logo">
+      <img src="../../../assets/images/svg/Markon-logo-white.png" width="60px" height="auto" alt="">
+      
+    </div>
+
+    
+  </mat-drawer>
+
+    <mat-drawer-content>
+
+      <mat-toolbar >
+        <div  fxLayout fxLayoutGap.xs="10px" class="nav">
+          <div  *ngIf="!opened" fxFlex fxLayout fxLayoutAlign="flex-start" >
+            <button class="toggle_btn" type="button"  mat-icon-button (click)="onhamnav()">
+              <i class="fas fa-bars"></i>
+            </button>
+          </div>
+          <div>
+            <p class="welcome">{{nameTitle}}</p>
+          </div>
+
+          
+
+         <div  fxFlex fxLayout fxLayoutAlign="flex-end">
+          <button [matMenuTriggerFor]="menu3" mat-icon-button class="toggle_btn" aria-label="Example icon-button with heart icon">
+            <i class="fas fa-cog"></i>
+          </button>
+          <mat-menu #menu3="matMenu">
+            <button class="icon" (click)="onChangeLanguage()" mat-menu-item>
+              <a class="icon-insde">
+                <i class="fas fa-globe"></i>
+                <span>{{lang}}</span>
+                </a>
+            </button>
+            <button class="icon" (click)="onChangePassword()" mat-menu-item>
+              <a class="icon-insde">
+                <i class="fas fa-key"></i>
+                {{changePassword}}
+                </a>
+            </button>
+            <button class="icon" (click)="onSignOut()" mat-menu-item>
+              <a class="icon-insde">
+                <i class="fas fa-sign-out-alt"></i>
+                {{logout}}
+                </a>
+            </button>
+            
+            
+            <!-- <ul >
+              <li class="side_list_item2" (click)="onChangeLanguage()" mat-menu-item><mat-icon class="menuIcon">language</mat-icon><div class="title2"> {{lang}}</div></li>
+              <li (click)="onSignOut()" class="side_list_item2" mat-menu-item><mat-icon class="menuIcon">keyboard_return</mat-icon><div class="title2"> {{logout}}</div></li>
+              
+            </ul> -->
+            
+          </mat-menu>
+          
+          <!-- <button class="toggle_btn" mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>perm_identity</mat-icon></button>
+<mat-menu #menu="matMenu">
+  <button (click)="onSignOut()" class="toggle_btn" mat-menu-item>{{logout}}</button>
+  
+</mat-menu> -->
+          <!-- <button mat-icon-button class="toggle_btn" aria-label="Example icon-button with share icon">
+           <mat-icon>perm_identity</mat-icon> -->
+           <!-- <mat-icon>person_outline</mat-icon> -->
+
+         <!-- </button> -->
+         </div>
+        </div>
+      </mat-toolbar>
+
+      <div fxLayout class="actions_box_container">
+      <!--  <div *ngIf="!break" (mouseover)="showButton = true" (mouseleave)="showButton = false" class="hoverableSide">
+          <mat-card class="example-card" *ngIf = "showButton">
+    <mat-card-title>hello title</mat-card-title>
+    <mat-card-content>hello content</mat-card-content>
+    <mat-card-actions>
+        <button mat-icon-button ><mat-icon>close</mat-icon></button>
+    </mat-card-actions>
+</mat-card>
+        </div>-->
+        <div class="actions_box">
+          
+          <router-outlet></router-outlet>
+
+        </div>
+      </div>
+
+      
+
+
+
+
+    </mat-drawer-content>
+
+
+
+</mat-drawer-container>
+

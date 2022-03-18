@@ -1,0 +1,61 @@
+<div class="log">
+  <section class="section"   #loginForm>
+    
+    <mat-card class="card" >
+      
+      <div class="form">
+        <div fxShow.xs class="shade2">
+        <mat-progress-bar *ngIf="loging" class="progress" mode="indeterminate"></mat-progress-bar>
+        
+        <img class="logo" src="../../../../../assets/images/svg/englishlogo.png" alt="logo">
+        <h1 class="welcome">Welcome</h1>
+
+        <!-- <div class="{{errorCss3 ? 'err_msg' : 'err_msg1'}}"><div [innerHTML]="htmlstring"></div></div> -->
+      <form #f="ngForm"  class="formC" (ngSubmit)="submit(f)">
+        
+          
+            <span class="{{errorCss ? 'spanE' : 'spanNE'}}">
+              <i class='fas fa-user'></i>
+            <input autofocus="off" [disabled]="loging" matInput placeholder="Your email" type="email" email  maxlength="255" #emailInput="ngModel" (ngModel)="pModel.username" name="username"> 
+          </span>
+         <!-- <div class="input_err" *ngIf="emailInput.value !== ''  && emailInput.invalid">
+           *Invalid E-mail.
+         </div> -->
+          
+        
+    
+        <span class="{{errorCss2 ? 'spanE' : 'spanNE'}}">
+          
+          <i class='fas fa-lock'></i>
+          <input  matInput [disabled]="loging" required minlength="8" id="myPassword" placeholder="Your password"  type="password"  #passwordInput="ngModel" (ngModel)="pModel.password" name="password">
+          <i (click)="showPassword()" class="fa fa-eye"></i>
+        </span>
+        <!-- <div class="input_err" *ngIf="passwordInput.errors?.minlength">
+          *password must be at least 8 characters long.
+        </div> -->
+
+        
+        
+      <button  [disabled]="loging" class="add_btn" >Login</button>
+      <div class="{{errorCss3 ? 'err_msg' : 'err_msg1'}}"><div [innerHTML]="htmlstring"></div></div>
+    </form>
+    
+
+    <div class="pwr">
+      <p class="power">Powered by <a class="markon" href="https://www.markoncs.com/">MCS</a></p>
+    </div>
+  </div>
+      </div>
+      <div fxHide.xs class="img_container">
+        <div class="shade"></div>
+        
+      </div>
+      
+      
+    </mat-card>
+   
+  
+  
+  </section>
+</div>
+

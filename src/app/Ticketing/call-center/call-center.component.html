@@ -1,0 +1,24 @@
+
+<section class="section" [dir]="direction" >
+
+  <form class="Main" [dir]="direction" >
+      <mat-form-field appearance="outline">
+          <mat-label>{{ clientNumber }}</mat-label>
+          <input
+            matInput
+            [(ngModel)]="clientNum"
+            name="clientNum"
+            type="text"
+
+            placeholder="Enter a number"
+          />
+
+
+        </mat-form-field>
+  </form>
+
+  <div class="btn-container">
+      <button class="BtnS" (click)="onSubmit()" mat-button color="primary" type="submit">{{submit}}</button>
+    </div>
+
+</section>

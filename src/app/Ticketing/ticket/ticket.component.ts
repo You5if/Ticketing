@@ -45,7 +45,7 @@ export class TicketComponent implements OnInit {
     menuId: number;
     model: Send;
     lFiles: FileListModel[] = [];
-    detActionsStatus: string = ""
+    detActionsStatus: number 
     role = localStorage.getItem("role");
 
     opC: boolean = true
@@ -81,7 +81,10 @@ export class TicketComponent implements OnInit {
         shortCloseFlag: true,
         viewFlag: true
       };
+  showDetailsAll: boolean = true;
+  showDetailsAll2: boolean = false;
   showDetails: boolean = false;
+  showDetails2: boolean = false;
   badgeAssigned:number = 0;
   badgeClosed:number = 0;
   badgeUnassigned:number = 0;
@@ -117,6 +120,23 @@ export class TicketComponent implements OnInit {
       this.refreshMe();
   }
 
+  id = "newticket"
+  tabChange(ids:any){
+      this.id = ids
+    }
+
+  closeDet1() {
+  this.showDetailsAll = true;
+  this.showDetailsAll2 = false;
+  this.showDetails = false;
+  this.showDetails2 = false;
+  }
+  closeDet2() {
+    this.showDetailsAll = false;
+  this.showDetailsAll2 = true;
+  this.showDetails = false;
+  this.showDetails2 = false;
+  }
   refreshMe() {
     if(localStorage.getItem(this._globals.baseAppName + '_language') == "16001") {
       this.direction = "ltr"
@@ -153,26 +173,28 @@ export class TicketComponent implements OnInit {
     console.log(localStorage.getItem('departmentId'));
     
 
-    this.ticketservice.getNewTickets(+localStorage.getItem('departmentId')).subscribe(
+    this.ticketservice.getNewTickets(this._auth.getUserId()).subscribe(
           (result) => {
             console.log(result);
             
             this.indexes = result
+            this.badgeUnassigned = result.length
           }
         );
-      if (this.role == '3') {
-        this.ticketservice.getAssignedTickets(+localStorage.getItem('departmentId')).subscribe(
+        this.ticketservice.getAssignedTickets(this._auth.getUserId()).subscribe(
           (result) => {
             console.log(result);
             
             this.indexesAssigned = result
+            this.badgeAssigned = result.length
           }
         );
-        this.ticketservice.getClosedTickets(+localStorage.getItem('departmentId')).subscribe(
+        this.ticketservice.getClosedTickets(this._auth.getUserId()).subscribe(
           (result) => {
             console.log(result);
             
             this.indexesClosed = result
+            this.badgeClosed = result.length
           }
         );
         this.ticketservice.getVerifyTickets(+localStorage.getItem('departmentId')).subscribe(
@@ -180,120 +202,171 @@ export class TicketComponent implements OnInit {
             console.log(result);
             
             this.indexesVerify = result
+            this.badgeVerified = result.length
           }
         );
+        // this.ticketservice.badgeOfUnassignedForAll(+localStorage.getItem('departmentId')).subscribe(
+        //   (result) => {
+        //     console.log(result);
+        //     this.badgeUnassigned = result.id
+        //     // this.indexesVerify = result
+        //   }
+        // );
+        // this.ticketservice.badgeOfAssignedForSupervisorOrManager(+localStorage.getItem('departmentId')).subscribe(
+        //   (result) => {
+        //     console.log(result);
+        //     this.badgeAssigned = result.id
+        //     // this.indexesVerify = result
+        //   }
+        // );
+        // this.ticketservice.badgeOfClosedForAll(+localStorage.getItem('departmentId')).subscribe(
+        //   (result) => {
+        //     console.log(result);
+        //     this.badgeClosed = result.id
+        //     // this.indexesVerify = result
+        //   }
+        // );
+        // this.ticketservice.badgeOfVerifiedForAll(+localStorage.getItem('departmentId')).subscribe(
+        //   (result) => {
+        //     console.log(result);
+        //     this.badgeVerified = result.id
+        //     // this.indexesVerify = result
+        //   }
+        // );
+      // if (this.role == '3') {
+      //   this.ticketservice.getAssignedTickets(+localStorage.getItem('departmentId')).subscribe(
+      //     (result) => {
+      //       console.log(result);
+            
+      //       this.indexesAssigned = result
+      //     }
+      //   );
+      //   this.ticketservice.getClosedTickets(+localStorage.getItem('departmentId')).subscribe(
+      //     (result) => {
+      //       console.log(result);
+            
+      //       this.indexesClosed = result
+      //     }
+      //   );
+      //   this.ticketservice.getVerifyTickets(+localStorage.getItem('departmentId')).subscribe(
+      //     (result) => {
+      //       console.log(result);
+            
+      //       this.indexesVerify = result
+      //     }
+      //   );
 
-        this.ticketservice.badgeOfUnassignedForAll(+localStorage.getItem('departmentId')).subscribe(
-          (result) => {
-            console.log(result);
-            this.badgeUnassigned = result.id
-            // this.indexesVerify = result
-          }
-        );
-        this.ticketservice.badgeOfAssignedForSupervisorOrManager(+localStorage.getItem('departmentId')).subscribe(
-          (result) => {
-            console.log(result);
-            this.badgeAssigned = result.id
-            // this.indexesVerify = result
-          }
-        );
-        this.ticketservice.badgeOfClosedForAll(+localStorage.getItem('departmentId')).subscribe(
-          (result) => {
-            console.log(result);
-            this.badgeClosed = result.id
-            // this.indexesVerify = result
-          }
-        );
-        this.ticketservice.badgeOfVerifiedForAll(+localStorage.getItem('departmentId')).subscribe(
-          (result) => {
-            console.log(result);
-            this.badgeVerified = result.id
-            // this.indexesVerify = result
-          }
-        );
+      //   this.ticketservice.badgeOfUnassignedForAll(+localStorage.getItem('departmentId')).subscribe(
+      //     (result) => {
+      //       console.log(result);
+      //       this.badgeUnassigned = result.id
+      //       // this.indexesVerify = result
+      //     }
+      //   );
+      //   this.ticketservice.badgeOfAssignedForSupervisorOrManager(+localStorage.getItem('departmentId')).subscribe(
+      //     (result) => {
+      //       console.log(result);
+      //       this.badgeAssigned = result.id
+      //       // this.indexesVerify = result
+      //     }
+      //   );
+      //   this.ticketservice.badgeOfClosedForAll(+localStorage.getItem('departmentId')).subscribe(
+      //     (result) => {
+      //       console.log(result);
+      //       this.badgeClosed = result.id
+      //       // this.indexesVerify = result
+      //     }
+      //   );
+      //   this.ticketservice.badgeOfVerifiedForAll(+localStorage.getItem('departmentId')).subscribe(
+      //     (result) => {
+      //       console.log(result);
+      //       this.badgeVerified = result.id
+      //       // this.indexesVerify = result
+      //     }
+      //   );
       
-      }else if (this.role == '4') {
-        this.ticketservice.getAssignedTickets(+localStorage.getItem('departmentId')).subscribe(
-          (result) => {
-            console.log(result);
+      // }else if (this.role == '4') {
+      //   this.ticketservice.getAssignedTickets(+localStorage.getItem('departmentId')).subscribe(
+      //     (result) => {
+      //       console.log(result);
             
-            this.indexesAssigned = result
-          }
-        );
-        this.ticketservice.getClosedTickets(+localStorage.getItem('departmentId')).subscribe(
-          (result) => {
-            console.log(result);
+      //       this.indexesAssigned = result
+      //     }
+      //   );
+      //   this.ticketservice.getClosedTickets(+localStorage.getItem('departmentId')).subscribe(
+      //     (result) => {
+      //       console.log(result);
             
-            this.indexesClosed = result
-          }
-        );
+      //       this.indexesClosed = result
+      //     }
+      //   );
 
-        this.ticketservice.badgeOfUnassignedForAll(+localStorage.getItem('departmentId')).subscribe(
-          (result) => {
-            console.log(result);
-            this.badgeUnassigned = result.id
-            // this.indexesVerify = result
-          }
-        );
-        this.ticketservice.badgeOfAssignedForSupervisorOrManager(+localStorage.getItem('departmentId')).subscribe(
-          (result) => {
-            console.log(result);
-            this.badgeAssigned = result.id
-            // this.indexesVerify = result
-          }
-        );
-        this.ticketservice.badgeOfClosedForAll(+localStorage.getItem('departmentId')).subscribe(
-          (result) => {
-            console.log(result);
-            this.badgeClosed = result.id
-            // this.indexesVerify = result
-          }
-        );
-        this.ticketservice.badgeOfVerifiedForAll(+localStorage.getItem('departmentId')).subscribe(
-          (result) => {
-            console.log(result);
-            this.badgeVerified = result.id
-            // this.indexesVerify = result
-          }
-        );
-      }else if (this.role == '5') {
-        this.ticketservice.getAssignedTicketsForTech(+this._auth.getUserId()).subscribe(
-          (result) => {
-            console.log(result);
+      //   this.ticketservice.badgeOfUnassignedForAll(+localStorage.getItem('departmentId')).subscribe(
+      //     (result) => {
+      //       console.log(result);
+      //       this.badgeUnassigned = result.id
+      //       // this.indexesVerify = result
+      //     }
+      //   );
+      //   this.ticketservice.badgeOfAssignedForSupervisorOrManager(+localStorage.getItem('departmentId')).subscribe(
+      //     (result) => {
+      //       console.log(result);
+      //       this.badgeAssigned = result.id
+      //       // this.indexesVerify = result
+      //     }
+      //   );
+      //   this.ticketservice.badgeOfClosedForAll(+localStorage.getItem('departmentId')).subscribe(
+      //     (result) => {
+      //       console.log(result);
+      //       this.badgeClosed = result.id
+      //       // this.indexesVerify = result
+      //     }
+      //   );
+      //   this.ticketservice.badgeOfVerifiedForAll(+localStorage.getItem('departmentId')).subscribe(
+      //     (result) => {
+      //       console.log(result);
+      //       this.badgeVerified = result.id
+      //       // this.indexesVerify = result
+      //     }
+      //   );
+      // }else if (this.role == '5') {
+      //   this.ticketservice.getAssignedTicketsForTech(+this._auth.getUserId()).subscribe(
+      //     (result) => {
+      //       console.log(result);
             
-            this.indexesAssigned = result
-          }
-        );
+      //       this.indexesAssigned = result
+      //     }
+      //   );
 
-        this.ticketservice.badgeOfUnassignedForAll(+localStorage.getItem('departmentId')).subscribe(
-          (result) => {
-            console.log(result);
-            this.badgeUnassigned= result.id
-            // this.indexesVerify = result
-          }
-        );
-        this.ticketservice.badgeOfAssignedForTechnician(+this._auth.getUserId()).subscribe(
-          (result) => {
-            console.log(result);
-            this.badgeAssigned = result.id
-            // this.indexesVerify = result
-          }
-        );
-        this.ticketservice.badgeOfClosedForAll(+localStorage.getItem('departmentId')).subscribe(
-          (result) => {
-            console.log(result);
-            this.badgeClosed = result.id
-            // this.indexesVerify = result
-          }
-        );
-        this.ticketservice.badgeOfVerifiedForAll(+localStorage.getItem('departmentId')).subscribe(
-          (result) => {
-            console.log(result);
-            this.badgeVerified = result.id
-            // this.indexesVerify = result
-          }
-        );
-      }
+      //   this.ticketservice.badgeOfUnassignedForAll(+localStorage.getItem('departmentId')).subscribe(
+      //     (result) => {
+      //       console.log(result);
+      //       this.badgeUnassigned= result.id
+      //       // this.indexesVerify = result
+      //     }
+      //   );
+      //   this.ticketservice.badgeOfAssignedForTechnician(+this._auth.getUserId()).subscribe(
+      //     (result) => {
+      //       console.log(result);
+      //       this.badgeAssigned = result.id
+      //       // this.indexesVerify = result
+      //     }
+      //   );
+      //   this.ticketservice.badgeOfClosedForAll(+localStorage.getItem('departmentId')).subscribe(
+      //     (result) => {
+      //       console.log(result);
+      //       this.badgeClosed = result.id
+      //       // this.indexesVerify = result
+      //     }
+      //   );
+      //   this.ticketservice.badgeOfVerifiedForAll(+localStorage.getItem('departmentId')).subscribe(
+      //     (result) => {
+      //       console.log(result);
+      //       this.badgeVerified = result.id
+      //       // this.indexesVerify = result
+      //     }
+      //   );
+      // }
 
     this._auth.getScreenRights(this.menuId).subscribe((rights: RightModel) => {
       this.screenRights = {
@@ -404,6 +477,10 @@ export class TicketComponent implements OnInit {
       
     })
   }
+  onVert(id: number) {
+    this.opC = false
+    
+  }
   onTransferBtn(ticket: TicketModel) {
     this.opC = false
     this.openTransferDialog(ticket)
@@ -506,10 +583,44 @@ export class TicketComponent implements OnInit {
   }
   
 
-  openTicketDet(tickectModel : TicketModel, status: string) {
+  openTicketDet(tickectModel : TicketModel, status: number) {
     if(this.opC == true) {
       this.detActionsStatus = status
     this.showDetails = true
+    this.showDetails2 = false
+    this.showDetailsAll = true
+    this.showDetailsAll2 = false
+    this.tickectDetails = tickectModel
+    this._ui.loadingStateChanged.next(true);
+      this.ticketservice.getComments(tickectModel.ticketId).subscribe((response) => {
+        console.log(response);
+        
+        this._ui.loadingStateChanged.next(false);
+        this.comments = response
+        this.comments.forEach((com) => {
+          com.crDate = com.crDate.replace('T', ' ')
+          if (com.commentType === "ATTACH") {
+            com.apiImagePath = "http://ticketingapi.autopay-mcs.com/" + com.apiImagePath
+          }
+        })
+        // console.log(this.comments);
+        
+        // this.comments.forEach((com) => {
+        //   com.edit = false
+        // })
+      })
+    }else {
+      
+      this.opC = true
+    }
+  }
+  openTicketDet2(tickectModel : TicketModel, status: number) {
+    if(this.opC == true) {
+      this.detActionsStatus = status
+    this.showDetails = false
+    this.showDetails2 = true
+    this.showDetailsAll = false
+    this.showDetailsAll2 = true
     this.tickectDetails = tickectModel
     this._ui.loadingStateChanged.next(true);
       this.ticketservice.getComments(tickectModel.ticketId).subscribe((response) => {

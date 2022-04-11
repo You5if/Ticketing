@@ -115,7 +115,7 @@ export class TicketEntryComponent implements OnInit {
         console.log(this.data);
         // this.data[1].access = "Editable"
         
-        this.data[6].value = "Customer: NEW \nName: \nContact: \nContact2: \nInquiry: "
+        this.data[6].value = "Customer: NEW \n|Name: \n|Contact: \n|Contact2: \n|Inquiry: "
         this.data[10].value = this._auth.getUserId()
         
         for(let i=0;i<=this.data.length;i++){
@@ -182,7 +182,7 @@ export class TicketEntryComponent implements OnInit {
         for(let i=this.light.length-1;i>=0;i--){
           
           if(this.light[i].tableColumnId == 808){
-            this.light[i].value = "Customer: NEW \nName: \nContact: \nContact2: \nInquiry: "
+            this.light[i].value = "Customer: NEW \n|Name: \n|Contact: \n|Contact2: \n|Inquiry: "
           }
          
         }
@@ -190,7 +190,7 @@ export class TicketEntryComponent implements OnInit {
         for(let i=this.light.length-1;i>=0;i--){
           
           if(this.light[i].tableColumnId == 808){
-            this.light[i].value = " Customer: <Code> \nName: <Name> \nContact:  \nContact2: \nPolicy code: <Code> \nInquiry:"
+            this.light[i].value = " Customer: <Code> \n|Name: <Name> \n|Contact:  \n|Contact2: \n|Policy code: <Code> \n|Inquiry:"
           }
          
         }

@@ -1,294 +1,319 @@
-
-
-
-
- <section fxLayout fxLayoutGap="15px" class="sec">
-  <div class="btnClass">
-    <div class="add_btnD"  (click)="onAdd()" ><mat-icon >add</mat-icon></div>
-
-  </div>
-  <div class="tickets">
-    <mat-tab-group class="tabGroup">
-      <mat-tab class="tabs">
-        <ng-template class="tabChild" mat-tab-label>
-          <span matBadge="{{badgeUnassigned}}" matBadgeOverlap="false">
-            <i class="far fa-file"></i>
-          </span>
-        </ng-template>
-        <div *ngFor="let item of indexes; let i = index;">
-          <mat-card  (click)="openTicketDet(item, 'New')" class="card">
-            <!-- <div class="circleDiv">
-              
-                <h1 class="circle">{{i}}</h1>
-            
-            </div> -->
-            <div class="ticketDiv">
-              <div class="ticketTop">
-                <div fxLayout fxLayoutGap="5px">
-                  <p class="idClass">ID</p>
-                  <p class="idClass">:</p>
-                  <p class="idClass">{{item.ticketId}}</p>
-                </div>
-                <button *ngIf="role === '5'" class="accept_btn" mat-button color="primary" (click)="onAcceptBtn(item.ticketId)" [disabled]="role === '4'">{{ acceptBtn }}</button>
-                <button *ngIf="role === '4'" class="assigned_btn" mat-button color="primary" (click)="onAssignedBtn(item)" [disabled]="role === '5'">{{ assignedBtn }}</button>
-
-              </div>
-              <mat-card-title fxLayout fxLayoutGap="5px" class="ticketTitle">
-                Ticket code: Tick
-                    
-                    <span class="ticketTitle">{{item.ticketId}}</span>
-              </mat-card-title>
-            <mat-card-content>
-              <!-- <div fxLayout fxLayoutGap="5px">
-                <p class="ticketDes">Remarks</p>
-                <p class="ticketDes">:</p>
-                <p class="ticketDes">{{item.remarks}}</p>
-              </div> -->
-              <div fxLayout fxLayoutGap="5px">
-                <p class="ticketPC">Problem type</p>
-                <p class="ticketPC">:</p>
-                <p class="ticketPC">problem</p>
-              </div>
-              <div fxLayout fxLayoutGap="20px">
-                <p class="ticketDate">Modified on : 12-06-19</p>
-                <div fxLayout fxLayoutGap="5px">
-                  <p class="ticketActive">Status</p>
-                  <p class="ticketActive">:</p>
-                  <p class="ticketActive">status</p>
-                </div>
-              </div>
-            </mat-card-content>
-            </div>
-            
-          
-          </mat-card>
-      
-         </div>
-      </mat-tab>
-      <mat-tab class="tabs">
-        <ng-template class="tabChild"  mat-tab-label>
-          <span matBadge="{{badgeAssigned}}"   matBadgeOverlap="false">
-            <i class="fas fa-user-check"></i>
-          </span>
-        </ng-template>
-        <div *ngFor="let item of indexesAssigned; let i = index;">
-          <mat-card  (click)="openTicketDet(item, 'Assigned')" class="card">
-            <!-- <div class="circleDiv">
-              
-                <h1 class="circle">{{i}}</h1>
-            
-            </div> -->
-            <div class="ticketDiv">
-              <div class="ticketTop">
-                <div fxLayout fxLayoutGap="5px">
-                  <p class="idClass">ID</p>
-                  <p class="idClass">:</p>
-                  <p class="idClass">{{item.ticketId}}</p>
-                </div>
-              <button (click)="onClickOptions()" *ngIf="role === '5'" class="Btn" mat-icon-button [matMenuTriggerFor]="menu" >
-                <mat-icon class="icon">more_vert</mat-icon>
-              </button>
-              <mat-menu #menu="matMenu">
-                <button class="Btn" (click)="onTransferBtn(item)" mat-menu-item>{{transfer}}</button>
-                <button class="Btn" (click)="onCloseBtn(item)" mat-menu-item>{{close}}</button>
-              </mat-menu>
-              </div>
-              <mat-card-title fxLayout fxLayoutGap="5px" class="ticketTitle">
-                Ticket code: Tick
-                    
-                    <span class="ticketTitle">{{item.ticketId}}</span>
-              </mat-card-title>
-            <mat-card-content>
-              <!-- <div fxLayout fxLayoutGap="5px">
-                <p class="ticketDes">Remarks</p>
-                <p class="ticketDes">:</p>
-                <p class="ticketDes">{{item.remarks}}</p>
-              </div> -->
-              <div fxLayout fxLayoutGap="5px">
-                <p class="ticketPC">Problem type</p>
-                <p class="ticketPC">:</p>
-                <p class="ticketPC">problem</p>
-              </div>
-              <div fxLayout fxLayoutGap="20px">
-                <p class="ticketDate">Modified on : 12-06-19</p>
-                <div fxLayout fxLayoutGap="5px">
-                  <p class="ticketActive">Status</p>
-                  <p class="ticketActive">:</p>
-                  <p class="ticketActive">status</p>
-                </div>
-              </div>
-            </mat-card-content>
-            </div>
-            
-          
-          </mat-card>
-      
-         </div>
-      </mat-tab>
-
-      <mat-tab *ngIf="role === '3' || role === '4'"  class="tabs">
-        <ng-template class="tabChild"  mat-tab-label>
-          <span matBadge="{{badgeClosed}}"   matBadgeOverlap="false">
-            <span class="material-icons">
-              lock
-              </span>
-          </span>
-        </ng-template>
-        <div *ngFor="let item of indexesClosed; let i = index;">
-          <mat-card  (click)="openTicketDet(item, 'Assigned')" class="card">
-            <!-- <div class="circleDiv">
-              
-                <h1 class="circle">{{i}}</h1>
-            
-            </div> -->
-            <div class="ticketDiv">
-              <div class="ticketTop">
-                <div fxLayout fxLayoutGap="5px">
-                  <p class="idClass">ID</p>
-                  <p class="idClass">:</p>
-                  <p class="idClass">{{item.ticketId}}</p>
-                </div>
-              <button (click)="onClickOptions()"  class="Btn" mat-icon-button [matMenuTriggerFor]="menu" >
-                <mat-icon class="icon">more_vert</mat-icon>
-              </button>
-              <mat-menu #menu="matMenu">
-                <button class="Btn" (click)="onAssignedBtn(item)" mat-menu-item>{{assignedBtn}}</button>
-                <button class="Btn" (click)="onTransferBtn(item)" mat-menu-item>{{transfer}}</button>
-                <button class="Btn" (click)="onVerifyBtn(item)" mat-menu-item>{{verify}}</button>
-              </mat-menu>
-              </div>
-              <mat-card-title fxLayout fxLayoutGap="5px" class="ticketTitle">
-                Ticket code: Tick
-                    
-                    <span class="ticketTitle">{{item.ticketId}}</span>
-              </mat-card-title>
-            <mat-card-content>
-              <!-- <div fxLayout fxLayoutGap="5px">
-                <p class="ticketDes">Remarks</p>
-                <p class="ticketDes">:</p>
-                <p class="ticketDes">{{item.remarks}}</p>
-              </div> -->
-              <div fxLayout fxLayoutGap="5px">
-                <p class="ticketPC">Problem type</p>
-                <p class="ticketPC">:</p>
-                <p class="ticketPC">problem</p>
-              </div>
-              <div fxLayout fxLayoutGap="20px">
-                <p class="ticketDate">Modified on : 12-06-19</p>
-                <div fxLayout fxLayoutGap="5px">
-                  <p class="ticketActive">Status</p>
-                  <p class="ticketActive">:</p>
-                  <p class="ticketActive">status</p>
-                </div>
-              </div>
-            </mat-card-content>
-            </div>
-            
-          
-          </mat-card>
-      
-         </div>
-      </mat-tab>
-      <mat-tab *ngIf="role === '3'"  class="tabs">
-        <ng-template class="tabChild"  mat-tab-label>
-          <span matBadge="{{badgeVerified}}"   matBadgeOverlap="false">
-            <i class="fas fa-certificate"></i>
-          </span>
-        </ng-template>
-        <div *ngFor="let item of indexesVerify; let i = index;">
-          <mat-card  (click)="openTicketDet(item, 'Assigned')" class="card">
-            <!-- <div class="circleDiv">
-              
-                <h1 class="circle">{{i}}</h1>
-            
-            </div> -->
-            <div class="ticketDiv">
-              <div class="ticketTop">
-                <div fxLayout fxLayoutGap="5px">
-                  <p class="idClass">ID</p>
-                  <p class="idClass">:</p>
-                  <p class="idClass">{{item.ticketId}}</p>
-                </div>
-              
-              </div>
-              <mat-card-title fxLayout fxLayoutGap="5px" class="ticketTitle">
-                Ticket code: Tick
-                    
-                    <span class="ticketTitle">{{item.ticketId}}</span>
-              </mat-card-title>
-            <mat-card-content>
-              <!-- <div fxLayout fxLayoutGap="5px">
-                <p class="ticketDes">Remarks</p>
-                <p class="ticketDes">:</p>
-                <p class="ticketDes">{{item.remarks}}</p>
-              </div> -->
-              <div fxLayout fxLayoutGap="5px">
-                <p class="ticketPC">Problem type</p>
-                <p class="ticketPC">:</p>
-                <p class="ticketPC">problem</p>
-              </div>
-              <div fxLayout fxLayoutGap="20px">
-                <p class="ticketDate">Modified on : 12-06-19</p>
-                <div fxLayout fxLayoutGap="5px">
-                  <p class="ticketActive">Status</p>
-                  <p class="ticketActive">:</p>
-                  <p class="ticketActive">status</p>
-                </div>
-              </div>
-            </mat-card-content>
-            </div>
-            
-          
-          </mat-card>
-      
-         </div>
-      </mat-tab>
-      
-    </mat-tab-group>
-  
-   
-</div>
-<div class="ticketDets">
-  <div *ngIf="showDetails">
-    <div *ngIf="detActionsStatus === 'Assigned'" fxLayout fxLayoutGap="20px" class="actions">
-      <h1 class="commentBtn" (click)="onNewComment()" ><mat-icon >add</mat-icon>Comment</h1>
-    <div class="img_profile">
-      <app-card-upload [myFiles]="lFiles" (onUploadFinished)="uploadFinished($event)"
-                  
-                  >
-      </app-card-upload>
-    </div>
-    </div>
-    <div>
-      <div *ngFor="let comment of comments" class="attach" >
-        
-        <!-- <img *ngIf="!showit" [src]="imagePathUrl"  alt="" width="100px" height="100px"> -->
-
-        <mat-card class="commentedCard">
-          <div class="userComment">
-            
-            <div *ngIf="comment.commentType === 'TEXT'" fxLayout="column">
-              <h1 class="commentC">{{comment.displayName}}</h1>
-              <div class="textCom">
-                <h1 class="commentC">{{comment.comment}}</h1>
-              </div>
-              <h4 class="commentDate">{{comment.crDate}}</h4>
-            </div>
-            <div *ngIf="comment.commentType === 'ATTACH'" fxLayout="column">
-              <h1 class="commentC">{{comment.displayName}}</h1>
-              <h1 class="commentC"><a class="links" href="{{comment.apiImagePath}}" target="_blank">attachment</a></h1>
-              <h4 class="commentDate">{{comment.crDate}}</h4>
-            </div>
-            
+<section class="ticket_container">
+  <div class="tabs">
+    
+    <div class="tabs_head">
+      <div class="tabs_toggle" matBadge="{{badgeUnassigned}}" matBadgeOverlap="true" style="z-index: 6;">
+      <span id="newticket" (click)="tabChange('newticket'); closeDet1()" class="{{id == 'newticket' ?  'tab_toggleactive': 'tab_toggle'}}" ><i class="far fa-file"></i><h6   matBadgeColor="warn"><strong>ticket</strong> </h6></span>
+      </div>
+      <div class="tabs_toggle" matBadge="{{badgeAssigned}}" matBadgeOverlap="true" matBadgeColor="warn" style="z-index: 5;">
+        <span  id="assigned" (click)="tabChange('assigned'); closeDet2()" class="{{id == 'assigned' ?  'tab_toggleactive': 'tab_toggle'}}" > <i class="fas fa-user-check"></i><h6 >assigned </h6></span>
+        </div>
+        <div class="tabs_toggle" matBadge="{{badgeClosed}}" matBadgeOverlap="true" matBadgeColor="warn" style="z-index: 4;" >
+          <span  id="closed" (click)="tabChange('closed'); closeDet2()" class="{{id == 'closed' ?  'tab_toggleactive': 'tab_toggle'}}"><i class="fa fa-archive" aria-hidden="true"></i><h6 >closed</h6></span>
           </div>
+          <div class="tabs_toggle" matBadge="{{badgeVerified}}" matBadgeOverlap="true" matBadgeColor="warn" style="z-index: 3;" *ngIf="role === '3'">
+            <span  id="verified" (click)="tabChange('verified')" class="{{id == 'verified' ?  'tab_toggleactive': 'tab_toggle'}}"><i class="fas fa-certificate"></i><h6 >verified</h6></span>
+            </div>
+    </div>
+    
+     <div class="tabs_body">
+      
+       <div class="tabs_content" *ngIf="id === 'newticket'">
+         <div *ngFor="let item of indexes; let i = index;" class="tabs_text">
           
           
-        </mat-card>
+          <mat-card (click)="openTicketDet(item, item.userRole)" class="{{item.userRole === 4 ? 'cardB' : item.userRole === 5 ? 'cardO' : item.userRole === 6 ? 'cardY': 'card'}}">
+            <div class="ticketDiv " >
+              <div class="ticketTop" fxLayout fxLayoutGap="auto">
+                <div fxLayout fxLayoutGap="5px">
+                  <p class="idClass1"><strong>ID</strong></p>
+                  <p class="idClass">:</p>
+                  <p class="idClass">{{item.ticketId}}</p>
+                </div>
+              <button (click)="onVert()" class="Btn" mat-icon-button [matMenuTriggerFor]="menunewtick"  >
+                <mat-icon class="icon">more_vert</mat-icon>
+              </button>
+              <mat-menu #menunewtick="matMenu">
+                <button *ngIf="item.userRole === 5" class="Btn2"  mat-menu-item (click)="onAcceptBtn(item.ticketId)" [disabled]="item.userRole === 4">{{ acceptBtn }}</button>
+                <button *ngIf="item.userRole === 4" class="Btn2"  mat-menu-item (click)="onAssignedBtn(item)" [disabled]="item.userRole === 5">{{ assignedBtn }}</button>
+              </mat-menu>
+              </div>
+            </div>
+            
+            <mat-card-content>
+            
+              <div fxLayout fxLayoutGap="5px">
+                <p class="ticketDes1"><strong>Inquiry</strong></p>
+                <p class="ticketDes">:</p>
+                <p class="ticketDes">Complaint</p>
+              </div>
+              <div fxLayout fxLayoutGap="5px" >
+                <p class="tickettec1"><strong>Technician</strong></p>
+                <p class="tickettec">:</p>
+                <p class="tickettec">Hussam Abdalla</p>
+              </div>
+              <div fxLayout fxLayoutGap="5px">
+                <p class="ticketPC1"><strong>Department</strong> </p>
+                <p class="ticketPC">:</p>
+                <p class="ticketPC">category</p>
+              </div>
+              <div fxLayout fxLayoutGap="auto">
+                <p class="ticketDate"><strong>Last modified on</strong>  : 12-06-19</p>
+                <div fxLayout fxLayoutGap="5px">
+                  <div class="statustag"><span>Status</span></div>
+                </div>
+              </div>
+            </mat-card-content>
+           </mat-card>
+           
+           </div>
+  
+       </div>
+       <div class="tabs_content" *ngIf="id === 'assigned'">
         
-        
+        <div *ngFor="let item of indexesAssigned; let i = index;" class="tabs_text" >
+          <mat-card (click)="openTicketDet2(item, item.userRole)"  class="{{item.userRole === 4 ? 'cardB' : item.userRole === 5 ? 'cardO' : item.userRole === 6 ? 'cardY': 'card'}}">
+            <div class="ticketDiv " >
+              <div class="ticketTop" fxLayout fxLayoutGap="auto">
+                <div fxLayout fxLayoutGap="5px">
+                  <p class="idClass1"><strong>ID</strong></p>
+                  <p class="idClass">:</p>
+                  <p class="idClass">{{item.ticketId}}</p>
+                </div>
+              <button (click)="onVert()" *ngIf="role === '5'" class="Btn" mat-icon-button [matMenuTriggerFor]="menu"   >
+                <mat-icon class="icon">more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button class="Btn2"  mat-menu-item (click)="onTransferBtn(item)">{{transfer}}</button>
+                <button class="Btn2"  mat-menu-item (click)="onCloseBtn(item)">{{close}}</button>
+              </mat-menu>
+              </div>
+            </div>
+            
+            <mat-card-content>
+            
+              <div fxLayout fxLayoutGap="5px">
+                <p class="ticketDes1"><strong>Inquiry</strong></p>
+                <p class="ticketDes">:</p>
+                <p class="ticketDes">Complaint</p>
+              </div>
+              <div fxLayout fxLayoutGap="5px" >
+                <p class="tickettec1"><strong>Technician</strong></p>
+                <p class="tickettec">:</p>
+                <p class="tickettec">Hussam Abdalla</p>
+              </div>
+              <div fxLayout fxLayoutGap="5px">
+                <p class="ticketPC1"><strong>Department</strong> </p>
+                <p class="ticketPC">:</p>
+                <p class="ticketPC">category</p>
+              </div>
+              <div fxLayout fxLayoutGap="auto">
+                <p class="ticketDate"><strong>Last modified on</strong>  : 12-06-19</p>
+                <div fxLayout fxLayoutGap="5px">
+                  <div class="statustag"><span>Status</span></div>
+                </div>
+              </div>
+            </mat-card-content>
+           </mat-card>
+           
+           
+          
+        </div>
+  
+      </div>
+      <div class="tabs_content" *ngIf="id === 'closed'">
+        <div *ngFor="let item of indexesClosed; let i = index;" class="tabs_text" >
+          <mat-card (click)="openTicketDet2(item, item.userRole)" class="{{item.userRole === 4 ? 'cardB' : item.userRole === 5 ? 'cardO' : item.userRole === 6 ? 'cardY': 'card'}}">
+            <div class="ticketDiv " >
+              <div class="ticketTop" fxLayout fxLayoutGap="auto">
+                <div fxLayout fxLayoutGap="5px">
+                  <p class="idClass1"><strong>ID</strong></p>
+                  <p class="idClass">:</p>
+                  <p class="idClass">{{item.ticketId}}</p>
+                </div>
+              <button (click)="onVert()" class="Btn" mat-icon-button [matMenuTriggerFor]="menuclosedtick" >
+                <mat-icon class="icon">more_vert</mat-icon>
+              </button>
+              <mat-menu #menuclosedtick="matMenu">
+                <button class="Btn2"  mat-menu-item  (click)="onAssignedBtn(item)">{{assignedBtn}}</button>
+                <button class="Btn2"  mat-menu-item  (click)="onTransferBtn(item)">{{transfer}}</button>
+                <button class="Btn2"  mat-menu-item  (click)="onVerifyBtn(item)">{{verify}}</button>
+              </mat-menu>
+              </div>
+            </div>
+            
+            <mat-card-content>
+            
+              <div fxLayout fxLayoutGap="5px">
+                <p class="ticketDes1"><strong>Inquiry</strong></p>
+                <p class="ticketDes">:</p>
+                <p class="ticketDes">Complaint</p>
+              </div>
+              <div fxLayout fxLayoutGap="5px" >
+                <p class="tickettec1"><strong>Technician</strong></p>
+                <p class="tickettec">:</p>
+                <p class="tickettec">Hussam Abdalla</p>
+              </div>
+              <div fxLayout fxLayoutGap="5px">
+                <p class="ticketPC1"><strong>Department</strong> </p>
+                <p class="ticketPC">:</p>
+                <p class="ticketPC">category</p>
+              </div>
+              <div fxLayout fxLayoutGap="auto">
+                <p class="ticketDate"><strong>Last modified on</strong>  : 12-06-19</p>
+                <div fxLayout fxLayoutGap="5px">
+                  <div class="statustag"><span>Status</span></div>
+                </div>
+              </div>
+            </mat-card-content>
+           </mat-card>
+           
+           
+          
+        </div>
+  
+      </div>
+      <div class="tabs_content" *ngIf="id === 'verified'">
+        <div *ngFor="let item of indexesVerify; let i = index;" class="tabs_text">
+         
+         
+         <mat-card (click)="openTicketDet(item, item.userRole)" class="card">
+           <div class="ticketDiv " >
+             <div class="ticketTop" fxLayout fxLayoutGap="auto">
+               <div fxLayout fxLayoutGap="5px">
+                 <p class="idClass1"><strong>ID</strong></p>
+                 <p class="idClass">:</p>
+                 <p class="idClass">{{item.ticketId}}</p>
+               </div>
+             <!-- <button class="Btn" mat-icon-button  >
+               <mat-icon class="icon">more_vert</mat-icon>
+             </button> -->
+             </div>
+           </div>
+           
+           <mat-card-content>
+           
+             <div fxLayout fxLayoutGap="5px">
+               <p class="ticketDes1"><strong>Inquiry</strong></p>
+               <p class="ticketDes">:</p>
+               <p class="ticketDes">Complaint</p>
+             </div>
+             <div fxLayout fxLayoutGap="5px" >
+               <p class="tickettec1"><strong>Technician</strong></p>
+               <p class="tickettec">:</p>
+               <p class="tickettec">Hussam Abdalla</p>
+             </div>
+             <div fxLayout fxLayoutGap="5px">
+               <p class="ticketPC1"><strong>Department</strong> </p>
+               <p class="ticketPC">:</p>
+               <p class="ticketPC">category</p>
+             </div>
+             <div fxLayout fxLayoutGap="auto">
+               <p class="ticketDate"><strong>Last modified on</strong>  : 12-06-19</p>
+               <div fxLayout fxLayoutGap="5px">
+                 <div class="statustag"><span>Status</span></div>
+               </div>
+             </div>
+           </mat-card-content>
+          </mat-card>
+          
+          </div>
+ 
+      </div>
+     </div>
+     <div class="btnClass">
+      <div class="add_btnD"  (click)="onAdd()" ><mat-icon >add</mat-icon></div>
+  
+    </div>
+  </div>
+
+  
+
+  <div class="ticketDets" *ngIf="showDetailsAll">
+    <div *ngIf="showDetails">
+      <div *ngIf="detActionsStatus === 6" fxLayout fxLayoutGap="20px" class="actions">
+        <h1 class="commentBtn" (click)="onNewComment()" ><mat-icon >add</mat-icon>Comment</h1>
+      <div class="img_profile">
+        <app-card-upload [myFiles]="lFiles" (onUploadFinished)="uploadFinished($event)"
+                    
+                    >
+        </app-card-upload>
+      </div>
+      </div>
+      <div>
+        <div *ngFor="let comment of comments" class="attach" >
+          
+          <!-- <img *ngIf="!showit" [src]="imagePathUrl"  alt="" width="100px" height="100px"> -->
+  
+          <mat-card class="commentedCard">
+            <div class="userComment">
+              
+              <div *ngIf="comment.commentType === 'TEXT'" fxLayout="column">
+                <h1 class="commentC">{{comment.displayName}}</h1>
+                <div class="textCom">
+                  <h1 class="commentC">{{comment.comment}}</h1>
+                </div>
+                <h4 class="commentDate">{{comment.crDate}}</h4>
+              </div>
+              <div *ngIf="comment.commentType === 'ATTACH'" fxLayout="column">
+                <h1 class="commentC">{{comment.displayName}}</h1>
+                <h1 class="commentC"><a class="links" href="{{comment.apiImagePath}}" target="_blank">attachment</a></h1>
+                <h4 class="commentDate">{{comment.crDate}}</h4>
+              </div>
+              
+            </div>
+            
+            
+          </mat-card>
+          
+          
+        </div>
       </div>
     </div>
   </div>
-</div>
- </section>
-
+  <div class="ticketDets" *ngIf="showDetailsAll2">
+    <div *ngIf="showDetails2">
+      <div  fxLayout fxLayoutGap="20px" class="actions">
+        <h1 class="commentBtn" (click)="onNewComment()" ><mat-icon >add</mat-icon>Comment</h1>
+      <div class="img_profile">
+        <app-card-upload [myFiles]="lFiles" (onUploadFinished)="uploadFinished($event)"
+                    
+                    >
+        </app-card-upload>
+      </div>
+      </div>
+      <div>
+        <div *ngFor="let comment of comments" class="attach" >
+          
+          <!-- <img *ngIf="!showit" [src]="imagePathUrl"  alt="" width="100px" height="100px"> -->
+  
+          <mat-card class="commentedCard">
+            <div class="userComment">
+              
+              <div *ngIf="comment.commentType === 'TEXT'" fxLayout="column">
+                <h1 class="commentC">{{comment.displayName}}</h1>
+                <div class="textCom">
+                  <h1 class="commentC">{{comment.comment}}</h1>
+                </div>
+                <h4 class="commentDate">{{comment.crDate}}</h4>
+              </div>
+              <div *ngIf="comment.commentType === 'ATTACH'" fxLayout="column">
+                <h1 class="commentC">{{comment.displayName}}</h1>
+                <h1 class="commentC"><a class="links" href="{{comment.apiImagePath}}" target="_blank">attachment</a></h1>
+                <h4 class="commentDate">{{comment.crDate}}</h4>
+              </div>
+              
+            </div>
+            
+            
+          </mat-card>
+          
+          
+        </div>
+      </div>
+    </div>
+  </div>
+    
+        
+  
+  </section>

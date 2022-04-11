@@ -175,7 +175,7 @@ export class TicketComponent implements OnInit {
 
     this.ticketservice.getNewTickets(this._auth.getUserId()).subscribe(
           (result) => {
-            console.log(result);
+            console.log('Y', JSON.stringify(result));
             
             this.indexes = result
             this.badgeUnassigned = result.length

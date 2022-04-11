@@ -30,7 +30,7 @@
                   <p class="idClass">:</p>
                   <p class="idClass">{{item.ticketId}}</p>
                 </div>
-              <button (click)="onVert()" class="Btn" mat-icon-button [matMenuTriggerFor]="menunewtick"  >
+              <button (click)="onVert()" *ngIf="item.userRole === 5 || item.userRole === 4" class="Btn" mat-icon-button [matMenuTriggerFor]="menunewtick"  >
                 <mat-icon class="icon">more_vert</mat-icon>
               </button>
               <mat-menu #menunewtick="matMenu">
@@ -80,7 +80,7 @@
                   <p class="idClass">:</p>
                   <p class="idClass">{{item.ticketId}}</p>
                 </div>
-              <button (click)="onVert()" *ngIf="role === '5'" class="Btn" mat-icon-button [matMenuTriggerFor]="menu"   >
+              <button (click)="onVert()" *ngIf="item.userRole === 5" class="Btn" mat-icon-button [matMenuTriggerFor]="menu"   >
                 <mat-icon class="icon">more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
@@ -131,7 +131,7 @@
                   <p class="idClass">:</p>
                   <p class="idClass">{{item.ticketId}}</p>
                 </div>
-              <button (click)="onVert()" class="Btn" mat-icon-button [matMenuTriggerFor]="menuclosedtick" >
+              <button (click)="onVert()" *ngIf="item.userRole != 6" class="Btn" mat-icon-button [matMenuTriggerFor]="menuclosedtick" >
                 <mat-icon class="icon">more_vert</mat-icon>
               </button>
               <mat-menu #menuclosedtick="matMenu">

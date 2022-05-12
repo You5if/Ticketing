@@ -45,7 +45,7 @@ export class TicketComponent implements OnInit {
     menuId: number;
     model: Send;
     lFiles: FileListModel[] = [];
-    detActionsStatus: number 
+    detActionsStatus: number = +localStorage.getItem("detActions")
     role = localStorage.getItem("role");
 
     opC: boolean = true
@@ -422,12 +422,14 @@ export class TicketComponent implements OnInit {
 
      console.log(JSON.stringify(newAttach));
      
-
+     
      this.ticketservice.CreateAttach(newAttach).subscribe((response) => {
       console.log(response);
-      
-      this.openTicketDet(this.tickectDetails, this.detActionsStatus) 
-      
+      if(this.showDetailsAll === false) {
+        this.openTicketDet2(this.tickectDetails, +localStorage.getItem("detActions") )
+      }else {
+        this.openTicketDet(this.tickectDetails, +localStorage.getItem("detActions") )
+      }
     })
     
     
@@ -585,7 +587,9 @@ export class TicketComponent implements OnInit {
 
   openTicketDet(tickectModel : TicketModel, status: number) {
     if(this.opC == true) {
-      this.detActionsStatus = status
+     localStorage.setItem("detActions", status.toString())
+      this.detActionsStatus = +localStorage.getItem("detActions")
+      
     this.showDetails = true
     this.showDetails2 = false
     this.showDetailsAll = true
@@ -616,7 +620,10 @@ export class TicketComponent implements OnInit {
   }
   openTicketDet2(tickectModel : TicketModel, status: number) {
     if(this.opC == true) {
-      this.detActionsStatus = status
+      localStorage.setItem("detActions", status.toString())
+      
+      this.detActionsStatus = +localStorage.getItem("detActions")
+      
     this.showDetails = false
     this.showDetails2 = true
     this.showDetailsAll = false
@@ -743,7 +750,15 @@ export class TicketComponent implements OnInit {
       });
     }
     this.dialogRef2.afterClosed().subscribe(() => {
-      this.openTicketDet(this.tickectDetails, this.detActionsStatus) 
+      this.detActionsStatus = +localStorage.getItem("detActions")
+      if(this.showDetailsAll === false) {
+        this.openTicketDet2(this.tickectDetails, +localStorage.getItem("detActions") )
+      }else {
+        this.openTicketDet(this.tickectDetails, +localStorage.getItem("detActions") )
+      }
+
+      console.log(this.detActionsStatus);
+      
     });
   }
   openAssignedDialog = function(result: TicketModel) {

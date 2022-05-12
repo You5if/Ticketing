@@ -67,6 +67,7 @@ export class AssignedComponent implements OnInit {
       ) { }
 
   ngOnInit() {
+    console.log(this.data);
     if(localStorage.getItem(this._globals.baseAppName + '_language') == "16001") {
       this.direction = "ltr"
       this.submit = "Submit"
@@ -83,6 +84,7 @@ export class AssignedComponent implements OnInit {
     this._select.getDropdown('appuserid','appuser','appusername','active=1 and deleted=0 and appuserid>1',false).subscribe((res: SelectModel[]) => {
       this.users = res;
   });
+  console.log(this.data);
   }
   
 

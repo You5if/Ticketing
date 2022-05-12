@@ -67,6 +67,8 @@ export class TransferComponent implements OnInit {
       ) { }
 
   ngOnInit() {
+    console.log(this.data);
+    
     if(localStorage.getItem(this._globals.baseAppName + '_language') == "16001") {
       this.direction = "ltr"
       this.submit = "Submit"

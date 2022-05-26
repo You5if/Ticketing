@@ -79,11 +79,11 @@
     </ng-container>
 
     <!-- delete Column -->
-    <ng-container matColumnDef="delete">
-      <mat-header-cell class="centH" *matHeaderCellDef>{{delete}}</mat-header-cell>
+    <ng-container matColumnDef="changePassword">
+      <mat-header-cell class="centH" *matHeaderCellDef>{{changePassword}}</mat-header-cell>
       <mat-cell class="cent" mat-cell *matCellDef="let row">
-        <button mat-icon-button class="Btn"  color="warn" (click)="onDelete(row.clientUserId)" [disabled]="!screenRights.editFlag">
-          <mat-icon small class="mat-icon material-icons" role="img" aria-hidden="true">delete</mat-icon>
+        <button mat-icon-button class="Btn" (click)="onChangePassword(row.appUserId)" [disabled]="!screenRights.editFlag">
+          <i class="fas fa-key"></i>
         </button>
       </mat-cell>
     </ng-container>

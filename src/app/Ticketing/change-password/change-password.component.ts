@@ -61,7 +61,7 @@ export class ChangePasswordNewComponent implements OnInit {
     obj2: Sources;
 
     obj: AppUserPasswordModel = {
-        AppUserId: this._auth.getUserId(),
+        AppUserId: this.pModel.userId,
         Password: ""
     }
   
@@ -87,10 +87,12 @@ export class ChangePasswordNewComponent implements OnInit {
       private _select: SelectService,
       private alertify: AlertifyService,
       private dialogRef: MatDialogRef<ChangePasswordNewComponent>,
-      @Inject(MAT_DIALOG_DATA) public pModel: Send
+      @Inject(MAT_DIALOG_DATA) public pModel: any
   ) { }
 
   ngOnInit() {
+    console.log(this._auth.getUserId());
+    
     if(localStorage.getItem(this._globals.baseAppName + '_language') == "16001") {
         this.direction = "ltr"
         this.dialog_title = "Change password"
@@ -119,7 +121,7 @@ export class ChangePasswordNewComponent implements OnInit {
   onSubmit() {
 
     // console.log(this.obj);
-    if (this.obj.Password != "") {
+    if (this.obj.Password != "" && this.obj.Password.length >= 8) {
       this.dapiService.ChangePassword(this.obj).subscribe(nexto => {
         this.res = nexto;
         if(localStorage.getItem(this._globals.baseAppName + '_language') == "16001") {
@@ -142,7 +144,7 @@ export class ChangePasswordNewComponent implements OnInit {
        }
       });
     } else {
-      this.alertify.error("Field can't be empty")
+      this.alertify.error("Field can't be empty or less than 8")
     }
 
      

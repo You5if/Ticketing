@@ -16,6 +16,7 @@ import { AppGlobals } from 'src/app/app.global';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Send } from 'src/app/send.model';
 import { CheckfordeleteComponent, DeleteModel } from '../operation/checkfordelete/checkfordelete.component';
+import { ChangePasswordNewComponent } from '../change-password/change-password.component';
 
 @Component({
     selector: 'app-clientuser',
@@ -26,7 +27,7 @@ import { CheckfordeleteComponent, DeleteModel } from '../operation/checkfordelet
 export class ClientUserComponent implements OnInit {
 
     displayedColumns: string[] =
-        ['displayName', 'username', 'appRole', 'password', 'delete'];
+        ['displayName', 'username', 'appRole', 'password', 'changePassword'];
 
     dataSource: any;
     model: Send;
@@ -47,6 +48,7 @@ export class ClientUserComponent implements OnInit {
     password: string;
     edit: string;
   header: string;
+  changePassword: string;
   bankName:string;
   submit: string;
   cancel: string;
@@ -102,6 +104,7 @@ export class ClientUserComponent implements OnInit {
       this.customerName = "Customer"
       this.password = "Password"
       this.delete = "Delete"
+      this.changePassword = "Change password"
       // this.accountCode = "Account Code"
       // this.accountName = "Account Name"
       // this.accountType = "Account Type"
@@ -113,6 +116,7 @@ export class ClientUserComponent implements OnInit {
       this.direction = "rtl"
       this.header = "المستخدمين"
       this.displayName = "المستخدم"
+      this.changePassword = "تغيير كلمة السر"
       this.username = "اسم المستخدم"
       this.appRole = "الدور"
       this.customerName = "العميل"
@@ -150,6 +154,19 @@ export class ClientUserComponent implements OnInit {
       };
     });
   }
+
+  onChangePassword = function (id:number) {
+    
+    this.dialogRef = this.dialog.open(ChangePasswordNewComponent, {
+      disableClose: true,
+      
+      data: {
+        userId: id
+      }
+    });
+  
+  this.dialogRef.afterClosed().subscribe(() => {});
+};
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();

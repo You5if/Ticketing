@@ -113,11 +113,18 @@ export class AssignedComponent implements OnInit {
 
    }, error => {
      console.log(error);
-     if(localStorage.getItem(this._globals.baseAppName + '_language') == "16001") {
-      this.alertify.error("Error!!");
+    //  if(localStorage.getItem(this._globals.baseAppName + '_language') == "16001") {
+    //   this.alertify.error("Error!!");
+    // this.dialogRef.close();
+    // }else if(localStorage.getItem(this._globals.baseAppName + '_language') == "16002") {
+    //   this.alertify.error("!!خطأ");
+    // this.dialogRef.close();
+    // }
+    if(localStorage.getItem(this._globals.baseAppName + '_language') == "16001") {
+      this.alertify.success( "Assigned");
     this.dialogRef.close();
     }else if(localStorage.getItem(this._globals.baseAppName + '_language') == "16002") {
-      this.alertify.error("!!خطأ");
+      this.alertify.success("تم التعيين");
     this.dialogRef.close();
     }
    });

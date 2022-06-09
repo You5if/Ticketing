@@ -83,6 +83,7 @@ export class TicketEntryComponent implements OnInit {
     dialog_title: string = localStorage.getItem(this._globals.baseAppName + '_Add&Edit');
   
     dropList: Sources[] = [];
+  hideController: boolean = false;
 
 
   constructor(
@@ -171,6 +172,37 @@ export class TicketEntryComponent implements OnInit {
         this.data[4].myarray2 = res[0].name;
         // this.container.push(res);
     });
+    this._select.getDropdown("problemcatid", "problemCat", "cast(forcustomer as nvarchar)", "problemcatid=" + id, false).subscribe((res: SelectModel[]) => {
+      console.log(res);
+      if (res[0].name === "0") {
+        this.data[1].myarray2 = true;
+        this.data[2].myarray2 = true;
+        this.data[6].value = ""
+      }else if (res[0].name === "1") {
+        this.data[1].myarray2 = false;
+        this.data[2].myarray2 = false;
+        if(this.checkedIsSub != false) {
+        for(let i=this.light.length-1;i>=0;i--){
+          
+          if(this.light[i].tableColumnId == 808){
+            this.light[i].value = "Customer: NEW \n|Name: \n|Contact: \n|Contact2: \n|Inquiry: "
+          }
+         
+        }
+      }else {
+        for(let i=this.light.length-1;i>=0;i--){
+          
+          if(this.light[i].tableColumnId == 808){
+            this.light[i].value = " Customer: <Code> \n|Name: <Name> \n|Contact:  \n|Contact2: \n|Policy code: <Code> \n|Inquiry:"
+          }
+         
+        }
+      }
+      }
+      // this.data[4].value = res[0].id.toString();
+      // this.data[4].myarray2 = res[0].name;
+      // this.container.push(res);
+  });
     }
 
   }

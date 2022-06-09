@@ -10,6 +10,21 @@
 
 } 
 
+.label {
+  color: white;
+    padding: 5px;
+    border-radius: 7px;
+    background-color: #e3e64d;
+}
+
+.starDiv {
+  display: flex;
+  
+  padding-right: 5px;
+  justify-content: flex-end;
+  width: 100%;
+}
+
 .commentedCard {
   // width: 370px;
   margin-bottom: 5px;
@@ -358,6 +373,8 @@ h6{
 }
 .card {
   width: 100%;
+  padding: 20px 10px 0px 10px;
+  border-radius: 10px;
   margin: 0px 10px 10px 10px;
   @for $i from 1 through 800 {
     &:nth-child(#{$i}) {
@@ -368,6 +385,8 @@ h6{
 }
 .cardY {
   width: 100%;
+  padding: 20px 10px 0px 10px;
+  border-radius: 10px;
   background-color: lightyellow;
   margin: 0px 10px 10px 10px;
   @for $i from 1 through 800 {
@@ -379,6 +398,8 @@ h6{
 }
 .cardB {
   width: 100%;
+  padding: 20px 10px 0px 10px;
+  border-radius: 10px;
   background-color: rgb(231, 236, 252);
   margin: 0px 10px 10px 10px;
   @for $i from 1 through 800 {
@@ -390,6 +411,8 @@ h6{
 }
 .cardO {
   width: 100%;
+  padding: 20px 10px 0px 10px;
+  border-radius: 10px;
   background-color: rgb(247, 239, 239);
   margin: 0px 10px 10px 10px;
   @for $i from 1 through 800 {

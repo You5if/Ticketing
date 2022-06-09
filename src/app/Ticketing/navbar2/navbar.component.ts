@@ -204,7 +204,9 @@ export class Navbar2Component implements OnInit {
     this.dialogRef = this.dialog.open(ChangePasswordNewComponent, {
       disableClose: true,
       
-      data: {}
+      data: {
+        userId: this._auth.getUserId()
+      }
     });
   
   this.dialogRef.afterClosed().subscribe(() => {});

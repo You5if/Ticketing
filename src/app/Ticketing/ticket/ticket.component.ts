@@ -48,6 +48,7 @@ export class TicketComponent implements OnInit {
     detActionsStatus: number = +localStorage.getItem("detActions")
     role = localStorage.getItem("role");
 
+    userId: number
     opC: boolean = true
 
     tickectDetails : TicketModel
@@ -116,9 +117,11 @@ export class TicketComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.role);
+    this.userId = Number(this._auth.getUserId())
     
       this.refreshMe();
   }
+  
 
   id = "newticket"
   tabChange(ids:any){

@@ -106,11 +106,12 @@
             <mat-grid-tile *ngSwitchCase="'Checkbox'">
               <div [ngSwitch]="source.access">
                 <mat-checkbox
+
                 *ngSwitchCase="'Editable'"
                 [ngModel]="source.value == 1 ? true : source.value == 0 ? false : null"
                 (ngModelChange)="source.value = $event ? 1 : 0"
                 (change)="onCheck(source.tableColumnId)"
-
+                [fxHide]="source.myarray2"
 
                 name="{{ source.label }}"
                 >{{ source.label }}</mat-checkbox
@@ -183,7 +184,7 @@
             <mat-grid-tile *ngSwitchCase="'dropdown'">
               <div [ngSwitch]="source.access">
                 <div *ngSwitchCase="'Editable'">
-                    <mat-form-field  appearance="fill">
+                    <mat-form-field [fxHide]="source.myarray2"  appearance="fill">
                       <mat-label>{{ source.label }}</mat-label>
                       <mat-select
                         [(ngModel)]="+source.value"

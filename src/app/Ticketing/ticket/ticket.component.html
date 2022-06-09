@@ -24,12 +24,16 @@
           
           <mat-card (click)="openTicketDet(item, item.userRole)" class="{{item.userRole === 4 ? 'cardB' : item.userRole === 5 ? 'cardO' : item.userRole === 6 ? 'cardY': 'card'}}">
             <div class="ticketDiv " >
+              <div *ngIf="item.openedById === userId" class="starDiv">
+                <span class="label"><i class="fa fa-star"></i></span>
+               </div>
               <div class="ticketTop" fxLayout fxLayoutGap="auto">
                 <div fxLayout fxLayoutGap="5px">
                   <p class="idClass1"><strong>ID</strong></p>
                   <p class="idClass">:</p>
                   <p class="idClass">{{item.ticketId}}</p>
                 </div>
+                <!-- <span class="label"><i class="fa fa-star"></i></span> -->
               <button (click)="onVert()" *ngIf="item.userRole === 5 || item.userRole === 4" class="Btn" mat-icon-button [matMenuTriggerFor]="menunewtick"  >
                 <mat-icon class="icon">more_vert</mat-icon>
               </button>
@@ -38,6 +42,7 @@
                 <button *ngIf="item.userRole === 4" class="Btn2"  mat-menu-item (click)="onAssignedBtn(item)" [disabled]="item.userRole === 5">{{ assignedBtn }}</button>
               </mat-menu>
               </div>
+             
             </div>
             
             <mat-card-content>
@@ -51,6 +56,11 @@
                 <p class="tickettec1"><strong>Category</strong></p>
                 <p class="tickettec">:</p>
                 <p class="tickettec">{{item.category}}</p>
+              </div>
+              <div fxLayout fxLayoutGap="5px" >
+                <p class="tickettec1"><strong>Agent</strong></p>
+                <p class="tickettec">:</p>
+                <p class="tickettec">{{item.openedBy}}</p>
               </div>
               <div fxLayout fxLayoutGap="5px" >
                 <p class="tickettec1"><strong>Technician</strong></p>
@@ -79,6 +89,9 @@
         <div *ngFor="let item of indexesAssigned; let i = index;" class="tabs_text" >
           <mat-card (click)="openTicketDet2(item, item.userRole)"  class="{{item.userRole === 4 ? 'cardB' : item.userRole === 5 ? 'cardO' : item.userRole === 6 ? 'cardY': 'card'}}">
             <div class="ticketDiv " >
+              <div *ngIf="item.openedById === userId" class="starDiv">
+                <span class="label"><i class="fa fa-star"></i></span>
+               </div>
               <div class="ticketTop" fxLayout fxLayoutGap="auto">
                 <div fxLayout fxLayoutGap="5px">
                   <p class="idClass1"><strong>ID</strong></p>
@@ -108,6 +121,11 @@
                 <p class="tickettec">{{item.category}}</p>
               </div>
               <div fxLayout fxLayoutGap="5px" >
+                <p class="tickettec1"><strong>Agent</strong></p>
+                <p class="tickettec">:</p>
+                <p class="tickettec">{{item.openedBy}}</p>
+              </div>
+              <div fxLayout fxLayoutGap="5px" >
                 <p class="tickettec1"><strong>Technician</strong></p>
                 <p class="tickettec">:</p>
                 <p class="tickettec">{{item.displayName}}</p>
@@ -135,6 +153,9 @@
         <div *ngFor="let item of indexesClosed; let i = index;" class="tabs_text" >
           <mat-card (click)="openTicketDet2(item, item.userRole)" class="{{item.userRole === 4 ? 'cardB' : item.userRole === 5 ? 'cardO' : item.userRole === 6 ? 'cardY': 'card'}}">
             <div class="ticketDiv " >
+              <div *ngIf="item.openedById === userId" class="starDiv">
+                <span class="label"><i class="fa fa-star"></i></span>
+               </div>
               <div class="ticketTop" fxLayout fxLayoutGap="auto">
                 <div fxLayout fxLayoutGap="5px">
                   <p class="idClass1"><strong>ID</strong></p>
@@ -163,6 +184,11 @@
                 <p class="tickettec1"><strong>Category</strong></p>
                 <p class="tickettec">:</p>
                 <p class="tickettec">{{item.category}}</p>
+              </div>
+              <div fxLayout fxLayoutGap="5px" >
+                <p class="tickettec1"><strong>Agent</strong></p>
+                <p class="tickettec">:</p>
+                <p class="tickettec">{{item.openedBy}}</p>
               </div>
               <div fxLayout fxLayoutGap="5px" >
                 <p class="tickettec1"><strong>Technician</strong></p>
@@ -194,6 +220,9 @@
          
          <mat-card (click)="openTicketDet(item, item.userRole)" class="card">
            <div class="ticketDiv " >
+            <div *ngIf="item.openedById === userId" class="starDiv">
+              <span class="label"><i class="fa fa-star"></i></span>
+             </div>
              <div class="ticketTop" fxLayout fxLayoutGap="auto">
                <div fxLayout fxLayoutGap="5px">
                  <p class="idClass1"><strong>ID</strong></p>

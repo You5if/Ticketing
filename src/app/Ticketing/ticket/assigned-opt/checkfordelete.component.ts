@@ -54,6 +54,8 @@ export class AssignedComponent implements OnInit {
     cancel: string;
     direction:string;
     dialog_title:string;
+  note: string;
+  showNote: boolean = false;
   constructor(
     public dialogRef: MatDialogRef<AssignedComponent>,
     private _globals: AppGlobals,
@@ -81,10 +83,18 @@ export class AssignedComponent implements OnInit {
       this.submit = "ارسال"
       this.cancel = "الغاء"
     }
-    this._select.getDropdown('appuserid','appuser','appusername','active=1 and deleted=0 and appuserid>1',false).subscribe((res: SelectModel[]) => {
+    //http://ticketingapi.autopay-mcs.com/api/Ddl/getdropdown/distinct%20probtech.appuserid/probtech,appuser/AppUserName/%20probtech.active=1%20and%20probtech.deleted=0%20and%20Probtech.AppUserId=AppUser.AppUserId%20and%20ProblemCatId%20in%20(select%20ProblemCatId%20from%20ProbSup%20where%20active=1%20and%20deleted=0%20and%20appuserid=26)/false
+    this._select.getDropdown('distinct probtech.appuserid','probtech,appuser',' AppUserName',' probtech.active=1 and probtech.deleted=0 and Probtech.AppUserId=AppUser.AppUserId and ProblemCatId in (select ProblemCatId from ProbSup where active=1 and deleted=0 and appuserid='+this._auth.getUserId()+')',false).subscribe((res: SelectModel[]) => {
       this.users = res;
   });
   console.log(this.data);
+  }
+
+  onChoosingTech(id: number) {
+    this.showNote = true
+    this._select.getDropdown('cast(count(ticketid) as bigint)','ticket',"'ok'",'active=1 and deleted=0 and status=37002 and appuserid='+id,false).subscribe((res: SelectModel[]) => {
+      this.note = "Current load:" + " " +res[0].id + " " + "tickets"
+  });
   }
   
 

@@ -201,7 +201,15 @@
          <!-- </button> -->
          </div>
         </div>
+        
       </mat-toolbar>
+      <!-- <div *ngFor="let notification of testArray; let i = index">
+        <div class="notificationBox" *ngIf="notification.openNotification">
+          <h3 class="notificationText">{{notification.message}}</h3>
+            <img (click)="onCancel(i)" class="cancel_Img" src="../../../assets/images/svg/close3.png" alt="">
+          
+        </div>
+      </div> -->
 
       <div fxLayout class="actions_box_container">
       <!--  <div *ngIf="!break" (mouseover)="showButton = true" (mouseleave)="showButton = false" class="hoverableSide">

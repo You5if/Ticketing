@@ -14,6 +14,7 @@ import { ChangePasswordNewComponent } from '../change-password/change-password.c
   styleUrls: ['./navbar.component.scss']
 })
 export class Navbar2Component implements OnInit {
+  openNotification: boolean = true
   opened: boolean = true
   navWidth = ''
   open: boolean = true
@@ -45,6 +46,12 @@ export class Navbar2Component implements OnInit {
   key: number;
   isOpen_YourVariable = true;
 
+  testArray = [
+    { message: "First notification", openNotification: true},
+    { message: "Second notification", openNotification: false},
+    { message: "Third notification", openNotification: false}
+  ]
+
   lang_LS: string;
   changePassword: string;
   constructor(
@@ -55,6 +62,7 @@ export class Navbar2Component implements OnInit {
 
   ngOnInit() {
     
+    // this.startTimer()
     localStorage.setItem(this._globals.baseAppName + '_language', "16001")
     this.titleService.setTitle("Ticketing portal");
     // this.userId = this._auth.getUserName()
@@ -79,6 +87,14 @@ export class Navbar2Component implements OnInit {
       this.nameTitle = localStorage.getItem(this._globals.baseAppName + '_title')
 
       
+  }
+
+  startTimer() {
+    setInterval(() => {
+      console.log("Hello this is Timer");
+      this.openNotification = true
+      
+    },1000)
   }
 
   onSignOut() {
@@ -219,6 +235,11 @@ onResize(event:any){
     : false;
     this.opened = false;
 
+}
+
+onCancel(id: number) {
+  this.testArray[id].openNotification = false
+  this.testArray[id+1].openNotification = true
 }
 // resizeValidate(event: ResizeEvent): boolean {
 //   const MIN_DIMENSIONS_PX: number = 50;

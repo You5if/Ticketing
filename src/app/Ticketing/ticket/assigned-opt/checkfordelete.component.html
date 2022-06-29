@@ -19,17 +19,18 @@
 
 
   <section class="sec">
-    <form class="Main" [dir]="direction"  >
+    <form fxLayout="column" fxLayoutGap="10px" class="Main" [dir]="direction"  >
       <mat-form-field appearance="outline">
         <mat-label>{{ tech }}</mat-label>
         <mat-select matNativeControl  
-          [(ngModel)]="appUserId" [ngModelOptions]="{standalone: true}">
+          [(ngModel)]="appUserId" [ngModelOptions]="{standalone: true}"
+          (selectionChange)="onChoosingTech($event.value)">
           <mat-option *ngFor="let item of users" [value]="item.id">
             {{item.name}}
           </mat-option>
         </mat-select>
       </mat-form-field>
-      
+      <h3 *ngIf="showNote">{{note}}</h3>
     </form>
   </section>
   <div class="btn-container">

@@ -78,7 +78,7 @@ export class UploadCardComponent implements OnInit {
       if (files[i].type === "image/jpeg" || files[i].type === "image/png") {
         // do nothing
       } else {
-        fileValidations = 0;
+        // fileValidations = 0;
       }
     }
     if (fileValidations === 0) {

@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
 })
 
 
-export class NavbarService {
+export class AppNotificationEntryService {
 
     constructor(private _globals: AppGlobals,
         private httpClient: HttpClient,
@@ -22,18 +22,19 @@ export class NavbarService {
         private http: Http,
         private _auth: AuthService) {}
 
-        
+        Controllers(model: Send) {
+            return this.http.post(this._globals.baseAPIUrl + 'AppNotification/getuniventry', model, this._cf.requestOptions()).pipe(
+           map((response: any) => {
+           return response.json();
+           }), catchError(this._cf.handleError));
+        }
 
-        getAssignedTickets(id: number): Observable<any[]> {
-            return this.httpClient.get<any[]>(this._globals.baseAPIUrl + 'Ticket/assignedticket/' + id).pipe(
-            map((result: any[]) => {
-            return result;
-            }), catchError(this._cf.handleError)
-            );
-           }
+        EntryA(arr: any){
+           return this.http.post(this._globals.baseAPIUrl + 'AppNotification/createuniv',arr);
+        }
 
-           editNotificationStatus(arr: any){
-            return this.http.post(this._globals.baseAPIUrl + 'AppNotification/edituniv',arr);
-         }
+        EntryE(arr: any){
+           return this.http.post(this._globals.baseAPIUrl + 'AppNotification/edituniv',arr);
+        }
 }
 

@@ -125,7 +125,18 @@
           <li class="side_list_item" routerLink="Ticket" >Ticket</li> -->
           
         
-        <mat-divider *ngIf="role === '2'"></mat-divider>
+       
+        <mat-divider ></mat-divider>
+        <div >
+          <div  *ngIf="opened" class="main_title">
+            <span class="fon">{{reports}}</span>
+          </div>
+         </div>
+          <mat-divider ></mat-divider>
+          <div >
+            <li *ngIf="opened" class="side_list_item" (click)="onChangeSite('Report')" routerLink="Report"  ><a><i class="fa fa-file"></i>{{report}}</a></li>
+            <li *ngIf="!opened" class="side_list_item_slim" (click)="onChangeSite('Report')"  routerLink="Report"><a><i class="fa fa-file"></i><div class="textIcons">{{report}}</div></a></li>
+           </div>
         
       </ul>
     </div>
@@ -157,37 +168,67 @@
           
 
          <div  fxFlex fxLayout fxLayoutAlign="flex-end">
-          <button [matMenuTriggerFor]="menu3" mat-icon-button class="toggle_btn" aria-label="Example icon-button with heart icon">
-            <i class="fas fa-cog"></i>
-          </button>
-          <mat-menu #menu3="matMenu">
-            <button class="icon" (click)="onChangeLanguage()" mat-menu-item>
-              <a class="icon-insde">
-                <i class="fas fa-globe"></i>
-                <span>{{lang}}</span>
-                </a>
+          <div fxLayout fxLayoutGap="10px">
+            <button (click)="onNotification()"  class="toggle_btn3"  [matMenuTriggerFor]="menuN"  mat-icon-button  aria-label="Example icon-button with heart icon">
+              <i class="fas fa-bell">
+                <div *ngIf="!hideNotification" class="notDot"></div>
+              </i>
             </button>
-            <button class="icon" (click)="onChangePassword()" mat-menu-item>
-              <a class="icon-insde">
-                <i class="fas fa-key"></i>
-                {{changePassword}}
-                </a>
-            </button>
-            <button class="icon" (click)="onSignOut()" mat-menu-item>
-              <a class="icon-insde">
-                <i class="fas fa-sign-out-alt"></i>
-                {{logout}}
-                </a>
-            </button>
-            
-            
-            <!-- <ul >
-              <li class="side_list_item2" (click)="onChangeLanguage()" mat-menu-item><mat-icon class="menuIcon">language</mat-icon><div class="title2"> {{lang}}</div></li>
-              <li (click)="onSignOut()" class="side_list_item2" mat-menu-item><mat-icon class="menuIcon">keyboard_return</mat-icon><div class="title2"> {{logout}}</div></li>
+            <!-- <button (click)="onNotification()"  class="toggle_btn3"  [matMenuTriggerFor]="menuN"  mat-icon-button  aria-label="Example icon-button with heart icon">
+              <i matBadge="&#8288;" matBadgeSize="small" matBadgeColor="warn" [matBadgeHidden]="hideNotification"  class="fas fa-bell"></i>
+            </button> -->
+            <mat-menu #menuN="matMenu" xPosition="after">
+              <div class="notList" >
+                <div *ngFor="let not of newNotification">
+                  <div fxLayout="column" class="not">
+                    <div fxLayout class="notRow">
+                      <h3 class="notTitle">{{not.notTitle}}</h3>
+                      <h5 class="notDate">{{not.notTime | date}}</h5>
+                    </div>
+                      <div fxLayout class="notRow">
+                        <h3 class="notMessage">{{not.notMessage}}</h3>
+                      <h5 class="notDate">{{not.notTime | date:'hh:mm a'}}</h5>
+                      </div>
+                    <mat-divider></mat-divider>
+                  </div>
+                </div>
+                
+              </div>
               
-            </ul> -->
-            
-          </mat-menu>
+              
+            </mat-menu>
+            <button [matMenuTriggerFor]="menu3" mat-icon-button class="toggle_btn" aria-label="Example icon-button with heart icon">
+              <i class="fas fa-cog"></i>
+            </button>
+            <mat-menu #menu3="matMenu">
+              <button class="icon" (click)="onChangeLanguage()" mat-menu-item>
+                <a class="icon-insde">
+                  <i class="fas fa-globe"></i>
+                  <span>{{lang}}</span>
+                  </a>
+              </button>
+              <button class="icon" (click)="onChangePassword()" mat-menu-item>
+                <a class="icon-insde">
+                  <i class="fas fa-key"></i>
+                  {{changePassword}}
+                  </a>
+              </button>
+              <button class="icon" (click)="onSignOut()" mat-menu-item>
+                <a class="icon-insde">
+                  <i class="fas fa-sign-out-alt"></i>
+                  {{logout}}
+                  </a>
+              </button>
+              
+              
+              <!-- <ul >
+                <li class="side_list_item2" (click)="onChangeLanguage()" mat-menu-item><mat-icon class="menuIcon">language</mat-icon><div class="title2"> {{lang}}</div></li>
+                <li (click)="onSignOut()" class="side_list_item2" mat-menu-item><mat-icon class="menuIcon">keyboard_return</mat-icon><div class="title2"> {{logout}}</div></li>
+                
+              </ul> -->
+              
+            </mat-menu>
+          </div>
           
           <!-- <button class="toggle_btn" mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>perm_identity</mat-icon></button>
 <mat-menu #menu="matMenu">

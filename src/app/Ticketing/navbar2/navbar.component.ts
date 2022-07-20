@@ -1,12 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatTableDataSource } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { RouterLinkActive } from '@angular/router';
 import { ResizeEvent } from 'angular-resizable-element';
 
 import { AppGlobals } from 'src/app/app.global';
+import { CommonService } from 'src/app/components/common/common.service';
+import { MessageBoxService } from 'src/app/components/messagebox/message-box.service';
 import { AuthService } from 'src/app/components/security/auth/auth.service';
+import { UIService } from 'src/app/components/shared/uiservices/UI.service';
+import { Send } from 'src/app/send.model';
+import { AppNotificationEntryService } from '../appnotification/appnotification-entry/appnotification-entry.service';
 import { ChangePasswordNewComponent } from '../change-password/change-password.component';
+import { NavbarService } from './navbar.service';
 
 @Component({
   selector: 'app-navbar',
@@ -23,6 +29,7 @@ export class Navbar2Component implements OnInit {
   direction: string = "ltr";
   Agent: string
   userManagement: string;
+  pageData :any
   callCenter:string;
   users: string;
   customerManagement: string;
@@ -45,24 +52,77 @@ export class Navbar2Component implements OnInit {
   langa = true;
   key: number;
   isOpen_YourVariable = true;
+  hideNotification: boolean = true;
+  notSound: number = 0
+
+  nlast: any = {
+    records: [],
+    auditColumn: this._auth.getAuditColumns()
+  }
+  model: Send = {
+    tableId: 106,
+    recordId: 0,
+    userId: +this._auth.getUserId(),
+    roleId: +localStorage.getItem('role'),
+    languageId: +localStorage.getItem(this._globals.baseAppName + '_language')
+  };
+  
 
   testArray = [
-    { message: "First notification", openNotification: true},
-    { message: "Second notification", openNotification: false},
-    { message: "Third notification", openNotification: false}
+    { id: 1, message: "First notification", openNotification: true},
+    { id: 2, message: "Second notification", openNotification: false},
+    { id: 3, message: "Third notification", openNotification: false}
   ]
+
+  
 
   lang_LS: string;
   changePassword: string;
+  newNotification: any;
+  reports: string;
+  report: string;
   constructor(
     private _auth: AuthService,
     private titleService: Title,
+    private navService: AppNotificationEntryService,
+    private _cf: CommonService,
+        private _ui: UIService,
+        private _msg: MessageBoxService,
     private _globals: AppGlobals,
     public dialog: MatDialog,) { }
 
   ngOnInit() {
+    this.pageData = {
+      tableId: 106,
+      userId: 26,
+      recordsPerPage: 100,
+      pageNo: 1,
+      sort: 'notTime desc',
+      filter: "appUserId=("+ this._auth.getUserId()+")"
+    }
     
-    // this.startTimer()
+    this._cf.newGetPageData("AppNotification", this.pageData).subscribe((result) => {
+      
+      this.newNotification = result
+      if (!this.newNotification[0].isRead) {
+        this.hideNotification = false
+        if (this.newNotification[0].appNotificationId != this.notSound) {
+          this.notSound = this.newNotification[0].appNotificationId
+          this.playSound('../../../assets/notification-pretty-good.mp3')
+        }
+      }
+      // if (this.newNotification[0].appNotificationId != +localStorage.getItem(this._globals.baseAppName + '_notificationBadgeId')) {
+      //   localStorage.setItem(this._globals.baseAppName + '_notificationBadgeId', this.newNotification[0].appNotificationId.toString())
+      //   this.hideNotification = false
+      //   this.playSound('../../../assets/notification-pretty-good.mp3')
+      // }else {
+      //   this.hideNotification = true
+      // }
+      
+          console.log(result)
+    })
+    
+    this.startTimer()
     localStorage.setItem(this._globals.baseAppName + '_language', "16001")
     this.titleService.setTitle("Ticketing portal");
     // this.userId = this._auth.getUserName()
@@ -82,19 +142,109 @@ export class Navbar2Component implements OnInit {
       this.technicians = "Technicians"
       this.departments = "Departments"
       this.tickets = "Tickets"
+      this.reports = "Reports"
+      this.report = "Report"
       
       this.changePassword = "Change password"
       this.nameTitle = localStorage.getItem(this._globals.baseAppName + '_title')
 
-      
+      this.open =
+  window.innerWidth >= 600
+    ? true
+    : false;
+      this.opened =
+  window.innerWidth >= 600
+    ? true
+    : false;
+    // this.opened = false;
+  }
+
+  playSound(url) {
+    const audio = new Audio(url);
+    audio.play();
   }
 
   startTimer() {
     setInterval(() => {
-      console.log("Hello this is Timer");
-      this.openNotification = true
+      this._cf.newGetPageData("AppNotification", this.pageData).subscribe((result) => {
       
-    },1000)
+        this.newNotification = result
+        if (!this.newNotification[0].isRead) {
+          this.hideNotification = false
+          if (this.newNotification[0].appNotificationId != this.notSound) {
+            this.notSound = this.newNotification[0].appNotificationId
+            this.playSound('../../../assets/notification-pretty-good.mp3')
+          }
+        }
+        
+            console.log(result)
+      })
+      // this._cf.newGetPageData("AppNotification", this.pageData).subscribe((result) => {
+      
+      //   this.newNotification = result
+      //   if (this.newNotification[0].appNotificationId != +localStorage.getItem(this._globals.baseAppName + '_notificationBadgeId')) {
+      //     localStorage.setItem(this._globals.baseAppName + '_notificationBadgeId', this.newNotification[0].appNotificationId.toString())
+      //     this.hideNotification = false
+      //     this.playSound('../../../assets/notification-pretty-good.mp3')
+      //   }
+        
+      //       console.log(result)
+      // })
+    },5000)
+  }
+  // startTimer() {
+  //   setInterval(() => {
+  //     var notify = this.testArray.find(o => o.openNotification === true)
+  //     this.onCancel2(notify.id)
+  //   },5000)
+  // }
+
+  onNotification() {
+    this.hideNotification = true
+    for (let i = 0; i < this.newNotification.length; i++) {
+      if (!this.newNotification[i].isRead) {
+        this.model.recordId = this.newNotification[i].appNotificationId
+        console.log("modelUN", JSON.stringify(this.model));
+        
+        this.navService.Controllers(this.model).subscribe(res => {
+            this.nlast.records = res
+            this.nlast.records[5].value = "1"
+            console.log("editUN", JSON.stringify(this.nlast));
+            
+        this.navService.EntryE(this.nlast).subscribe(next => {
+          this.nlast.records = []
+          this.hideNotification = true
+        }, error => {
+          this.nlast.records = []
+          this.hideNotification = true
+        })
+        })
+        
+        
+      }
+      
+    }
+  }
+
+  onCancel2(id: number) {
+    for (let i = 0; i < this.testArray.length; i++) {
+      if (this.testArray[i].id === id) {
+        this.testArray[i].openNotification = false
+    this.testArray[i+1].openNotification = true
+    if (this.testArray[i+1].openNotification) {
+      this.playSound('../../../assets/notification-pretty-good.mp3')
+    }
+      }
+      
+    }
+    
+  }
+  onCancel(id: number) {
+    this.testArray[id].openNotification = false
+    this.testArray[id+1].openNotification = true
+    if (this.testArray[id+1].openNotification) {
+      this.playSound('../../../assets/notification-pretty-good.mp3')
+    }
   }
 
   onSignOut() {
@@ -130,6 +280,8 @@ export class Navbar2Component implements OnInit {
       this.technicians = "Technicians"
       this.departments = "Departments"
       this.tickets = "Tickets"
+      this.reports = "Reports"
+      this.report = "Report"
       
       
       this.lang_LS = "16001"
@@ -155,6 +307,8 @@ export class Navbar2Component implements OnInit {
       this.technicians = "التقنيون"
       this.departments = "الاقسام"
       this.tickets = "التذاكر"
+      this.reports = "Reports"
+      this.report = "Report"
       
       this.lang_LS = "16002"
 
@@ -182,6 +336,8 @@ export class Navbar2Component implements OnInit {
       this.technicians = "Technicians"
       this.departments = "Departments"
       this.tickets = "Tickets"
+      this.reports = "Reports"
+      this.report = "Report"
       
       
       this.lang_LS = "16001"
@@ -233,14 +389,12 @@ onResize(event:any){
   window.innerWidth >= 600
     ? true
     : false;
-    this.opened = false;
+    // this.opened = false;
+    // this.open = false
 
 }
 
-onCancel(id: number) {
-  this.testArray[id].openNotification = false
-  this.testArray[id+1].openNotification = true
-}
+
 // resizeValidate(event: ResizeEvent): boolean {
 //   const MIN_DIMENSIONS_PX: number = 50;
 //   if (

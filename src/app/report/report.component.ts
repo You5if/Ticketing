@@ -5,6 +5,9 @@ import { DatePipe } from '@angular/common';
 import { SelectService } from '../components/common/select.service';
 import { ReportPageService } from '../components/PR/report-page/report-page.service';
 import { Router } from '@angular/router';
+import { AppGlobals } from '../app.global';
+import { SelectModel } from '../components/misc/SelectModel';
+import { AuthService } from '../components/security/auth/auth.service';
 
 @Component({
   selector: 'app-report',
@@ -14,32 +17,60 @@ import { Router } from '@angular/router';
 export class ReportComponent implements OnInit {
 
   myForm: FormGroup;
-  companyies: any;
-  role: string;
+  technicians: any;
+  role: string = localStorage.getItem('role');
+  direction: string;
+  submit: string;
+  techniciansL: string;
+  toDate: string;
+  fromDate: string;
+  fromDateTech:string = ''
+  toDateTech:string = ''
+  techId:number
 
   constructor(
     public dialogRef: MatDialogRef<ReportComponent>,
     private fb: FormBuilder,
     private datePipe: DatePipe,
-    private selectService: SelectService,
+    private _select: SelectService,
     private _report: ReportPageService,
+    private _auth: AuthService,
+    private _globals: AppGlobals,
     private router: Router,
     ) { 
     this.dialogRef.disableClose = true
   }
 
   ngOnInit() {
-    this.myForm = this.fb.group({
-      company: '',
-      fromDate: new Date(),
-      toDate: new Date(),
-    });
+    if(localStorage.getItem(this._globals.baseAppName + '_language') == "16001") {
+      this.direction = "ltr"
+      this.submit = "Get report"
+      this.fromDate = "From date"
+      this.toDate = "To date"
+      this.techniciansL = "Technicians"
+      
+    }else if(localStorage.getItem(this._globals.baseAppName + '_language') == "16002") {
+      this.direction = "rtl"
+      this.submit = "التقرير"
+      this.fromDate = "من تاريخ"
+      this.toDate = "الى تاريخ"
+      this.techniciansL = "التقنيون"
+      
+    }
 
-    this.selectService.getCompanies().subscribe(
-      data => this.companyies = data,
-    );
+    console.log("user:", this._auth.getUserId(), this._auth.getUniqueName());
+    
 
-    this.role = localStorage.getItem('role');
+    this._select.getDropdown('distinct probtech.appuserid','probtech,appuser',' AppUserName',' probtech.active=1 and probtech.deleted=0 and Probtech.AppUserId=AppUser.AppUserId and ProblemCatId in (select ProblemCatId from ProbSup where active=1 and deleted=0 and appuserid='+this._auth.getUserId()+')',false).subscribe((res: SelectModel[]) => {
+      this.technicians = res;
+      this.technicians.push({id: this._auth.getUserId(), name: this._auth.getUniqueName()})
+  });
+
+    
+
+    
+
+    
   }
 
   onClose() {
@@ -48,27 +79,44 @@ export class ReportComponent implements OnInit {
 
   onReport(fromDate, toDate, id) {
     if(id > 0) {
-      let reportId: number = 26;
+      let reportId: number = 2;
       let restOfUrl: string;
-      restOfUrl = 'fromdate=' + fromDate + "&todate=" + toDate + "&companyid=" + id;
+      restOfUrl = 'from=' + fromDate + "&to=" + toDate + "&user=" + id;
       this._report.passReportData({ reportId: reportId, restOfUrl: restOfUrl });
-      this.router.navigate(['report']);
+      this.router.navigate(['System/TechnicianReport']);
       // this.router.navigate([]).then(result => {  window.open(this._globals.baseAppUrl + '#/report'); });
       // window.open('#/report', '_blank');
       console.log(restOfUrl)
     }
   }
+
+  onFromDateTech(e:any) {
+    let idD = (<HTMLInputElement>e.target).value
+    this.fromDateTech = idD
+    if (this.toDateTech === "") {
+      this.toDateTech = idD
+    }
+    console.log("fromDate", this.fromDateTech);
+    
+  }
+  onToDateTech(e:any) {
+    let idD2 = (<HTMLInputElement>e.target).value
+    this.toDateTech = idD2
+    if (this.fromDateTech === "") {
+      this.fromDateTech = idD2
+    }
+    console.log("toDate", this.toDateTech);
+    
+  }
   
 
   onSubmit() {
-    if(this.role == '4') this.myForm.value.company = localStorage.getItem('sdCompanyId');
-    const fromDate = this.datePipe.transform(this.myForm.value.fromDate, 'yyyy-M-d')
-    const toDate = this.datePipe.transform(this.myForm.value.toDate, 'yyyy-M-d')
+    
+    
     this.onReport(
-      fromDate,
-      toDate,
-      this.myForm.value.company
+      this.fromDateTech,
+      this.toDateTech,
+      this.techId
     );
-    this.dialogRef.close()
   }
 }

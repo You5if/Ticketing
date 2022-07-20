@@ -98,7 +98,7 @@
                   <p class="idClass">:</p>
                   <p class="idClass">{{item.ticketId}}</p>
                 </div>
-              <button (click)="onVert()" *ngIf="item.userRole === 5" class="Btn" mat-icon-button [matMenuTriggerFor]="menu"   >
+              <button (click)="onVert()" *ngIf="item.userRole === 5 || item.userRole === 4" class="Btn" mat-icon-button [matMenuTriggerFor]="menu"   >
                 <mat-icon class="icon">more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
@@ -265,10 +265,170 @@
  
       </div>
      </div>
-     <div class="btnClass">
-      <div class="add_btnD"  (click)="onAdd()" ><mat-icon >add</mat-icon></div>
-  
-    </div>
+     <div class="btnsCon" fxLayoutGap="10px">
+       <div *ngIf="!sortIsOn" (click)="onClickSort()" class="chImg" [matMenuTriggerFor]="sortmenu" ><img class="sfimg" src="../../../assets/images/svg/sort (6).png" alt=""></div>
+       <div *ngIf="sortIsOn" (click)="onClickSort()" class="chImg" [matMenuTriggerFor]="sortmenu" ><img class="sfimg" src="../../../assets/images/svg/sort (3).png" alt=""></div>
+       <mat-menu [hasBackdrop]="false"  #sortmenu="matMenu" yPosition="above">
+        <div class="sortfilter">
+          <div class="sortfilterRow">
+            <h5 class="sortfilterLabels" (click)="$event.stopPropagation()">Ticket no:</h5>
+            <div class="sortfilterOptions">
+              <div class="sortfilterOpt" fxLayoutGap="10px">
+                <h6>{{ascending}}</h6>
+                <mat-slide-toggle [(ngModel)]="ticketNoCheckedA" (change)="ticketNoSort('asc')" (click)="$event.stopPropagation();"></mat-slide-toggle>
+              </div>
+              <div class="sortfilterOpt" fxLayoutGap="10px">
+                <h6>{{descending}}</h6>
+                <mat-slide-toggle [(ngModel)]="ticketNoCheckedD" (change)="ticketNoSort('desc')" (click)="$event.stopPropagation();"></mat-slide-toggle>
+              </div>
+            </div>
+          </div>
+          <mat-divider class="sortfilterDivider"></mat-divider>
+          <div class="sortfilterRow">
+            <h5 class="sortfilterLabels" (click)="$event.stopPropagation()">Agent:</h5>
+            <div class="sortfilterOptions">
+              <div class="sortfilterOpt" fxLayoutGap="10px">
+                <h6>{{ascending}}</h6>
+                <mat-slide-toggle [(ngModel)]="agentCheckedA" (change)="agentSort('asc')" (click)="$event.stopPropagation();"></mat-slide-toggle>
+              </div>
+              <div class="sortfilterOpt" fxLayoutGap="10px">
+                <h6>{{descending}}</h6>
+                <mat-slide-toggle [(ngModel)]="agentCheckedD" (change)="agentSort('desc')" (click)="$event.stopPropagation();"></mat-slide-toggle>
+              </div>
+            </div>
+          </div>
+          <mat-divider class="sortfilterDivider"></mat-divider>
+          <div class="sortfilterRow">
+            <h5 class="sortfilterLabels" (click)="$event.stopPropagation()">Category:</h5>
+            <div class="sortfilterOptions">
+              <div class="sortfilterOpt" fxLayoutGap="10px">
+                <h6>{{ascending}}</h6>
+                <mat-slide-toggle [(ngModel)]="categoryCheckedA" (change)="categorySort('asc')" (click)="$event.stopPropagation();"></mat-slide-toggle>
+              </div>
+              <div class="sortfilterOpt" fxLayoutGap="10px">
+                <h6>{{descending}}</h6>
+                <mat-slide-toggle [(ngModel)]="categoryCheckedD" (change)="categorySort('desc')" (click)="$event.stopPropagation();"></mat-slide-toggle>
+              </div>
+            </div>
+          </div>
+          <mat-divider class="sortfilterDivider"></mat-divider>
+          <div class="sortfilterRow">
+            <h5 class="sortfilterLabels" (click)="$event.stopPropagation()">Creation:</h5>
+            <div class="sortfilterOptions">
+              <div class="sortfilterOpt" fxLayoutGap="10px">
+                <h6>{{ascending}}</h6>
+                <mat-slide-toggle [(ngModel)]="creationCheckedA" (change)="creationSort('asc')" (click)="$event.stopPropagation();"></mat-slide-toggle>
+              </div>
+              <div class="sortfilterOpt" fxLayoutGap="10px">
+                <h6>{{descending}}</h6>
+                <mat-slide-toggle [(ngModel)]="creationCheckedD" (change)="creationSort('desc')" (click)="$event.stopPropagation();"></mat-slide-toggle>
+              </div>
+            </div>
+          </div>
+          <div class="sortfilterBtns">
+            <button class="BtnC" (click)="onClearSort()"  mat-button color="warn" type="submit">{{clear}}</button>
+            <button class="BtnS" (click)="onApplySort()"  mat-button color="primary" type="submit">{{apply}}</button>
+          </div>
+        </div>
+      </mat-menu>
+       <!-- <div class="chImg" ><img class="sfimg" src="../../../assets/images/svg/sort (2).png" alt=""></div> -->
+       <div class="btnClass">
+        <div class="add_btnD"  (click)="onAdd()" ><mat-icon >add</mat-icon></div>
+      </div>
+      <div *ngIf="!filterIsOn" class="chImg" [matMenuTriggerFor]="filtermenu" ><img class="sfimg" src="../../../assets/images/svg/filter-filled-tool-symbol (3).png" alt=""></div>
+       <div *ngIf="filterIsOn" class="chImg" [matMenuTriggerFor]="filtermenu" ><img class="sfimg" src="../../../assets/images/svg/filter-filled-tool-symbol.png" alt=""></div>
+       <mat-menu [hasBackdrop]="false"  #filtermenu="matMenu" yPosition="above">
+        <div class="sortfilter">
+          <div class="sortfilterRow">
+            <h5 class="sortfilterLabels" (click)="$event.stopPropagation()">Ticket no:</h5>
+            <div class="sortfilterOptions">
+              <mat-form-field (click)="$event.stopPropagation()"  class="sortfilterInput" appearance="fill">
+                <mat-label>Ticket no</mat-label>
+                <input matInput type="number" (onChangeValue)="$event.stopPropagation()" [(ngModel)]="ticketNoFilter">
+                <button class="BtnX" *ngIf="ticketNoFilter" matSuffix mat-icon-button aria-label="Clear" (click)="ticketNoFilter=''">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+          </div>
+          <mat-divider class="sortfilterDivider"></mat-divider>
+          <div class="sortfilterRow">
+            <h5 class="sortfilterLabels" (click)="$event.stopPropagation()">{{agentL}}</h5>
+            <div class="sortfilterOptions">
+              <app-my-test-auto 
+              (click)="$event.stopPropagation()"
+              [refId]="'appuserid'" 
+              [refCondition]="'appuserid>1 and active=1 and deleted=0'" 
+              [refTable]="'appuser'" 
+              [refColumn]="'appusername'" 
+              [labelValue]="agent" 
+              [initialValue]="" 
+              [initialFilter]="filterInitial" 
+              (resultId)="onResults('agent', $event)"></app-my-test-auto>
+            
+            </div>
+          </div>
+          <mat-divider class="sortfilterDivider"></mat-divider>
+          <div class="sortfilterRow">
+            <h5 class="sortfilterLabels" (click)="$event.stopPropagation()">{{categoryL}}</h5>
+            
+              <div class="sortfilterOptions">
+                <app-my-test-auto 
+                (click)="$event.stopPropagation()"
+                [refId]="'problemcatid'" 
+                [refCondition]="'problemcatid>1 and active=1 and deleted=0'" 
+                [refTable]="'problemcat'" 
+                [refColumn]="'problem'" 
+                [labelValue]="category" 
+                [initialValue]="" 
+                [initialFilter]="filterInitial" 
+                (resultId)="onResults('category', $event)"></app-my-test-auto>
+              
+              </div>
+            
+          </div>
+          <mat-divider class="sortfilterDivider"></mat-divider>
+          <div class="sortfilterRow">
+            <h5 class="sortfilterLabels" (click)="$event.stopPropagation()">Creation:</h5>
+            <div class="sortfilterOptions">
+              <div class="sortfilterOpt" fxLayoutGap="10px">
+                <mat-form-field (click)="$event.stopPropagation()"  class="sortfilterInput2"  appearance="outline">
+                  <mat-label>{{ fromDate }}</mat-label>
+                  <input
+                    matInput
+                    [(ngModel)]="fromDateFilter"
+                    name="fromDate"
+                    (onChangeValue)="$event.stopPropagation()"
+                    (input)="onFromDateFilter($event)"
+                    type="date"
+                    placeholder="From date"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="sortfilterOpt" fxLayoutGap="10px">
+                <mat-form-field (click)="$event.stopPropagation()"  class="sortfilterInput2"  appearance="outline">
+                  <mat-label>{{ toDate }}</mat-label>
+                  <input
+                    matInput
+                    [(ngModel)]="toDateFilter"
+                    name="toDate"
+                    (onChangeValue)="$event.stopPropagation()"
+                    (input)="onToDateFilter($event)"
+                    type="date"
+                    placeholder="To date"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="sortfilterBtns">
+            <button class="BtnC" (click)="onClearFilter()"  mat-button color="warn" type="submit">{{clear}}</button>
+            <button class="BtnS" (click)="onApplyFilter()"  mat-button color="primary" type="submit">{{apply}}</button>
+          </div>
+        </div>
+      </mat-menu>
+       <!-- <div class="chImg" ><img class="sfimg" src="../../../assets/images/svg/filter-filled-tool-symbol (2).png" alt=""></div> -->
+     </div>
   </div>
 
   

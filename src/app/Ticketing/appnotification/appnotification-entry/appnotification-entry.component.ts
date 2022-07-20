@@ -13,22 +13,20 @@ import { SelectService } from 'src/app/components/common/select.service';
 import { AppGlobals } from 'src/app/app.global';
 import { Send } from 'src/app/send.model';
 import { Sources } from 'src/app/source.model';
-import { TicketEntryService } from './ticket-entry.service';
-import { GlobalSerivce } from 'src/app/global-functions.service';
+import { AppNotificationEntryService } from './appnotification-entry.service';
 
 @Component({
-  selector: 'app-ticket-entry',
-  templateUrl: './ticket-entry.component.html',
-  styleUrls: ['./ticket-entry.component.scss']
+  selector: 'app-appnotification-entry',
+  templateUrl: './appnotification-entry.component.html',
+  styleUrls: ['./appnotification-entry.component.scss']
 })
 
-export class TicketEntryComponent implements OnInit {
+export class AppNotificationEntryComponent implements OnInit {
 
 	url: string;
-  checkedIsSub:boolean = true;
 
     model: Send = {
-      tableId: 97,
+      tableId: 106,
       recordId: 0,
       userId: +this._auth.getUserId(),
       roleId: +localStorage.getItem('role'),
@@ -42,7 +40,7 @@ export class TicketEntryComponent implements OnInit {
         companyId: 10001,
         branchId: 201,
         financialYearId: 1,
-        userId: +this._auth.getUserId(),
+        userId: 1,
         mACAddress: "unidentified",
         hostName: "unidentified",
         iPAddress: "unidentified",
@@ -84,18 +82,16 @@ export class TicketEntryComponent implements OnInit {
     dialog_title: string = localStorage.getItem(this._globals.baseAppName + '_Add&Edit');
   
     dropList: Sources[] = [];
-  hideController: boolean = false;
 
 
   constructor(
-	  private dapiService: TicketEntryService,
+	  private dapiService: AppNotificationEntryService,
       private _ui: UIService,
       private _msg: MessageBoxService,
       private _auth: AuthService,
       private _globals: AppGlobals,
-      private _globalFun: GlobalSerivce,
       private _select: SelectService,
-      private dialogRef: MatDialogRef<TicketEntryComponent>,
+      private dialogRef: MatDialogRef<AppNotificationEntryComponent>,
       @Inject(MAT_DIALOG_DATA) public pModel: Send
   ) { }
 
@@ -114,13 +110,7 @@ export class TicketEntryComponent implements OnInit {
       this.dapiService.Controllers(this.pModel).subscribe(res => {
         this._ui.loadingStateChanged.next(false);
         this.data = res;
-
-        console.log(this.data);
-        // this.data[1].access = "Editable"
-        
-        this.data[6].value = "Customer: NEW \n|Name: \n|Contact: \n|Contact2: \n|Inquiry: "
-        this.data[10].value = this._auth.getUserId()
-        
+  
         for(let i=0;i<=this.data.length;i++){
           this.ver2 = this.data[i]
           if (this.ver2 && this.ver2.inTransaction && this.ver2.access != "NoAccess"){
@@ -144,92 +134,13 @@ export class TicketEntryComponent implements OnInit {
         for(let k=0;k<=this.dropList.length;k++) {
           this.dropItem = this.dropList[k]
   
-          if (this.dropItem.tableColumnId == 806) {
-            this._select.getDropdown(this.dropItem.refId, this.dropItem.refTable, this.dropItem.refColumn, this.dropItem.refCondition + this._auth.getUserId(), false).subscribe((res: SelectModel[]) => {
-              this.dropList[k].myarray = res;
-              this.container.push(res);
-          });
-      
-          }else {
-            this._select.getDropdown(this.dropItem.refId, this.dropItem.refTable, this.dropItem.refColumn, this.dropItem.refCondition, false).subscribe((res: SelectModel[]) => {
-              this.dropList[k].myarray = res;
-              this.container.push(res);
-          });
-      
-          }
-         
+          this._select.getDropdown(this.dropItem.refId, this.dropItem.refTable, this.dropItem.refColumn, this.dropItem.refCondition, false).subscribe((res: SelectModel[]) => {
+          this.dropList[k].myarray = res;
+          this.container.push(res);
+      });
+  
         }  
       })
-
-      console.log(this.light);
-      
-  }
-
-  onChangeValue(id: number, tableId:number) {
-    if(tableId === 806) {
-      this._select.getDropdown("undepartment.undepartmentid", "undepartment,problemCat", "deptname", "undepartment.undepartmentid=problemCat.undepartmentid and problemcatid=" + id, false).subscribe((res: SelectModel[]) => {
-        console.log(res);
-        
-        this.data[4].value = res[0].id.toString();
-        this.data[4].myarray2 = res[0].name;
-        // this.container.push(res);
-    });
-    this._select.getDropdown("problemcatid", "problemCat", "cast(forcustomer as nvarchar)", "problemcatid=" + id, false).subscribe((res: SelectModel[]) => {
-      console.log(res);
-      if (res[0].name === "0") {
-        this.data[1].myarray2 = true;
-        this.data[2].myarray2 = true;
-        this.data[6].value = ""
-      }else if (res[0].name === "1") {
-        this.data[1].myarray2 = false;
-        this.data[2].myarray2 = false;
-        if(this.checkedIsSub != false) {
-        for(let i=this.light.length-1;i>=0;i--){
-          
-          if(this.light[i].tableColumnId == 808){
-            this.light[i].value = "Customer: NEW \n|Name: \n|Contact: \n|Contact2: \n|Inquiry: "
-          }
-         
-        }
-      }else {
-        for(let i=this.light.length-1;i>=0;i--){
-          
-          if(this.light[i].tableColumnId == 808){
-            this.light[i].value = " Customer: <Code> \n|Name: <Name> \n|Contact:  \n|Contact2: \n|Policy code: <Code> \n|Inquiry:"
-          }
-         
-        }
-      }
-      }
-      // this.data[4].value = res[0].id.toString();
-      // this.data[4].myarray2 = res[0].name;
-      // this.container.push(res);
-  });
-    }
-
-  }
-
-  onCheck(tableId: number) {
-    if(tableId === 816) {
-      this.checkedIsSub = !this.checkedIsSub
-      if(this.checkedIsSub != false) {
-        for(let i=this.light.length-1;i>=0;i--){
-          
-          if(this.light[i].tableColumnId == 808){
-            this.light[i].value = "Customer: NEW \n|Name: \n|Contact: \n|Contact2: \n|Inquiry: "
-          }
-         
-        }
-      }else {
-        for(let i=this.light.length-1;i>=0;i--){
-          
-          if(this.light[i].tableColumnId == 808){
-            this.light[i].value = " Customer: <Code> \n|Name: <Name> \n|Contact:  \n|Contact2: \n|Policy code: <Code> \n|Inquiry:"
-          }
-         
-        }
-      }
-    }
   }
 
   onSubmit() {
@@ -247,17 +158,6 @@ export class TicketEntryComponent implements OnInit {
        }
      }
 
-    
-      this.last.records.sort(function(a, b) { 
-        return a.applicationOrder - b.applicationOrder  ||  a.label.localeCompare(b.label);
-      });
-
-      console.log("lastQ",this.last);
-      
-      this.last = this._globalFun.convertQuotation(this.last)
-
-      console.log("lastQ",this.last);
-      
           if(this.last.records[0].entryMode == "A"){
            this.last.auditColumn = this._auth.getAuditColumns();
            this.dapiService.EntryA(this.last).subscribe(nexto => {

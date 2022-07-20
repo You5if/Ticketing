@@ -12,6 +12,60 @@ mat-drawer-content {
   height: 100%;
 }
 
+.not {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 10px 10px 10px;
+}
+
+.notRow {
+  display: flex;
+  justify-content: space-between;
+}
+
+.notDot{
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #03878c;
+  position: absolute;
+    left: 10px;
+    bottom: 20px;
+}
+
+.fa-bell {
+  position: relative;
+}
+
+::ng-deep .mat-badge-content {
+  font-size: 2px;
+}
+
+.notDate {
+  font-size: 14px !important;
+    color: rgb(153, 152, 152);
+}
+.notTitle {
+  font-weight: bold;
+}
+.notMessage {
+  margin-bottom: 15px;
+}
+
+.notList {
+  height: 250px;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+.notList::-webkit-scrollbar {
+  width: 3px;
+}
+.notList::-webkit-scrollbar-thumb {
+  border-radius: 50px;
+
+  background-color: #c2c2c2;
+}
+
 .closeAll {
   border: 2px solid black;
   background-color: white;
@@ -336,6 +390,7 @@ mat-icon {
   outline: none;
   color: #ffffff;
 }
+
 
 .actions1 {
   display: flex;

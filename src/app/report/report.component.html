@@ -1,31 +1,59 @@
-<h1 mat-dialog-title>Report</h1>
-<div mat-dialog-content>
-  <form [formGroup]="myForm">
+<h1 [dir]="direction" class="title" >Technician activity</h1>
+<div [dir]="direction">
+  <div fxLayoutGap="15px" class="line" >
     <mat-form-field appearance="outline">
-      <mat-label>Company</mat-label>
-      <mat-select formControlName="company" [disabled]="role === '4'">
-        <mat-option *ngFor="let company of companyies" [value]="company.id">
-          {{company.name}}
+      <mat-label>{{techniciansL}}</mat-label>
+      <mat-select 
+      [(ngModel)]="techId"
+      name="techId"
+      >
+        <mat-option *ngFor="let tech of technicians" [value]="tech.id">
+          {{tech.name}}
         </mat-option>
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
+    <!-- <mat-form-field appearance="outline">
       <mat-label>Starting Date</mat-label>
       <input matInput [matDatepicker]="from" formControlName="fromDate">
       <mat-datepicker-toggle matSuffix [for]="from"></mat-datepicker-toggle>
       <mat-datepicker #from></mat-datepicker>
+    </mat-form-field> -->
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ fromDate }}</mat-label>
+      <input
+        matInput
+        [(ngModel)]="fromDateTech"
+        name="fromDateTech"
+        (input)="onFromDateTech($event)"
+        type="date"
+        placeholder="{{fromDate}}"
+      />
+
+
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>End Date</mat-label>
-      <input matInput [matDatepicker]="to" formControlName="toDate">
-      <mat-datepicker-toggle matSuffix [for]="to"></mat-datepicker-toggle>
-      <mat-datepicker #to></mat-datepicker>
+      <mat-label>{{ toDate }}</mat-label>
+      <input
+        matInput
+        [(ngModel)]="toDateTech"
+        (input)="onToDateTech($event)"
+        name="toDateTech"
+        type="date"
+        placeholder="{{toDate}}"
+      />
+
+
     </mat-form-field>
-  </form>
+    <div >
+      <button class="BtnS" (click)="onSubmit()"  mat-button color="primary" type="submit">Get report</button>
+    </div>
+  </div>
 </div>
-<div mat-dialog-actions>
-  <button mat-flat-button color="warn" (click)="onClose()">Cancel</button>
-  <button mat-flat-button color="accent" (click)="onSubmit()">Submit</button>
-</div>
+
+
+  
+
+  

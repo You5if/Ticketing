@@ -205,6 +205,10 @@ import { NewClientComponent } from './Ticketing/new-client/new-client.component'
 import { KnownClientComponent } from './Ticketing/known-client/known-client.component';
 import { TicketEntry2Component } from "./Ticketing/new-client/ticket-entry/ticket-entry.component";
 import { TicketEntry3Component } from "./Ticketing/new-client/ticket-entry3/ticket-entry.component";
+import { DetailsEntryComponent } from "./Ticketing/ticket/details-entry/checkfordelete.component";
+import { AppNotificationEntryComponent } from "./Ticketing/appnotification/appnotification-entry/appnotification-entry.component";
+import { AppNotificationComponent } from "./Ticketing/appnotification/appnotification.component";
+import { MyTestAutoComponent } from "./Ticketing/my-test-auto/my-test-auto.component";
 
 
 
@@ -412,6 +416,10 @@ export const jwtConfig = {
     KnownClientComponent,
     TicketEntry2Component,
     TicketEntry3Component,
+    DetailsEntryComponent,
+    AppNotificationComponent,
+    AppNotificationEntryComponent,
+    MyTestAutoComponent
     
 
 
@@ -445,6 +453,7 @@ export const jwtConfig = {
     
   ],
   providers: [
+    MyTestAutoComponent,
     AlertifyService,
     { provide: MatDialogRef, useValue: {} },
 { provide: MAT_DIALOG_DATA, useValue: [] },
@@ -532,7 +541,9 @@ export const jwtConfig = {
     TicketVerifyEntryComponent,
     ProbAgentEntryComponent,
     TicketEntry2Component,
-    TicketEntry3Component
+    TicketEntry3Component,
+    DetailsEntryComponent,
+    AppNotificationEntryComponent,
     
   ]
 })

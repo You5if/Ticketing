@@ -174,4 +174,26 @@ export class TicketService {
      CreateAttach(arr: TicketAttachModel){
       return this.http.post(this._globals.baseAPIUrl + 'TicketAttach/create',arr);
    }
+
+   newTicketsf(arr: any):Observable<TicketModel[]>{
+      return this.httpClient.post(this._globals.baseAPIUrl + 'Ticket/FilterSortTicket',arr).pipe(
+         map((result: TicketModel[]) => {
+         return result;
+         }), catchError(this._cf.handleError)
+         );
+   }
+   assignTicketsf(arr: any):Observable<TicketModel[]>{
+      return this.httpClient.post(this._globals.baseAPIUrl + 'Ticket/FilterSortTicketAssignedBy',arr).pipe(
+         map((result: TicketModel[]) => {
+         return result;
+         }), catchError(this._cf.handleError)
+         );
+   }
+   closedTicketsf(arr: any):Observable<TicketModel[]>{
+      return this.httpClient.post(this._globals.baseAPIUrl + 'Ticket/FilterSortTicketClosedBy',arr).pipe(
+         map((result: TicketModel[]) => {
+         return result;
+         }), catchError(this._cf.handleError)
+         );
+   }
 }

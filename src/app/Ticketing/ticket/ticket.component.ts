@@ -21,6 +21,9 @@ import { AssignedComponent } from './assigned-opt/checkfordelete.component';
 import { TransferComponent } from './transfer-opt/checkfordelete.component';
 import { TicketCloseEntryComponent } from './ticketclose-entry/ticketclose-entry.component';
 import { TicketVerifyEntryComponent } from './ticketverify-entry/ticketverify-entry.component';
+import { GlobalSerivce } from 'src/app/global-functions.service';
+import { DetailsEntryComponent } from './details-entry/checkfordelete.component';
+import { MyTestAutoComponent } from '../my-test-auto/my-test-auto.component';
 
 @Component({
     selector: 'app-ticket',
@@ -68,6 +71,15 @@ export class TicketComponent implements OnInit {
     indexesVerify: TicketModel[]
     items: number[] = [1,2,3,4,5,]
 
+    ticketNoCheckedA: boolean = false
+    ticketNoCheckedD: boolean = false
+    agentCheckedA: boolean = false
+    agentCheckedD: boolean = false
+    categoryCheckedA: boolean = false
+    categoryCheckedD: boolean = false
+    creationCheckedA: boolean = false
+    creationCheckedD: boolean = false
+
     totalRecords: number;
     pageSizeOptions: number[] = [5, 10, 25, 100];
 
@@ -90,6 +102,42 @@ export class TicketComponent implements OnInit {
   badgeClosed:number = 0;
   badgeUnassigned:number = 0;
   badgeVerified:number = 0;
+  ascending: string;
+  descending: string;
+  apply: string;
+  clear: string;
+  ticketNoSortString: string = "";
+  agentSortString: string = "";
+  categorySortString: string = "";
+  creationSortString: string = "";
+
+  ticketPageData: any = {
+    AppUserId: this._auth.getUserId(), 
+    TicketId:1, 
+    FromDate:"",
+    ToDate:"",
+    Agent:1,
+    Category:1,
+    SortTicketId:"",
+    SortDate:"",
+    SortAgent:"",
+    SortCategory:""
+   }
+
+   sortIsOn : boolean = false
+   filterIsOn : boolean = false
+   ticketNoFilter: number
+  agent: string;
+  agentfilterNum: number = 1;
+  categoryfilterNum: number = 1;
+  category: string;
+  agentL: string;
+  categoryL: string;
+  fromDateFilter:string = ""
+  toDateFilter:string = ""
+  fromDate: string;
+  toDate: string;
+  filterInitial: string = '1'
 
     constructor(
         public dialog: MatDialog,
@@ -97,11 +145,14 @@ export class TicketComponent implements OnInit {
         public dialog2: MatDialog,
         public dialog3: MatDialog,
         public dialog4: MatDialog,
+        public dialog5: MatDialog,
+        public _auto: MyTestAutoComponent,
         private _cf: CommonService,
         private alertify: AlertifyService,
         private _ui: UIService,
         private _msg: MessageBoxService,
         private _globals: AppGlobals,
+        private _globalFun: GlobalSerivce,
         private _auth: AuthService,
         private _select: SelectService,
         private ticketservice: TicketService
@@ -116,6 +167,8 @@ export class TicketComponent implements OnInit {
 
 
   ngOnInit() {
+    // console.log(this._globalFun.convertQuotation("Testing ' fun"));
+    
     console.log(this.role);
     this.userId = Number(this._auth.getUserId())
     
@@ -141,15 +194,26 @@ export class TicketComponent implements OnInit {
   this.showDetails2 = false;
   }
   refreshMe() {
+    this.startTicketingTimer()
     if(localStorage.getItem(this._globals.baseAppName + '_language') == "16001") {
       this.direction = "ltr"
       this.newTicket = "New"
       this.assignedTicket = "Assigned"
       this.acceptBtn = "Accept"
+      this.agent = "Agent"
+      this.fromDate = "From date"
+      this.toDate = "To date"
+      this.agentL = "Agent:"
+      this.category = "Category"
+      this.categoryL = "Cat. :"
       this.assignedBtn = "Assign"
       this.transfer = "Transfer"
       this.close = "Close"
       this.closed = "Closed"
+      this.ascending = "Ascending"
+      this.descending = "Descending"
+      this.apply = "Apply"
+      this.clear = "Clear"
       this.verify = "Verify"
       
     }else if(localStorage.getItem(this._globals.baseAppName + '_language') == "16002") {
@@ -157,10 +221,20 @@ export class TicketComponent implements OnInit {
       this.newTicket = "جديد"
       this.assignedTicket = "مكلفة الى"
       this.acceptBtn = "قبول"
+      this.fromDate = "من تاريخ"
+      this.toDate = "الى تاريخ"
       this.assignedBtn = "تعيين"
+      this.agent = "العملاء"
+      this.agentL = ":العملاء"
+      this.category = "الفئة"
+      this.categoryL = ":الفئة"
+      this.apply = "تطبيق"
+      this.clear = "الغاء"
       this.transfer = "نقل"
       this.close = "اغلاق"
       this.closed = "مغلقة"
+      this.ascending = "تصاعدي"
+      this.descending = "تنازلي"
       this.verify = "تاكيد"
       
     }
@@ -176,38 +250,42 @@ export class TicketComponent implements OnInit {
     console.log(localStorage.getItem('departmentId'));
     
 
-    this.ticketservice.getNewTickets(this._auth.getUserId()).subscribe(
+    this._ui.loadingStateChanged.next(true);
+    this.ticketservice.newTicketsf(this.ticketPageData).subscribe(
           (result) => {
+            this._ui.loadingStateChanged.next(false);
             console.log('Y', JSON.stringify(result));
             
             this.indexes = result
             this.badgeUnassigned = result.length
           }
         );
-        this.ticketservice.getAssignedTickets(this._auth.getUserId()).subscribe(
+        this.ticketservice.assignTicketsf(this.ticketPageData).subscribe(
           (result) => {
+            this._ui.loadingStateChanged.next(false);
             console.log(result);
             
             this.indexesAssigned = result
             this.badgeAssigned = result.length
           }
         );
-        this.ticketservice.getClosedTickets(this._auth.getUserId()).subscribe(
+        this.ticketservice.closedTicketsf(this.ticketPageData).subscribe(
           (result) => {
+            this._ui.loadingStateChanged.next(false);
             console.log(result);
             
             this.indexesClosed = result
             this.badgeClosed = result.length
           }
         );
-        this.ticketservice.getVerifyTickets(+localStorage.getItem('departmentId')).subscribe(
-          (result) => {
-            console.log(result);
+        // this.ticketservice.getVerifyTickets(+localStorage.getItem('departmentId')).subscribe(
+        //   (result) => {
+        //     console.log(result);
             
-            this.indexesVerify = result
-            this.badgeVerified = result.length
-          }
-        );
+        //     this.indexesVerify = result
+        //     this.badgeVerified = result.length
+        //   }
+        // );
         // this.ticketservice.badgeOfUnassignedForAll(+localStorage.getItem('departmentId')).subscribe(
         //   (result) => {
         //     console.log(result);
@@ -386,6 +464,46 @@ export class TicketComponent implements OnInit {
     });
   }
 
+
+  startTicketingTimer() {
+    setInterval(() => {
+      this.ticketservice.newTicketsf(this.ticketPageData).subscribe(
+        (result) => {
+          console.log('Y', JSON.stringify(result));
+          
+          this.indexes = result
+          this.badgeUnassigned = result.length
+        }
+      );
+      this.ticketservice.assignTicketsf(this.ticketPageData).subscribe(
+        (result) => {
+          console.log(result);
+          
+          this.indexesAssigned = result
+          this.badgeAssigned = result.length
+        }
+      );
+      this.ticketservice.closedTicketsf(this.ticketPageData).subscribe(
+        (result) => {
+          console.log(result);
+          
+          this.indexesClosed = result
+          this.badgeClosed = result.length
+        }
+      );
+      // this.ticketservice.getVerifyTickets(+localStorage.getItem('departmentId')).subscribe(
+      //   (result) => {
+      //     console.log(result);
+          
+      //     this.indexesVerify = result
+      //     this.badgeVerified = result.length
+      //   }
+      // );
+    },5000)
+  }
+
+
+
   public uploadFinished = (event) => { // this is event being called when file gets uploaded
     
     const file: FileListModel = {
@@ -448,6 +566,483 @@ export class TicketComponent implements OnInit {
     // yea i was just making sure they were leaving here correctly.. now i will go to step 2, sorry ok
 }
 
+onResults(type:string,e:any) {
+  console.log('ee',e);
+  if (type === 'agent') {
+    this.agentfilterNum = e
+  }else if (type === 'category') {
+    this.categoryfilterNum = e
+  }
+}
+
+onFromDateFilter(e:any) {
+  let idD = (<HTMLInputElement>e.target).value
+  this.fromDateFilter = idD
+  if (this.toDateFilter === "") {
+    this.toDateFilter = idD
+  }
+  console.log("fromDate", this.fromDateFilter);
+  
+}
+onToDateFilter(e:any) {
+  let idD2 = (<HTMLInputElement>e.target).value
+  this.toDateFilter = idD2
+  if (this.fromDateFilter === "") {
+    this.fromDateFilter = idD2
+  }
+  console.log("toDate", this.toDateFilter);
+  
+}
+
+ticketNoSort(sortString: string) {
+  
+  if (sortString === 'asc') {
+    if (this.ticketNoCheckedA) {
+      this.ticketNoCheckedD = false
+      this.agentCheckedA = false
+      this.agentCheckedD = false
+      this.categoryCheckedA = false
+      this.categoryCheckedD = false
+      this.creationCheckedA = false
+      this.creationCheckedD = false
+      // console.log('trueSort A');
+      this.ticketNoSortString = "asc"
+      this.agentSortString = ""
+      this.categorySortString = ""
+      this.creationSortString = ""
+      
+    }else {
+      this.ticketNoSortString = ""
+      this.agentSortString = ""
+      this.categorySortString = ""
+      this.creationSortString = ""
+    }
+  }else if (sortString === 'desc') {
+    if (this.ticketNoCheckedD) {
+      this.ticketNoCheckedA = false
+      this.agentCheckedA = false
+      this.agentCheckedD = false
+      this.categoryCheckedA = false
+      this.categoryCheckedD = false
+      this.creationCheckedA = false
+      this.creationCheckedD = false
+      // console.log('trueSort D');
+      this.ticketNoSortString = "desc"
+      this.agentSortString = ""
+      this.categorySortString = ""
+      this.creationSortString = ""
+    }else {
+      this.ticketNoSortString = ""
+      this.agentSortString = ""
+      this.categorySortString = ""
+      this.creationSortString = ""
+    }
+  }
+    
+  }
+agentSort(sortString: string) {
+  
+  if (sortString === 'asc') {
+    if (this.agentCheckedA) {
+      this.agentCheckedD = false
+      this.ticketNoCheckedA = false
+      this.ticketNoCheckedD = false
+      this.categoryCheckedA = false
+      this.categoryCheckedD = false
+      this.creationCheckedA = false
+      this.creationCheckedD = false
+      // console.log('trueSort A');
+      this.agentSortString = "asc"
+      this.ticketNoSortString = ""
+      this.categorySortString = ""
+      this.creationSortString = ""
+      
+    }else {
+      this.ticketNoSortString = ""
+      this.agentSortString = ""
+      this.categorySortString = ""
+      this.creationSortString = ""
+    }
+  }else if (sortString === 'desc') {
+    if (this.agentCheckedD) {
+      this.agentCheckedA = false
+      this.ticketNoCheckedA = false
+      this.ticketNoCheckedD = false
+      this.categoryCheckedA = false
+      this.categoryCheckedD = false
+      this.creationCheckedA = false
+      this.creationCheckedD = false
+      // console.log('trueSort D');
+      this.agentSortString = "desc"
+      this.ticketNoSortString = ""
+      this.categorySortString = ""
+      this.creationSortString = ""
+    }else {
+      this.ticketNoSortString = ""
+      this.agentSortString = ""
+      this.categorySortString = ""
+      this.creationSortString = ""
+    }
+  }
+    
+  }
+categorySort(sortString: string) {
+  
+  if (sortString === 'asc') {
+    if (this.categoryCheckedA) {
+      this.categoryCheckedD = false
+      this.ticketNoCheckedA = false
+      this.ticketNoCheckedD = false
+      this.agentCheckedA = false
+      this.agentCheckedD = false
+      this.creationCheckedA = false
+      this.creationCheckedD = false
+      // console.log('trueSort A');
+      this.categorySortString = "asc"
+      this.ticketNoSortString = ""
+      this.agentSortString = ""
+      this.creationSortString = ""
+      
+    }else {
+      this.ticketNoSortString = ""
+      this.agentSortString = ""
+      this.categorySortString = ""
+      this.creationSortString = ""
+    }
+  }else if (sortString === 'desc') {
+    if (this.categoryCheckedD) {
+      this.categoryCheckedA = false
+      this.ticketNoCheckedA = false
+      this.ticketNoCheckedD = false
+      this.agentCheckedA = false
+      this.agentCheckedD = false
+      this.creationCheckedA = false
+      this.creationCheckedD = false
+      // console.log('trueSort D');
+      this.categorySortString = "desc"
+      this.ticketNoSortString = ""
+      this.agentSortString = ""
+      this.creationSortString = ""
+    }else {
+      this.ticketNoSortString = ""
+      this.agentSortString = ""
+      this.categorySortString = ""
+      this.creationSortString = ""
+    }
+  }
+    
+  }
+creationSort(sortString: string) {
+  
+  if (sortString === 'asc') {
+    if (this.creationCheckedA) {
+      this.creationCheckedD = false
+      this.ticketNoCheckedA = false
+      this.ticketNoCheckedD = false
+      this.agentCheckedA = false
+      this.agentCheckedD = false
+      this.categoryCheckedA = false
+      this.categoryCheckedD = false
+      // console.log('trueSort A');
+      this.creationSortString = "asc"
+      this.ticketNoSortString = ""
+      this.agentSortString = ""
+      this.categorySortString = ""
+      
+    }else {
+      this.ticketNoSortString = ""
+      this.agentSortString = ""
+      this.categorySortString = ""
+      this.creationSortString = ""
+    }
+  }else if (sortString === 'desc') {
+    if (this.creationCheckedD) {
+      this.creationCheckedA = false
+      this.ticketNoCheckedA = false
+      this.ticketNoCheckedD = false
+      this.agentCheckedA = false
+      this.agentCheckedD = false
+      this.categoryCheckedA = false
+      this.categoryCheckedD = false
+      // console.log('trueSort D');
+      this.creationSortString = "desc"
+      this.ticketNoSortString = ""
+      this.agentSortString = ""
+      this.categorySortString = ""
+    }else {
+      this.ticketNoSortString = ""
+      this.agentSortString = ""
+      this.categorySortString = ""
+      this.creationSortString = ""
+    }
+  }
+    
+  }
+
+  onApplySort() {
+    this.closeDet1()
+    this.closeDet2()
+    this.sortIsOn = true
+    this.ticketPageData.SortTicketId = this.ticketNoSortString
+    this.ticketPageData.SortAgent = this.agentSortString
+    this.ticketPageData.SortCategory = this.categorySortString
+    this.ticketPageData.SortDate = this.creationSortString
+
+    if (this.ticketNoFilter === null) {
+      this.ticketPageData.TicketId = 1
+    }else if (this.ticketNoFilter === undefined) {
+      this.ticketPageData.TicketId = 1
+    }else {
+      this.ticketPageData.TicketId = this.ticketNoFilter
+    }
+    
+    this.ticketPageData.Agent = this.agentfilterNum
+    this.ticketPageData.Category = this.categoryfilterNum
+    this.ticketPageData.FromDate = this.fromDateFilter
+    this.ticketPageData.ToDate = this.toDateFilter
+
+    console.log("onApply",this.ticketPageData);
+    this._ui.loadingStateChanged.next(true);
+    this.ticketservice.newTicketsf(this.ticketPageData).subscribe(
+          (result) => {
+            this._ui.loadingStateChanged.next(false);
+            console.log('Y', JSON.stringify(result));
+            
+            this.indexes = result
+            this.badgeUnassigned = result.length
+          }
+        );
+        this.ticketservice.assignTicketsf(this.ticketPageData).subscribe(
+          (result) => {
+            this._ui.loadingStateChanged.next(false);
+            console.log(result);
+            
+            this.indexesAssigned = result
+            this.badgeAssigned = result.length
+          }
+        );
+        this.ticketservice.closedTicketsf(this.ticketPageData).subscribe(
+          (result) => {
+            this._ui.loadingStateChanged.next(false);
+            console.log(result);
+            
+            this.indexesClosed = result
+            this.badgeClosed = result.length
+          }
+        );
+    
+  }
+  onApplyFilter() {
+    this.closeDet1()
+    this.closeDet2()
+    this.filterIsOn = true
+    this.ticketPageData.SortTicketId = this.ticketNoSortString
+    this.ticketPageData.SortAgent = this.agentSortString
+    this.ticketPageData.SortCategory = this.categorySortString
+    this.ticketPageData.SortDate = this.creationSortString
+
+    this.filterInitial = "1"
+
+    if (this.ticketNoFilter === null) {
+      this.ticketPageData.TicketId = 1
+    }else if (this.ticketNoFilter === undefined) {
+      this.ticketPageData.TicketId = 1
+    }else {
+      this.ticketPageData.TicketId = this.ticketNoFilter
+    }
+    this.ticketPageData.Agent = this.agentfilterNum
+    this.ticketPageData.Category = this.categoryfilterNum
+    this.ticketPageData.FromDate = this.fromDateFilter
+    this.ticketPageData.ToDate = this.toDateFilter
+
+    console.log("onApply",this.ticketPageData);
+    this._ui.loadingStateChanged.next(true);
+    this.ticketservice.newTicketsf(this.ticketPageData).subscribe(
+          (result) => {
+            this._ui.loadingStateChanged.next(false);
+            console.log('Y', JSON.stringify(result));
+            
+            this.indexes = result
+            this.badgeUnassigned = result.length
+          }
+        );
+        this.ticketservice.assignTicketsf(this.ticketPageData).subscribe(
+          (result) => {
+            this._ui.loadingStateChanged.next(false);
+            console.log(result);
+            
+            this.indexesAssigned = result
+            this.badgeAssigned = result.length
+          }
+        );
+        this.ticketservice.closedTicketsf(this.ticketPageData).subscribe(
+          (result) => {
+            this._ui.loadingStateChanged.next(false);
+            console.log(result);
+            
+            this.indexesClosed = result
+            this.badgeClosed = result.length
+          }
+        );
+    
+  }
+
+  onClickSort() {
+    if (!this.sortIsOn) {
+      this.creationCheckedA = false
+      this.ticketNoCheckedA = false
+      this.ticketNoCheckedD = false
+      this.agentCheckedA = false
+      this.agentCheckedD = false
+      this.categoryCheckedA = false
+      this.categoryCheckedD = false
+      this.ticketNoSortString = ""
+      this.agentSortString = ""
+      this.categorySortString = ""
+      this.creationSortString = ""
+    }
+  }
+  onClickFilter() {
+    if (!this.filterIsOn) {
+      this.ticketNoFilter = null
+      this.filterInitial = "resetCC"
+    this.agentfilterNum = 1
+    this.categoryfilterNum = 1
+    this.fromDateFilter = ""
+    this.toDateFilter = ""
+    }
+  }
+
+  onClearSort() {
+    this.closeDet1()
+    this.closeDet2()
+    this.sortIsOn = false
+      this.ticketNoCheckedA = false
+      this.ticketNoCheckedD = false
+      this.agentCheckedA = false
+      this.agentCheckedD = false
+      this.categoryCheckedA = false
+      this.categoryCheckedD = false
+      this.creationCheckedA = false
+      this.creationCheckedD = false
+
+      this.ticketNoSortString = ""
+      this.agentSortString = ""
+      this.categorySortString = ""
+      this.creationSortString = ""
+
+
+    this.ticketPageData = {
+      AppUserId: this._auth.getUserId(), 
+      TicketId: this.ticketNoFilter, 
+      FromDate: this.fromDateFilter,
+      ToDate: this.toDateFilter,
+      Agent: this.agentfilterNum,
+      Category: this.categoryfilterNum,
+      SortTicketId:"",
+      SortDate:"",
+      SortAgent:"",
+      SortCategory:""
+     }
+
+     if (this.ticketNoFilter === null) {
+      this.ticketPageData.TicketId = 1
+    }else if (this.ticketNoFilter === undefined) {
+      this.ticketPageData.TicketId = 1
+    }else {
+      this.ticketPageData.TicketId = this.ticketNoFilter
+    }
+
+     console.log("onClearSort", this.ticketPageData);
+     this._ui.loadingStateChanged.next(true);
+    this.ticketservice.newTicketsf(this.ticketPageData).subscribe(
+          (result) => {
+            this._ui.loadingStateChanged.next(false);
+            console.log('Y', JSON.stringify(result));
+            
+            this.indexes = result
+            this.badgeUnassigned = result.length
+          }
+        );
+        this.ticketservice.assignTicketsf(this.ticketPageData).subscribe(
+          (result) => {
+            this._ui.loadingStateChanged.next(false);
+            console.log(result);
+            
+            this.indexesAssigned = result
+            this.badgeAssigned = result.length
+          }
+        );
+        this.ticketservice.closedTicketsf(this.ticketPageData).subscribe(
+          (result) => {
+            this._ui.loadingStateChanged.next(false);
+            console.log(result);
+            
+            this.indexesClosed = result
+            this.badgeClosed = result.length
+          }
+        );
+     
+  }
+  onClearFilter() {
+    this.closeDet1()
+    this.closeDet2()
+    this.filterIsOn = false
+    this.ticketNoFilter = null
+    this.agentfilterNum = 1
+    this.categoryfilterNum = 1
+    this.fromDateFilter = ""
+    this.toDateFilter = ""
+    this.filterInitial = "resetC"
+
+    // console.log("dd", this._auto.myControl);
+    
+    
+
+    this.ticketPageData = {
+      AppUserId: this._auth.getUserId(), 
+      TicketId:1, 
+      FromDate:"",
+      ToDate:"",
+      Agent:1,
+      Category:1,
+      SortTicketId: this.ticketNoSortString,
+      SortDate: this.creationSortString,
+      SortAgent: this.agentSortString,
+      SortCategory: this.categorySortString
+     }
+     console.log("onClearFilter", this.ticketPageData);
+     this._ui.loadingStateChanged.next(true);
+    this.ticketservice.newTicketsf(this.ticketPageData).subscribe(
+          (result) => {
+            this._ui.loadingStateChanged.next(false);
+            console.log('Y', JSON.stringify(result));
+            
+            this.indexes = result
+            this.badgeUnassigned = result.length
+          }
+        );
+        this.ticketservice.assignTicketsf(this.ticketPageData).subscribe(
+          (result) => {
+            this._ui.loadingStateChanged.next(false);
+            console.log(result);
+            
+            this.indexesAssigned = result
+            this.badgeAssigned = result.length
+          }
+        );
+        this.ticketservice.closedTicketsf(this.ticketPageData).subscribe(
+          (result) => {
+            this._ui.loadingStateChanged.next(false);
+            console.log(result);
+            
+            this.indexesClosed = result
+            this.badgeClosed = result.length
+          }
+        );
+     
+  }
+
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -473,6 +1068,7 @@ export class TicketComponent implements OnInit {
       return false;
     }
   }
+  
 
   onAcceptBtn(id: number) {
     this.opC = false
@@ -589,70 +1185,111 @@ export class TicketComponent implements OnInit {
   
 
   openTicketDet(tickectModel : TicketModel, status: number) {
-    if(this.opC == true) {
-     localStorage.setItem("detActions", status.toString())
-      this.detActionsStatus = +localStorage.getItem("detActions")
+    if (window.innerWidth > 1024) {
+      if(this.opC == true) {
+        localStorage.setItem("detActions", status.toString())
+         this.detActionsStatus = +localStorage.getItem("detActions")
+         
+       this.showDetails = true
+       this.showDetails2 = false
+       this.showDetailsAll = true
+       this.showDetailsAll2 = false
+       this.tickectDetails = tickectModel
+       this._ui.loadingStateChanged.next(true);
+         this.ticketservice.getComments(tickectModel.ticketId).subscribe((response) => {
+           console.log(response);
+           
+           this._ui.loadingStateChanged.next(false);
+           this.comments = response
+           this.comments.forEach((com) => {
+             com.crDate = com.crDate.replace('T', ' ')
+             if (com.commentType === "ATTACH") {
+               com.apiImagePath = "http://ticketingapi.autopay-mcs.com/" + com.apiImagePath
+             }
+           })
+           // console.log(this.comments);
+           
+           // this.comments.forEach((com) => {
+           //   com.edit = false
+           // })
+         })
+       }else {
+         
+         this.opC = true
+       }
+    }else if(window.innerWidth <= 1024) {
+      if(this.opC == true) {
+        localStorage.setItem("detActions", status.toString())
+         this.detActionsStatus = +localStorage.getItem("detActions")
+         var detailsArray = {
+          detActionsStatus: +localStorage.getItem("detActions"),
+          showDetails : true,
+          showDetails2 : false,
+          showDetailsAll : true,
+          showDetailsAll2 : false,
+          tickectDetails : tickectModel
+        }
+       
+        this.openDetails(detailsArray)
       
-    this.showDetails = true
-    this.showDetails2 = false
-    this.showDetailsAll = true
-    this.showDetailsAll2 = false
-    this.tickectDetails = tickectModel
-    this._ui.loadingStateChanged.next(true);
-      this.ticketservice.getComments(tickectModel.ticketId).subscribe((response) => {
-        console.log(response);
-        
-        this._ui.loadingStateChanged.next(false);
-        this.comments = response
-        this.comments.forEach((com) => {
-          com.crDate = com.crDate.replace('T', ' ')
-          if (com.commentType === "ATTACH") {
-            com.apiImagePath = "http://ticketingapi.autopay-mcs.com/" + com.apiImagePath
-          }
-        })
-        // console.log(this.comments);
-        
-        // this.comments.forEach((com) => {
-        //   com.edit = false
-        // })
-      })
-    }else {
-      
-      this.opC = true
+      //  this._ui.loadingStateChanged.next(true);
+      //    this.ticketservice.getComments(tickectModel.ticketId).subscribe((response) => {
+      //      console.log(response);
+           
+      //      this._ui.loadingStateChanged.next(false);
+      //      this.comments = response
+      //      this.comments.forEach((com) => {
+      //        com.crDate = com.crDate.replace('T', ' ')
+      //        if (com.commentType === "ATTACH") {
+      //          com.apiImagePath = "http://ticketingapi.autopay-mcs.com/" + com.apiImagePath
+      //        }
+      //      })
+      //      // console.log(this.comments);
+           
+      //      // this.comments.forEach((com) => {
+      //      //   com.edit = false
+      //      // })
+      //    })
+       }else {
+         
+         this.opC = true
+       }
     }
   }
   openTicketDet2(tickectModel : TicketModel, status: number) {
-    if(this.opC == true) {
-      localStorage.setItem("detActions", status.toString())
-      
-      this.detActionsStatus = +localStorage.getItem("detActions")
-      
-    this.showDetails = false
-    this.showDetails2 = true
-    this.showDetailsAll = false
-    this.showDetailsAll2 = true
-    this.tickectDetails = tickectModel
-    this._ui.loadingStateChanged.next(true);
-      this.ticketservice.getComments(tickectModel.ticketId).subscribe((response) => {
-        console.log(response);
+    if (window.innerWidth > 1024) {
+      if(this.opC == true) {
+        localStorage.setItem("detActions", status.toString())
         
-        this._ui.loadingStateChanged.next(false);
-        this.comments = response
-        this.comments.forEach((com) => {
-          com.crDate = com.crDate.replace('T', ' ')
-          if (com.commentType === "ATTACH") {
-            com.apiImagePath = "http://ticketingapi.autopay-mcs.com/" + com.apiImagePath
-          }
+        this.detActionsStatus = +localStorage.getItem("detActions")
+        
+      this.showDetails = false
+      this.showDetails2 = true
+      this.showDetailsAll = false
+      this.showDetailsAll2 = true
+      this.tickectDetails = tickectModel
+      this._ui.loadingStateChanged.next(true);
+        this.ticketservice.getComments(tickectModel.ticketId).subscribe((response) => {
+          console.log(response);
+          
+          this._ui.loadingStateChanged.next(false);
+          this.comments = response
+          this.comments.forEach((com) => {
+            com.crDate = com.crDate.replace('T', ' ')
+            if (com.commentType === "ATTACH") {
+              com.apiImagePath = "http://ticketingapi.autopay-mcs.com/" + com.apiImagePath
+            }
+          })
+          // console.log(this.comments);
+          
+          // this.comments.forEach((com) => {
+          //   com.edit = false
+          // })
         })
-        // console.log(this.comments);
+      }else {
         
-        // this.comments.forEach((com) => {
-        //   com.edit = false
-        // })
-      })
-    }else {
-      
-      this.opC = true
+        this.opC = true
+      }
     }
   }
 
@@ -692,6 +1329,24 @@ export class TicketComponent implements OnInit {
       });
     }
     this.dialogRef.afterClosed().subscribe(() => {
+      this.refreshMe();
+    });
+  };
+  openDetails = function (result: any) {
+    if (result === undefined) {
+      this.dialogRef5 = this.dialog5.open(DetailsEntryComponent, {
+        disableClose: true,
+        
+        data: {}
+      });
+    } else {
+      this.dialogRef5 = this.dialog5.open(DetailsEntryComponent, {
+        disableClose: true,
+        
+        data: result
+      });
+    }
+    this.dialogRef5.afterClosed().subscribe(() => {
       this.refreshMe();
     });
   };

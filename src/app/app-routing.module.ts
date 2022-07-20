@@ -47,6 +47,8 @@ import { ProbAgentComponent } from "./Ticketing/probagent/probagent.component";
 import { CallCenterComponent } from "./Ticketing/call-center/call-center.component";
 import { NewClientComponent } from "./Ticketing/new-client/new-client.component";
 import { KnownClientComponent } from "./Ticketing/known-client/known-client.component";
+import { AppNotificationComponent } from "./Ticketing/appnotification/appnotification.component";
+import { ReportComponent } from "./report/report.component";
 
 
 const routes: Routes = [
@@ -85,8 +87,11 @@ const routes: Routes = [
       { path: "Policy", component: PolicyComponent },
       { path: "Endorsement", component: EndorsementComponent },
       { path: "Agent", component: ProbAgentComponent },
+      { path: "Notification", component: AppNotificationComponent },
+      { path: "Report", component: ReportComponent },
       { path: "CallCenter", component: CallCenterComponent },
       { path: "Custom", component: KnownClientComponent },
+      { path: "TechnicianReport", component: ReportPageComponent },
       { path: ':id', component: NewClientComponent },
       ]},
       

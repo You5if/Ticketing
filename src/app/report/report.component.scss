@@ -11,3 +11,42 @@
 mat-form-field {
     width: 100%;
 }
+
+.line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    padding: 0 20px;
+}
+
+.title {
+    font-size: 1.5em !important;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+}
+
+.BtnS {
+    outline: none;
+    border: none;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-weight: bolder !important;
+    margin-bottom: 20px;
+    width: 120px;
+    height: 55px;
+    color: white;
+    background: #20bf6b;
+  }
+
+  @media (max-width: 960px) {
+    .line {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 0 20px;
+    }
+  }

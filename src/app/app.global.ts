@@ -36,7 +36,7 @@ export class AppGlobals {
   /* Development Server */
   // readonly baseReportUrl: string = 'http://shippingreports.autopay-mcs.com/default.aspx?';
   readonly baseReportUrl: string = 'http://ticketingreports.autopay-mcs.com/default.aspx?';
-  readonly baseReportEmailUrl: string = 'http://shippingreports.autopay-mcs.com/default2.aspx?';
+  // readonly baseReportEmailUrl: string = 'http://shippingreports.autopay-mcs.com/default2.aspx?';
 
   /* Live Server */
   // readonly baseReportUrl: string =

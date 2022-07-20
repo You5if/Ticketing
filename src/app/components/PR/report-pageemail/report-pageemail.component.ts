@@ -25,7 +25,7 @@ export class ReportPageEmailComponent implements OnInit {
 
 
   reportURL() {
-    return this._globals.baseReportEmailUrl + 'reportid=' + this.url.reportId + '&' + this.url.restOfUrl;
-    // return 'http://shippingreports.autopay-mcs.com/default.aspx?reportid=23&invoiceid=6';
+    // return this._globals.baseReportEmailUrl + 'reportid=' + this.url.reportId + '&' + this.url.restOfUrl;
+    return 'http://shippingreports.autopay-mcs.com/default.aspx?reportid=23&invoiceid=6';
   }
 }

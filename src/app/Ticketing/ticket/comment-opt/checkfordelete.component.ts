@@ -81,9 +81,10 @@ export class AddCommentComponent implements OnInit {
     this.newComment.commentDate = new Date(this.newComment.commentDate)
   console.log(this.newComment);  
   
-  // this._ui.loadingStateChanged.next(true);
+  this._ui.loadingStateChanged.next(true);
   
   this.dapiService.CreateComment(this.newComment).subscribe((response) => {
+    this._ui.loadingStateChanged.next(false);
     
     this.dialogRef.close();
     

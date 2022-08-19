@@ -471,24 +471,31 @@ export class TicketComponent implements OnInit {
         (result) => {
           console.log('Y', JSON.stringify(result));
           
-          this.indexes = result
+          if (result[0].ticketId != this.indexes[0].ticketId) {
+            this.indexes = result
           this.badgeUnassigned = result.length
+          }
         }
       );
       this.ticketservice.assignTicketsf(this.ticketPageData).subscribe(
         (result) => {
           console.log(result);
           
-          this.indexesAssigned = result
+          if (result[0].ticketId != this.indexesAssigned[0].ticketId) {
+            this.indexesAssigned = result
           this.badgeAssigned = result.length
+          }
+          
         }
       );
       this.ticketservice.closedTicketsf(this.ticketPageData).subscribe(
         (result) => {
           console.log(result);
-          
-          this.indexesClosed = result
-          this.badgeClosed = result.length
+          if (result[0].ticketId != this.indexesClosed[0].ticketId) {
+            this.indexesClosed = result
+            this.badgeClosed = result.length
+          }
+         
         }
       );
       // this.ticketservice.getVerifyTickets(+localStorage.getItem('departmentId')).subscribe(

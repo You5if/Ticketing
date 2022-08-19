@@ -167,14 +167,18 @@ export class TicketEntryComponent implements OnInit {
 
   onChangeValue(id: number, tableId:number) {
     if(tableId === 806) {
+      this._ui.loadingStateChanged.next(true);
       this._select.getDropdown("undepartment.undepartmentid", "undepartment,problemCat", "deptname", "undepartment.undepartmentid=problemCat.undepartmentid and problemcatid=" + id, false).subscribe((res: SelectModel[]) => {
+        this._ui.loadingStateChanged.next(false);
         console.log(res);
         
         this.data[4].value = res[0].id.toString();
         this.data[4].myarray2 = res[0].name;
         // this.container.push(res);
     });
+    this._ui.loadingStateChanged.next(true);
     this._select.getDropdown("problemcatid", "problemCat", "cast(forcustomer as nvarchar)", "problemcatid=" + id, false).subscribe((res: SelectModel[]) => {
+      this._ui.loadingStateChanged.next(false);
       console.log(res);
       if (res[0].name === "0") {
         this.data[1].myarray2 = true;
@@ -260,7 +264,9 @@ export class TicketEntryComponent implements OnInit {
       
           if(this.last.records[0].entryMode == "A"){
            this.last.auditColumn = this._auth.getAuditColumns();
+           this._ui.loadingStateChanged.next(true);
            this.dapiService.EntryA(this.last).subscribe(nexto => {
+            this._ui.loadingStateChanged.next(false);
              this.res = nexto;
              if(localStorage.getItem(this._globals.baseAppName + '_language') == "16001") {
               this._msg.showInfo("Message", "saved succesfully");
@@ -271,6 +277,7 @@ export class TicketEntryComponent implements OnInit {
             }
      
            }, error => {
+            this._ui.loadingStateChanged.next(false);
              console.log(error);
              if(localStorage.getItem(this._globals.baseAppName + '_language') == "16001") {
               this._msg.showInfo("Message", "Error!!");
@@ -282,7 +289,9 @@ export class TicketEntryComponent implements OnInit {
            });
          }else if(this.last.records[0].entryMode == "E"){
            this.last.auditColumn = this._auth.getAuditColumns();
+           this._ui.loadingStateChanged.next(true);
            this.dapiService.EntryE(this.last).subscribe(nexto => {
+            this._ui.loadingStateChanged.next(false);
              this.res = nexto;
              if(localStorage.getItem(this._globals.baseAppName + '_language') == "16001") {
               this._msg.showInfo("Message", "saved succesfully");
@@ -293,6 +302,7 @@ export class TicketEntryComponent implements OnInit {
             }
      
            }, error => {
+            this._ui.loadingStateChanged.next(false);
              if(localStorage.getItem(this._globals.baseAppName + '_language') == "16001") {
               this._msg.showInfo("Message", "Error!!");
             this.dialogRef.close();

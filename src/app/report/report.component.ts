@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { AppGlobals } from '../app.global';
 import { SelectModel } from '../components/misc/SelectModel';
 import { AuthService } from '../components/security/auth/auth.service';
+import { UIService } from '../components/shared/uiservices/UI.service';
 
 @Component({
   selector: 'app-report',
@@ -35,6 +36,7 @@ export class ReportComponent implements OnInit {
     private _select: SelectService,
     private _report: ReportPageService,
     private _auth: AuthService,
+    private _ui: UIService,
     private _globals: AppGlobals,
     private router: Router,
     ) { 
@@ -60,8 +62,9 @@ export class ReportComponent implements OnInit {
 
     console.log("user:", this._auth.getUserId(), this._auth.getUniqueName());
     
-
+    this._ui.loadingStateChanged.next(true);
     this._select.getDropdown('distinct probtech.appuserid','probtech,appuser',' AppUserName',' probtech.active=1 and probtech.deleted=0 and Probtech.AppUserId=AppUser.AppUserId and ProblemCatId in (select ProblemCatId from ProbSup where active=1 and deleted=0 and appuserid='+this._auth.getUserId()+')',false).subscribe((res: SelectModel[]) => {
+      this._ui.loadingStateChanged.next(false);
       this.technicians = res;
       this.technicians.push({id: this._auth.getUserId(), name: this._auth.getUniqueName()})
   });

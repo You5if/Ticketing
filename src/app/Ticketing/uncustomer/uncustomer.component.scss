@@ -106,6 +106,19 @@
   border: none;
   color: white;
 }
+.add_btnDown {
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 5px;
+  background: #ad306f;
+  outline: none;
+  border: none;
+  color: white;
+  margin-left: 15px;
+}
 .toolbar {
   background: white;
 }

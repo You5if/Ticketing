@@ -9,6 +9,11 @@
     <section class="sec" >
 
       <div class="add_btnD"   (click)="onAdd()" ><mat-icon >add</mat-icon></div>
+      <app-profile-upload [myFiles]="lFiles" (onUploadFinished)="uploadFinished($event)"
+                  
+                  >
+      </app-profile-upload>
+      <div class="add_btnDown"   ><i class="fa fa-download"></i></div>
       <!-- <button mat-button color="primary" (click)="openEntry()">Filter</button>
       <button mat-button color="primary" (click)="onSort()">Sort</button>
       <button mat-button color="primary" (click)="openEntry()" [disabled]="!screenRights.printFlag">Print</button>

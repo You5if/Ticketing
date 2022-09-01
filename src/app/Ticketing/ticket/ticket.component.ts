@@ -66,9 +66,13 @@ export class TicketComponent implements OnInit {
     comments: any[]
 
     indexes: TicketModel[]
+    veiwIndexes: TicketModel[]
     indexesAssigned: TicketModel[]
+    veiwIndexesAssigned: TicketModel[]
     indexesClosed: TicketModel[]
+    veiwIndexesClosed: TicketModel[]
     indexesVerify: TicketModel[]
+    veiwIndexesVerify: TicketModel[]
     items: number[] = [1,2,3,4,5,]
 
     ticketNoCheckedA: boolean = false
@@ -138,6 +142,13 @@ export class TicketComponent implements OnInit {
   fromDate: string;
   toDate: string;
   filterInitial: string = '1'
+  categoryList:any[]=[]
+  categoryIdsList:any[]=[]
+  AssignedCategoryList:any[]=[]
+  AssignedCategoryIdsList:any[]=[]
+  ClosedCategoryList:any[]=[]
+  ClosedCategoryIdsList:any[]=[]
+  catagotriesL: string;
 
     constructor(
         public dialog: MatDialog,
@@ -209,6 +220,7 @@ export class TicketComponent implements OnInit {
       this.assignedBtn = "Assign"
       this.transfer = "Transfer"
       this.close = "Close"
+      this.catagotriesL = "Categories"
       this.closed = "Closed"
       this.ascending = "Ascending"
       this.descending = "Descending"
@@ -227,6 +239,7 @@ export class TicketComponent implements OnInit {
       this.agent = "العملاء"
       this.agentL = ":العملاء"
       this.category = "الفئة"
+      this.catagotriesL = "الفئات"
       this.categoryL = ":الفئة"
       this.apply = "تطبيق"
       this.clear = "الغاء"
@@ -252,12 +265,37 @@ export class TicketComponent implements OnInit {
 
     this._ui.loadingStateChanged.next(true);
     this.ticketservice.newTicketsf(this.ticketPageData).subscribe(
-          (result) => {
+          (result:any) => {
             this._ui.loadingStateChanged.next(false);
-            console.log('Y', JSON.stringify(result));
+            console.log('Yeeet', result);
             
             this.indexes = result
+            this.veiwIndexes = result
             this.badgeUnassigned = result.length
+            this.indexes.map((index)=>{
+              if (!this.categoryIdsList.includes(index.problemCatId)){
+                this.categoryIdsList.push(index.problemCatId)
+                this.categoryList.push({
+                  category: index.category,
+                  problemCatId:index.problemCatId
+                })
+              }
+                console.log('categoryList', this.categoryList);
+            })
+            this.indexes.map((index)=>{
+              if (!this.categoryIdsList.includes(0)){
+                this.categoryIdsList.push(0)
+                this.categoryList.push({
+                  category: "All categories",
+                  problemCatId: 0
+                })
+              }
+                console.log('categoryList', this.categoryList);
+            })
+            // this.categoryList.push({
+            //   category: "All categories",
+            //   problemCatId: 0
+            // })
           }
         );
         this.ticketservice.assignTicketsf(this.ticketPageData).subscribe(
@@ -266,7 +304,29 @@ export class TicketComponent implements OnInit {
             console.log(result);
             
             this.indexesAssigned = result
+            this.veiwIndexesAssigned = result
             this.badgeAssigned = result.length
+            this.indexesAssigned.map((index)=>{
+              if (!this.AssignedCategoryIdsList.includes(index.problemCatId)){
+                this.AssignedCategoryIdsList.push(index.problemCatId)
+                this.AssignedCategoryList.push({
+                  category: index.category,
+                  problemCatId:index.problemCatId
+                })
+              }
+              console.log('AssignedCategoryList', this.AssignedCategoryList);
+            })
+            this.indexes.map((index)=>{
+              if (!this.AssignedCategoryIdsList.includes(0)){
+                this.AssignedCategoryIdsList.push(0)
+                this.AssignedCategoryList.push({
+                  category: "All categories",
+                  problemCatId: 0
+                })
+              }
+                console.log('categoryList', this.categoryList);
+            })
+            
           }
         );
         this.ticketservice.closedTicketsf(this.ticketPageData).subscribe(
@@ -275,7 +335,29 @@ export class TicketComponent implements OnInit {
             console.log(result);
             
             this.indexesClosed = result
+            this.veiwIndexesClosed = result
             this.badgeClosed = result.length
+            this.indexesClosed.map((index)=>{
+              if (!this.ClosedCategoryIdsList.includes(index.problemCatId)){
+                this.ClosedCategoryIdsList.push(index.problemCatId)
+                this.ClosedCategoryList.push({
+                  category: index.category,
+                  problemCatId:index.problemCatId
+                })
+              }
+              console.log('ClosedCategoryList', this.ClosedCategoryList);
+            })
+            this.indexes.map((index)=>{
+              if (!this.ClosedCategoryIdsList.includes(0)){
+                this.ClosedCategoryIdsList.push(0)
+                this.ClosedCategoryList.push({
+                  category: "All categories",
+                  problemCatId: 0
+                })
+              }
+                console.log('categoryList', this.categoryList);
+            })
+            
           }
         );
         // this.ticketservice.getVerifyTickets(+localStorage.getItem('departmentId')).subscribe(
@@ -464,12 +546,48 @@ export class TicketComponent implements OnInit {
     });
   }
 
+  categoryClick(id: number){
+    if (id === 0) {
+      this.refreshMe()
+    }else{
+      this.veiwIndexes= this.indexes.filter((index)=>{
+        if (index.problemCatId===id){return index}
+      })
+    }
+    console.log('this.indexes', this.indexes);
+  }
+
+  ClosedCategoryClick(id: number){
+    if (id === 0) {
+      this.refreshMe()
+    }else{
+      
+      this.veiwIndexesClosed= this.indexesClosed.filter((index)=>{
+        if (index.problemCatId===id){return index}
+      })
+    }
+  }
+
+  assignedCategoryClick(id: number){
+    if (id === 0) {
+      this.refreshMe()
+    }else{
+      
+      this.veiwIndexesAssigned= this.indexesAssigned.filter((index)=>{
+        if (index.problemCatId==id){
+          console.log(index);
+          return index
+        }
+      })
+    }
+  }
+
 
   startTicketingTimer() {
     setInterval(() => {
       this.ticketservice.newTicketsf(this.ticketPageData).subscribe(
         (result) => {
-          console.log('Y', JSON.stringify(result));
+          // console.log('Y', JSON.stringify(result));
           
           if (result[0].ticketId != this.indexes[0].ticketId) {
             this.indexes = result
@@ -479,7 +597,7 @@ export class TicketComponent implements OnInit {
       );
       this.ticketservice.assignTicketsf(this.ticketPageData).subscribe(
         (result) => {
-          console.log(result);
+          // console.log(result);
           
           if (result[0].ticketId != this.indexesAssigned[0].ticketId) {
             this.indexesAssigned = result
@@ -490,7 +608,7 @@ export class TicketComponent implements OnInit {
       );
       this.ticketservice.closedTicketsf(this.ticketPageData).subscribe(
         (result) => {
-          console.log(result);
+          // console.log(result);
           if (result[0].ticketId != this.indexesClosed[0].ticketId) {
             this.indexesClosed = result
             this.badgeClosed = result.length
@@ -816,6 +934,7 @@ creationSort(sortString: string) {
             console.log('Y', JSON.stringify(result));
             
             this.indexes = result
+            this.veiwIndexes = result
             this.badgeUnassigned = result.length
           }
         );
@@ -825,6 +944,7 @@ creationSort(sortString: string) {
             console.log(result);
             
             this.indexesAssigned = result
+            this.veiwIndexesAssigned = result
             this.badgeAssigned = result.length
           }
         );
@@ -834,6 +954,7 @@ creationSort(sortString: string) {
             console.log(result);
             
             this.indexesClosed = result
+            this.veiwIndexesAssigned = result
             this.badgeClosed = result.length
           }
         );
@@ -870,6 +991,7 @@ creationSort(sortString: string) {
             console.log('Y', JSON.stringify(result));
             
             this.indexes = result
+            this.veiwIndexes = result
             this.badgeUnassigned = result.length
           }
         );
@@ -879,6 +1001,7 @@ creationSort(sortString: string) {
             console.log(result);
             
             this.indexesAssigned = result
+            this.veiwIndexesAssigned = result
             this.badgeAssigned = result.length
           }
         );
@@ -888,6 +1011,7 @@ creationSort(sortString: string) {
             console.log(result);
             
             this.indexesClosed = result
+            this.veiwIndexesClosed = result
             this.badgeClosed = result.length
           }
         );
@@ -968,6 +1092,7 @@ creationSort(sortString: string) {
             console.log('Y', JSON.stringify(result));
             
             this.indexes = result
+            this.veiwIndexes = result
             this.badgeUnassigned = result.length
           }
         );
@@ -977,6 +1102,7 @@ creationSort(sortString: string) {
             console.log(result);
             
             this.indexesAssigned = result
+            this.veiwIndexesAssigned = result
             this.badgeAssigned = result.length
           }
         );
@@ -986,6 +1112,7 @@ creationSort(sortString: string) {
             console.log(result);
             
             this.indexesClosed = result
+            this.veiwIndexesClosed = result
             this.badgeClosed = result.length
           }
         );
@@ -1026,6 +1153,7 @@ creationSort(sortString: string) {
             console.log('Y', JSON.stringify(result));
             
             this.indexes = result
+            this.veiwIndexes = result
             this.badgeUnassigned = result.length
           }
         );
@@ -1035,6 +1163,7 @@ creationSort(sortString: string) {
             console.log(result);
             
             this.indexesAssigned = result
+            this.veiwIndexesAssigned = result
             this.badgeAssigned = result.length
           }
         );
@@ -1044,6 +1173,7 @@ creationSort(sortString: string) {
             console.log(result);
             
             this.indexesClosed = result
+            this.veiwIndexesClosed = result
             this.badgeClosed = result.length
           }
         );

@@ -42,6 +42,8 @@ export class Navbar2Component implements OnInit {
   technicians: string;
   departments: string;
   tickets: string;
+  adminTickets: string;
+  dashboard: string;
   resizeStyle: object = {};
   logout: string;
   change: string;
@@ -54,6 +56,7 @@ export class Navbar2Component implements OnInit {
   isOpen_YourVariable = true;
   hideNotification: boolean = true;
   notSound: number = 0
+  admin: string
 
   nlast: any = {
     records: [],
@@ -92,6 +95,7 @@ export class Navbar2Component implements OnInit {
     public dialog: MatDialog,) { }
 
   ngOnInit() {
+    this.admin = this._auth.getUserId()
     this.pageData = {
       tableId: 106,
       userId: 26,
@@ -142,6 +146,8 @@ export class Navbar2Component implements OnInit {
       this.technicians = "Technicians"
       this.departments = "Departments"
       this.tickets = "Tickets"
+      this.adminTickets = "Admin tickets"
+      this.dashboard = "Dashboards"
       this.reports = "Reports"
       this.report = "Report"
       
@@ -280,6 +286,8 @@ export class Navbar2Component implements OnInit {
       this.technicians = "Technicians"
       this.departments = "Departments"
       this.tickets = "Tickets"
+      this.adminTickets = "Admin tickets"
+      this.dashboard = "Dashboards"
       this.reports = "Reports"
       this.report = "Report"
       
@@ -307,6 +315,8 @@ export class Navbar2Component implements OnInit {
       this.technicians = "التقنيون"
       this.departments = "الاقسام"
       this.tickets = "التذاكر"
+      this.adminTickets = "تذاكر الادمن"
+      this.dashboard = "الاحصائيات"
       this.reports = "Reports"
       this.report = "Report"
       
@@ -322,7 +332,7 @@ export class Navbar2Component implements OnInit {
       this.changePassword = "Change password"
       this.logout = "Logout"
       this.change = "Change to:"
-      this.subSystem = "النظام الفرعي"
+      this.subSystem = "Sub system"
       this.callCenter = "Call center"
       this.userManagement = "User management"
       this.users = "Users"
@@ -336,6 +346,8 @@ export class Navbar2Component implements OnInit {
       this.technicians = "Technicians"
       this.departments = "Departments"
       this.tickets = "Tickets"
+      this.adminTickets = "Admin tickets"
+      this.dashboard = "Dashboards"
       this.reports = "Reports"
       this.report = "Report"
       

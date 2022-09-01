@@ -17,9 +17,30 @@
     </div>
     
      <div class="tabs_body">
-      
+      <div class="tab-categories" *ngIf="id === 'newticket'">
+        <mat-form-field appearance="outline">
+          <mat-label>{{catagotriesL}}</mat-label>
+          <mat-select 
+          (selectionChange)="categoryClick($event.value)"
+          name="catId"
+          >
+            <mat-option *ngFor="let category of categoryList" [value]="category.problemCatId">
+              {{category.category}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!-- <mat-chip-list aria-label="Dog selection">
+          <mat-chip *ngFor="let category of categoryList" (click)="categoryClick(category)">
+            {{category.category}}
+          </mat-chip>
+          <mat-chip (click)="refreshMe()">
+            All caterories
+          </mat-chip>
+        </mat-chip-list> -->
+      </div>
        <div class="tabs_content" *ngIf="id === 'newticket'">
-         <div *ngFor="let item of indexes; let i = index;" class="tabs_text">
+        
+         <div *ngFor="let item of veiwIndexes; let i = index;" class="tabs_text">
           
           
           <mat-card (click)="openTicketDet(item, item.userRole)" class="{{item.userRole === 4 ? 'cardB' : item.userRole === 5 ? 'cardO' : item.userRole === 6 ? 'cardY': 'card'}}">
@@ -84,9 +105,30 @@
            </div>
   
        </div>
+       <div class="tab-categories"  *ngIf="id === 'assigned'">
+        <mat-form-field appearance="outline">
+          <mat-label>{{catagotriesL}}</mat-label>
+          <mat-select 
+          (selectionChange)="assignedCategoryClick($event.value)"
+          name="catId"
+          >
+            <mat-option *ngFor="let category of AssignedCategoryList" [value]="category.problemCatId">
+              {{category.category}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+         <!-- <mat-chip-list aria-label="Dog selection">
+           <mat-chip *ngFor="let category of AssignedCategoryList" (click)="assignedCategoryClick(category)">
+             {{category.category}}
+           </mat-chip>
+           <mat-chip (click)="refreshMe()">
+             All caterories
+           </mat-chip>
+         </mat-chip-list> -->
+       </div>
        <div class="tabs_content" *ngIf="id === 'assigned'">
         
-        <div *ngFor="let item of indexesAssigned; let i = index;" class="tabs_text" >
+        <div *ngFor="let item of veiwIndexesAssigned; let i = index;" class="tabs_text" >
           <mat-card (click)="openTicketDet2(item, item.userRole)"  class="{{item.userRole === 4 ? 'cardB' : item.userRole === 5 ? 'cardO' : item.userRole === 6 ? 'cardY': 'card'}}">
             <div class="ticketDiv " >
               <div *ngIf="item.openedById === userId" class="starDiv">
@@ -149,8 +191,29 @@
         </div>
   
       </div>
+      <div class="tab-categories" *ngIf="id === 'closed'">
+        <mat-form-field appearance="outline">
+          <mat-label>{{catagotriesL}}</mat-label>
+          <mat-select 
+          (selectionChange)="ClosedCategoryClick($event.value)"
+          name="catId"
+          >
+            <mat-option *ngFor="let category of ClosedCategoryList" [value]="category.problemCatId">
+              {{category.category}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!-- <mat-chip-list aria-label="Dog selection">
+          <mat-chip *ngFor="let category of ClosedCategoryList" (click)="ClosedCategoryClick(category)">
+            {{category.category}}
+          </mat-chip>
+          <mat-chip (click)="refreshMe()">
+            All caterories
+          </mat-chip>
+        </mat-chip-list> -->
+      </div>
       <div class="tabs_content" *ngIf="id === 'closed'">
-        <div *ngFor="let item of indexesClosed; let i = index;" class="tabs_text" >
+        <div *ngFor="let item of veiwIndexesClosed; let i = index;" class="tabs_text" >
           <mat-card (click)="openTicketDet2(item, item.userRole)" class="{{item.userRole === 4 ? 'cardB' : item.userRole === 5 ? 'cardO' : item.userRole === 6 ? 'cardY': 'card'}}">
             <div class="ticketDiv " >
               <div *ngIf="item.openedById === userId" class="starDiv">
@@ -438,10 +501,10 @@
       <div *ngIf="detActionsStatus === 6" fxLayout fxLayoutGap="20px" class="actions">
         <h1 class="commentBtn" (click)="onNewComment()" ><mat-icon >add</mat-icon>Comment</h1>
       <div class="img_profile">
-        <app-card-upload [myFiles]="lFiles" (onUploadFinished)="uploadFinished($event)"
+        <app-admin-card-upload [myFiles]="lFiles" (onUploadFinished)="uploadFinished($event)"
                     
                     >
-        </app-card-upload>
+        </app-admin-card-upload>
       </div>
       </div>
       <div>

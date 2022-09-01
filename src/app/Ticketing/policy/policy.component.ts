@@ -15,6 +15,7 @@ import { SelectService } from 'src/app/components/common/select.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Send } from 'src/app/send.model';
 import { AppGlobals } from 'src/app/app.global';
+import { FileListModel } from '../upload/upload-file.model';
 
 @Component({
     selector: 'app-policy',
@@ -49,7 +50,8 @@ export class PolicyComponent implements OnInit {
   submit: string;
   cancel: string;
   direction: string;
-  indexes: any
+  indexes: any;
+  lFiles: FileListModel[] = [];
 
 
     totalRecords: number;
@@ -90,6 +92,7 @@ export class PolicyComponent implements OnInit {
   }
 
   refreshMe() {
+    this.lFiles = []
     if(localStorage.getItem(this._globals.baseAppName + '_language') == "16001") {
       this.direction = "ltr"
       this.header = "policies"
@@ -144,6 +147,31 @@ export class PolicyComponent implements OnInit {
     });
   }
 
+  public uploadFinished = (event:any) => { // this is event being called when file gets uploaded
+    
+    const file: FileListModel = {
+        originalFileName: event.originalFileName,
+        fileName: event.fileName,
+        extention: event.extention,
+        fullPath: event.fullPath,
+        apiPath: event.apiPath,
+        apiImagePath: event.apiPath
+    };
+    this.lFiles.push(file); 
+    console.log(this.lFiles);
+    
+    this.refreshMe();
+    // this.imagePathUrl2 = this.imgHttp.concat(file.fullPath.substring(file.fullPath.indexOf('h') + 1))
+    // console.log(this.imagePathUrl2);
+    
+    // this.showit = true
+    // and it pushes the files to this array also, then why doesnt it show?
+    // this.data = this.lFiles;
+    // this.validatedisabled = false
+    // this.validatedisabledmethod();
+    // bro problem is not this component, it somehow is not reflecting in other two... the files which i brought here..
+    // yea i was just making sure they were leaving here correctly.. now i will go to step 2, sorry ok
+}
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }

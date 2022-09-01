@@ -1,0 +1,59 @@
+<!-- <button class="btn btn-primary" (click)="downloadAsPDF()">Export To PDF</button> -->
+<div class="row" id="pdfTable" #pdfTable>
+  <div class="bar">
+    
+      <canvas baseChart height="100"
+              [datasets]="barChart.ChartData"
+              [labels]="barChart.ChartLabels"
+              [options]="barChart.ChartOptions"
+              [colors]="barChart.ChartColors"
+              [legend]="barChart.ChartLegend"
+              [chartType]="barChart.ChartType" ></canvas>
+   
+    </div>
+  <div class="container">
+   
+    <ul class="responsive-table">
+      <li class="table-header">
+        <div class="col colX">Dept.</div>
+        <div class="col">Opened</div>
+        <div class="col">Assigned</div>
+        <div class="col">Closed</div>
+      </li>
+      
+      <li *ngFor="let dept of deptResult" class="table-row" (click)="openDetails(dept)">
+        <div class="col colX" data-label="Job Id">{{dept.deptName}}</div>
+        <div class="col" data-label="Customer Name"><div class="colHidden">Opened:</div>{{dept.open}}</div>
+        <div class="col" data-label="Amount"><div class="colHidden">Assigned:</div>{{dept.assign}}</div>
+        <div class="col" data-label="Payment Status"><div class="colHidden">Closed:</div>{{dept.closed}}</div>
+      </li>
+      <!-- <li class="table-row" (click)="openDetails()">
+        <div class="col colX" data-label="Job Id">IT</div>
+        <div class="col" data-label="Customer Name"><div class="colHidden">Opened:</div>10</div>
+        <div class="col" data-label="Amount"><div class="colHidden">Assigned:</div>35</div>
+        <div class="col" data-label="Payment Status"><div class="colHidden">Closed:</div>20</div>
+      </li>
+      <li class="table-row">
+        <div class="col colX" data-label="Job Id">Accounting</div>
+        <div class="col" data-label="Customer Name"> <div class="colHidden">Opened:</div>45</div>
+        <div class="col" data-label="Amount"><div class="colHidden">Assigned:</div>32</div>
+        <div class="col" data-label="Payment Status"><div class="colHidden">Closed:</div>10</div>
+      </li>
+      <li class="table-row">
+        <div class="col colX" data-label="Job Id">HR</div>
+        <div class="col" data-label="Customer Name"><div class="colHidden">Opened:</div>76</div>
+        <div class="col" data-label="Amount"><div class="colHidden">Assigned:</div>55</div>
+        <div class="col" data-label="Payment Status"><div class="colHidden">Closed:</div>30</div>
+      </li>
+      <li class="table-row">
+        <div class="col colX" data-label="Job Id">Other</div>
+        <div class="col" data-label="Customer Name"><div class="colHidden">Opened:</div>33</div>
+        <div class="col" data-label="Amount"><div class="colHidden">Assigned:</div>115</div>
+        <div class="col" data-label="Payment Status"><div class="colHidden">Closed:</div>67</div>
+      </li> -->
+    </ul>
+  </div>
+  
+
+    
+</div>

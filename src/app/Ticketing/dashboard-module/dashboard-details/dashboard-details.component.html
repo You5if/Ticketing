@@ -1,0 +1,35 @@
+<h1 class="header">{{catName}}</h1>
+<div class="row">
+  
+  <div class="bar">
+      <canvas baseChart
+      height="100"
+              [datasets]="barChart.ChartData"
+              [labels]="barChart.ChartLabels"
+              [options]="barChart.ChartOptions"
+              [colors]="barChart.ChartColors"
+              [legend]="barChart.ChartLegend"
+              [chartType]="barChart.ChartType" ></canvas>
+    
+  </div>
+  <div class="container">
+   
+    <ul class="responsive-table">
+      <li class="table-header">
+        <div class="col colX">Category</div>
+        <div class="col">Opened</div>
+        <div class="col">Assigned</div>
+        <div class="col">Closed</div>
+      </li>
+      
+      <li *ngFor="let cat of catResult" class="table-row" >
+        <div class="col colX" data-label="Job Id">{{cat.problem}}</div>
+        <div class="col" data-label="Customer Name"><div class="colHidden">Opened:</div>{{cat.open}}</div>
+        <div class="col" data-label="Amount"><div class="colHidden">Assigned:</div>{{cat.assign}}</div>
+        <div class="col" data-label="Payment Status"><div class="colHidden">Closed:</div>{{cat.closed}}</div>
+      </li>
+    </ul>
+  </div>
+  
+    
+</div>

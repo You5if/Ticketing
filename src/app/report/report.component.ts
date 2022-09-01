@@ -19,15 +19,21 @@ export class ReportComponent implements OnInit {
 
   myForm: FormGroup;
   technicians: any;
+  allUsers: any;
   role: string = localStorage.getItem('role');
   direction: string;
   submit: string;
   techniciansL: string;
+  users: string;
   toDate: string;
   fromDate: string;
   fromDateTech:string = ''
   toDateTech:string = ''
+  fromDateUsers:string = ''
+  toDateUsers:string = ''
   techId:number
+  usersId:number
+  admin: string
 
   constructor(
     public dialogRef: MatDialogRef<ReportComponent>,
@@ -44,12 +50,14 @@ export class ReportComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.admin = this._auth.getUserId()
     if(localStorage.getItem(this._globals.baseAppName + '_language') == "16001") {
       this.direction = "ltr"
       this.submit = "Get report"
       this.fromDate = "From date"
       this.toDate = "To date"
       this.techniciansL = "Technicians"
+      this.users = "Users"
       
     }else if(localStorage.getItem(this._globals.baseAppName + '_language') == "16002") {
       this.direction = "rtl"
@@ -57,6 +65,7 @@ export class ReportComponent implements OnInit {
       this.fromDate = "من تاريخ"
       this.toDate = "الى تاريخ"
       this.techniciansL = "التقنيون"
+      this.users = "المستخدمين"
       
     }
 
@@ -67,6 +76,12 @@ export class ReportComponent implements OnInit {
       this._ui.loadingStateChanged.next(false);
       this.technicians = res;
       this.technicians.push({id: this._auth.getUserId(), name: this._auth.getUniqueName()})
+  });
+    this._ui.loadingStateChanged.next(true);
+    this._select.getDropdown('appuserid','appuser',' AppUserName',' active=1 and deleted=0 and appuserid>1',false).subscribe((res: SelectModel[]) => {
+      this._ui.loadingStateChanged.next(false);
+      this.allUsers = res;
+      // this.technicians.push({id: this._auth.getUserId(), name: this._auth.getUniqueName()})
   });
 
     
@@ -99,7 +114,7 @@ export class ReportComponent implements OnInit {
     if (this.toDateTech === "") {
       this.toDateTech = idD
     }
-    console.log("fromDate", this.fromDateTech);
+    // console.log("fromDate", this.fromDateTech);
     
   }
   onToDateTech(e:any) {
@@ -108,18 +123,42 @@ export class ReportComponent implements OnInit {
     if (this.fromDateTech === "") {
       this.fromDateTech = idD2
     }
-    console.log("toDate", this.toDateTech);
+    // console.log("toDate", this.toDateTech);
+    
+  }
+  onFromDateUsers(e:any) {
+    let idD3 = (<HTMLInputElement>e.target).value
+    this.fromDateUsers = idD3
+    if (this.toDateUsers === "") {
+      this.toDateUsers = idD3
+    }
+    // console.log("fromDate", this.fromDateTech);
+    
+  }
+  onToDateUsers(e:any) {
+    let idD4 = (<HTMLInputElement>e.target).value
+    this.toDateUsers= idD4
+    if (this.fromDateUsers === "") {
+      this.fromDateUsers = idD4
+    }
+    // console.log("toDate", this.toDateTech);
     
   }
   
 
-  onSubmit() {
-    
-    
-    this.onReport(
-      this.fromDateTech,
-      this.toDateTech,
-      this.techId
-    );
+  onSubmit(type: string) {
+    if(type === 'tech') {
+      this.onReport(
+        this.fromDateTech,
+        this.toDateTech,
+        this.techId
+      );
+    }else if(type === 'user') {
+      this.onReport(
+        this.fromDateUsers,
+        this.toDateUsers,
+        this.usersId
+      );
+    }
   }
 }

@@ -86,8 +86,8 @@
      </div>
       <mat-divider *ngIf="role === '2'"></mat-divider>
    <div *ngIf="role === '2'">
-    <li *ngIf="opened" class="side_list_item" (click)="onChangeSite('Catagotries')" routerLink="ProblemCat" routerLinkActive="is-active"><a><i class="fa fa-cubes"></i>{{catagotries}}</a></li>
-    <li *ngIf="!opened" class="side_list_item_slim" (click)="onChangeSite('Catagotries')" routerLink="ProblemCat" routerLinkActive="is-active"><a><i class="fa fa-cubes"></i><div class="textIcons">{{catagotries}}</div></a></li>
+    <li *ngIf="opened" class="side_list_item" (click)="onChangeSite('Categotries')" routerLink="ProblemCat" routerLinkActive="is-active"><a><i class="fa fa-cubes"></i>{{catagotries}}</a></li>
+    <li *ngIf="!opened" class="side_list_item_slim" (click)="onChangeSite('Categotries')" routerLink="ProblemCat" routerLinkActive="is-active"><a><i class="fa fa-cubes"></i><div class="textIcons">{{catagotries}}</div></a></li>
    </div>
     <mat-divider *ngIf="role === '2'"></mat-divider>
     <div *ngIf="role === '2'">
@@ -116,6 +116,16 @@
     <div  *ngIf="role === '2' || role === '3' || role === '4' || role === '5' || role === '6' ">
       <li *ngIf="opened" class="side_list_item" (click)="onChangeSite('Tickets')" routerLink="Ticket" routerLinkActive="is-active"><a><i class="fa fa-ticket"></i>{{tickets}}</a></li>
     <li *ngIf="!opened" class="side_list_item_slim" (click)="onChangeSite('Tickets')" routerLink="Ticket" routerLinkActive="is-active"><a><i class="fa fa-ticket"></i><div class="textIcons">{{tickets}}</div></a></li>
+    </div>
+    <mat-divider *ngIf="admin === '203' || admin === '26' "></mat-divider>
+    <div  *ngIf="admin === '203' || admin === '26' ">
+      <li *ngIf="opened" class="side_list_item" (click)="onChangeSite('Admin tickets')" routerLink="AdminTicket" routerLinkActive="is-active"><a><i class="fa fa-ticket"></i>{{adminTickets}}</a></li>
+    <li *ngIf="!opened" class="side_list_item_slim" (click)="onChangeSite('Admin tickets')" routerLink="AdminTicket" routerLinkActive="is-active"><a><i class="fa fa-ticket"></i><div class="textIcons">{{AdminTickets}}</div></a></li>
+    </div>
+    <mat-divider *ngIf="admin === '203' || admin === '26' "></mat-divider>
+    <div  *ngIf="admin === '203' || admin === '26' ">
+      <li *ngIf="opened" class="side_list_item" (click)="onChangeSite('Dashboard')" routerLink="Dashboard" routerLinkActive="is-active"><a><i class="fa fa-chart-line"></i>{{dashboard}}</a></li>
+    <li *ngIf="!opened" class="side_list_item_slim" (click)="onChangeSite('Dashboard')" routerLink="Dashboard" routerLinkActive="is-active"><a><i class="fa fa-chart-line"></i><div class="textIcons">{{dashboard}}</div></a></li>
     </div>
 
     <!-- <li class="side_list_item" routerLink="ProblemCat">ProblemCat</li>

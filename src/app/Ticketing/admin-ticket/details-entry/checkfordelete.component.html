@@ -1,0 +1,109 @@
+
+<!-- <div class="section">
+  <div class="ques" mat-dialog-content>
+    
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button class="BtnC" (click)="onNoClick()">{{cancel}}</button>
+    <button mat-button class="BtnS" (click)="onYesClick()">{{submit}}</button>
+  </div>
+</div> -->
+
+<section class="section" [dir]="direction">
+  <div class="bigMain" fxLayout>
+    <h3 class="fontY">
+      {{ dialog_title  }} 
+    </h3>
+    <img (click)="onCancel()" class="cancel_Img" src="../../../../assets/images/svg/close.png" alt="">
+  </div>
+
+
+  <section class="Main">
+    <div class="ticketDets" *ngIf="showDetailsAll">
+      <div *ngIf="showDetails">
+        <div *ngIf="detActionsStatus === 6" fxLayout fxLayoutGap="20px" class="actions">
+          <h1 class="commentBtn" (click)="onNewComment()" ><mat-icon >add</mat-icon>Comment</h1>
+        <div class="img_profile">
+          <app-card-upload [myFiles]="lFiles" (onUploadFinished)="uploadFinished($event)"
+                      
+                      >
+          </app-card-upload>
+        </div>
+        </div>
+        <div>
+          <div *ngFor="let comment of comments" class="attach" >
+            
+            <!-- <img *ngIf="!showit" [src]="imagePathUrl"  alt="" width="100px" height="100px"> -->
+    
+            <mat-card class="commentedCard">
+              <div class="userComment">
+                
+                <div *ngIf="comment.commentType === 'TEXT'" fxLayout="column">
+                  <h1 class="commentC">{{comment.displayName}}</h1>
+                  <div class="textCom">
+                    <h1 class="commentC">{{comment.comment}}</h1>
+                  </div>
+                  <h4 class="commentDate">{{comment.crDate}}</h4>
+                </div>
+                <div *ngIf="comment.commentType === 'ATTACH'" fxLayout="column">
+                  <h1 class="commentC">{{comment.displayName}}</h1>
+                  <h1 class="commentC"><a class="links" href="{{comment.apiImagePath}}" target="_blank">attachment</a></h1>
+                  <h4 class="commentDate">{{comment.crDate}}</h4>
+                </div>
+                
+              </div>
+              
+              
+            </mat-card>
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ticketDets" *ngIf="showDetailsAll2">
+      <div *ngIf="showDetails2">
+        <div  fxLayout fxLayoutGap="20px" class="actions">
+          <h1 class="commentBtn" (click)="onNewComment()" ><mat-icon >add</mat-icon>Comment</h1>
+        <div class="img_profile">
+          <app-card-upload [myFiles]="lFiles" (onUploadFinished)="uploadFinished($event)"
+                      
+                      >
+          </app-card-upload>
+        </div>
+        </div>
+        <div>
+          <div *ngFor="let comment of comments" class="attach" >
+            
+            <!-- <img *ngIf="!showit" [src]="imagePathUrl"  alt="" width="100px" height="100px"> -->
+    
+            <mat-card class="commentedCard">
+              <div class="userComment">
+                
+                <div *ngIf="comment.commentType === 'TEXT'" fxLayout="column">
+                  <h1 class="commentC">{{comment.displayName}}</h1>
+                  <div class="textCom">
+                    <h1 class="commentC">{{comment.comment}}</h1>
+                  </div>
+                  <h4 class="commentDate">{{comment.crDate}}</h4>
+                </div>
+                <div *ngIf="comment.commentType === 'ATTACH'" fxLayout="column">
+                  <h1 class="commentC">{{comment.displayName}}</h1>
+                  <h1 class="commentC"><a class="links" href="{{comment.apiImagePath}}" target="_blank">attachment</a></h1>
+                  <h4 class="commentDate">{{comment.crDate}}</h4>
+                </div>
+                
+              </div>
+              
+              
+            </mat-card>
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+</section>
+

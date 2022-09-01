@@ -209,6 +209,21 @@ import { DetailsEntryComponent } from "./Ticketing/ticket/details-entry/checkfor
 import { AppNotificationEntryComponent } from "./Ticketing/appnotification/appnotification-entry/appnotification-entry.component";
 import { AppNotificationComponent } from "./Ticketing/appnotification/appnotification.component";
 import { MyTestAutoComponent } from "./Ticketing/my-test-auto/my-test-auto.component";
+import { UploadProfileComponent } from "./Ticketing/upload/upload.component";
+import { UploadFiles2Component } from "./Ticketing/upload/upload-files/upload-files.component";
+import { DashboardModuleComponent } from './Ticketing/dashboard-module/dashboard-module.component';
+import { ChartsModule } from "ng2-charts";
+import { DashboardDetailsComponent } from './Ticketing/dashboard-module/dashboard-details/dashboard-details.component';
+import { AdminAssignedComponent } from "./Ticketing/admin-ticket/assigned-opt/checkfordelete.component";
+import { AdminAddCommentComponent } from "./Ticketing/admin-ticket/comment-opt/checkfordelete.component";
+import { AdminTicketEntryComponent } from "./Ticketing/admin-ticket/ticket-entry/ticket-entry.component";
+import { AdminTicketComponent } from "./Ticketing/admin-ticket/ticket.component";
+import { AdminTicketCloseEntryComponent } from "./Ticketing/admin-ticket/ticketclose-entry/ticketclose-entry.component";
+import { AdminTicketVerifyEntryComponent } from "./Ticketing/admin-ticket/ticketverify-entry/ticketverify-entry.component";
+import { AdminTransferComponent } from "./Ticketing/admin-ticket/transfer-opt/checkfordelete.component";
+import { AdminUploadFiles3Component } from "./Ticketing/admin-ticket/upload/upload-files/upload-files.component";
+import { AdminUploadCardComponent } from "./Ticketing/admin-ticket/upload/upload.component";
+
 
 
 
@@ -409,6 +424,16 @@ export const jwtConfig = {
     TicketCloseEntryComponent,
     TransferComponent,
     TicketVerifyEntryComponent,
+
+    AdminTicketComponent,
+    AdminTicketEntryComponent,
+    AdminAddCommentComponent,
+    AdminUploadCardComponent,
+    AdminUploadFiles3Component,
+    AdminAssignedComponent,
+    AdminTicketCloseEntryComponent,
+    AdminTransferComponent,
+    AdminTicketVerifyEntryComponent,
     ProbAgentComponent,
     ProbAgentEntryComponent,
     CallCenterComponent,
@@ -419,7 +444,11 @@ export const jwtConfig = {
     DetailsEntryComponent,
     AppNotificationComponent,
     AppNotificationEntryComponent,
-    MyTestAutoComponent
+    MyTestAutoComponent,
+    UploadProfileComponent,
+    UploadFiles2Component,
+    DashboardModuleComponent,
+    DashboardDetailsComponent
     
 
 
@@ -450,6 +479,7 @@ export const jwtConfig = {
     }),
     MaterialModule,
     MatBottomSheetModule,
+    ChartsModule
     
   ],
   providers: [

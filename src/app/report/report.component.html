@@ -48,7 +48,62 @@
 
     </mat-form-field>
     <div >
-      <button class="BtnS" (click)="onSubmit()"  mat-button color="primary" type="submit">Get report</button>
+      <button class="BtnS" (click)="onSubmit('tech')"  mat-button color="primary" type="submit">Get report</button>
+    </div>
+  </div>
+</div>
+
+<h1 *ngIf="admin === '203' || admin === '26' " [dir]="direction" class="title" >All users activity</h1>
+<div *ngIf="admin === '203' || admin === '26' " [dir]="direction">
+  <div fxLayoutGap="15px" class="line" >
+    <mat-form-field appearance="outline">
+      <mat-label>{{users}}</mat-label>
+      <mat-select 
+      [(ngModel)]="usersId"
+      name="usersId"
+      >
+        <mat-option *ngFor="let user of allUsers" [value]="user.id">
+          {{user.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- <mat-form-field appearance="outline">
+      <mat-label>Starting Date</mat-label>
+      <input matInput [matDatepicker]="from" formControlName="fromDate">
+      <mat-datepicker-toggle matSuffix [for]="from"></mat-datepicker-toggle>
+      <mat-datepicker #from></mat-datepicker>
+    </mat-form-field> -->
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ fromDate }}</mat-label>
+      <input
+        matInput
+        [(ngModel)]="fromDateUsers"
+        name="fromDateUsers"
+        (input)="onFromDateUsers($event)"
+        type="date"
+        placeholder="{{fromDate}}"
+      />
+
+
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ toDate }}</mat-label>
+      <input
+        matInput
+        [(ngModel)]="toDateUsers"
+        (input)="onToDateUsers($event)"
+        name="toDateUsers"
+        type="date"
+        placeholder="{{toDate}}"
+      />
+
+
+    </mat-form-field>
+    <div >
+      <button class="BtnS" (click)="onSubmit('user')"  mat-button color="primary" type="submit">Get report</button>
     </div>
   </div>
 </div>

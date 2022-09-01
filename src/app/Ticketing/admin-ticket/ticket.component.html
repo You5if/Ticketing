@@ -1,0 +1,600 @@
+<section class="ticket_container">
+  <div class="tabs">
+    <div fxLayout fxLayout.xs="column" fxLayoutGap="5px">
+      
+        <mat-form-field appearance="outline">
+          <mat-label>{{users}}</mat-label>
+          <mat-select 
+          (selectionChange)="usersClick($event.value)"
+          name="usersId"
+          >
+            <mat-option *ngFor="let user of allUsers" [value]="user.id">
+              {{user.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      
+      <div class="tabs_head">
+        <div class="tabs_toggle" matBadge="{{badgeUnassigned}}" matBadgeOverlap="true" style="z-index: 6;">
+        <span id="newticket" (click)="tabChange('newticket'); closeDet1()" class="{{id == 'newticket' ?  'tab_toggleactive': 'tab_toggle'}}" ><i class="far fa-file"></i><h6   matBadgeColor="warn"><strong>ticket</strong> </h6></span>
+        </div>
+        <div class="tabs_toggle" matBadge="{{badgeAssigned}}" matBadgeOverlap="true" matBadgeColor="warn" style="z-index: 5;">
+          <span  id="assigned" (click)="tabChange('assigned'); closeDet2()" class="{{id == 'assigned' ?  'tab_toggleactive': 'tab_toggle'}}" > <i class="fas fa-user-check"></i><h6 >assigned </h6></span>
+          </div>
+          <div class="tabs_toggle" matBadge="{{badgeClosed}}" matBadgeOverlap="true" matBadgeColor="warn" style="z-index: 4;" >
+            <span  id="closed" (click)="tabChange('closed'); closeDet2()" class="{{id == 'closed' ?  'tab_toggleactive': 'tab_toggle'}}"><i class="fa fa-archive" aria-hidden="true"></i><h6 >closed</h6></span>
+            </div>
+            <div class="tabs_toggle" matBadge="{{badgeVerified}}" matBadgeOverlap="true" matBadgeColor="warn" style="z-index: 3;" *ngIf="role === '3'">
+              <span  id="verified" (click)="tabChange('verified')" class="{{id == 'verified' ?  'tab_toggleactive': 'tab_toggle'}}"><i class="fas fa-certificate"></i><h6 >verified</h6></span>
+              </div>
+      </div>
+    </div>
+    
+     <div class="tabs_body" fxLayout="column">
+      <div class="tab-categories" *ngIf="id === 'newticket'">
+        <mat-form-field appearance="outline">
+          <mat-label>{{catagotriesL}}</mat-label>
+          <mat-select 
+          (selectionChange)="categoryClick($event.value)"
+          name="catId"
+          >
+            <mat-option *ngFor="let category of categoryList" [value]="category.problemCatId">
+              {{category.category}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!-- <mat-chip-list aria-label="Dog selection">
+          <mat-chip *ngFor="let category of categoryList" (click)="categoryClick(category)">
+            {{category.category}}
+          </mat-chip>
+          <mat-chip (click)="refreshMe()">
+            All caterories
+          </mat-chip>
+        </mat-chip-list> -->
+      </div>
+       <div class="tabs_content" *ngIf="id === 'newticket'">
+        
+         <div *ngFor="let item of veiwIndexes; let i = index;" class="tabs_text">
+          
+          
+          <mat-card (click)="openTicketDet(item, item.userRole)" class="{{item.userRole === 4 ? 'cardB' : item.userRole === 5 ? 'cardO' : item.userRole === 6 ? 'cardY': 'card'}}">
+            <div class="ticketDiv " >
+              <div *ngIf="item.openedById === userId" class="starDiv">
+                <span class="label"><i class="fa fa-star"></i></span>
+               </div>
+              <div class="ticketTop" fxLayout fxLayoutGap="auto">
+                <div fxLayout fxLayoutGap="5px">
+                  <p class="idClass1"><strong>ID</strong></p>
+                  <p class="idClass">:</p>
+                  <p class="idClass">{{item.ticketId}}</p>
+                </div>
+                <!-- <span class="label"><i class="fa fa-star"></i></span> -->
+              <button (click)="onVert()" *ngIf="item.userRole === 5 || item.userRole === 4" class="Btn" mat-icon-button [matMenuTriggerFor]="menunewtick"  >
+                <mat-icon class="icon">more_vert</mat-icon>
+              </button>
+              <mat-menu #menunewtick="matMenu">
+                <button *ngIf="item.userRole === 5" class="Btn2"  mat-menu-item (click)="onAcceptBtn(item.ticketId)" [disabled]="item.userRole === 4">{{ acceptBtn }}</button>
+                <button *ngIf="item.userRole === 4" class="Btn2"  mat-menu-item (click)="onAssignedBtn(item)" [disabled]="item.userRole === 5">{{ assignedBtn }}</button>
+              </mat-menu>
+              </div>
+             
+            </div>
+            
+            <mat-card-content>
+            
+              <div fxLayout fxLayoutGap="5px">
+                <p class="ticketDes1"><strong>Inquiry</strong></p>
+                <p class="ticketDes">:</p>
+                <p class="ticketDes">{{item.inquiry}}</p>
+              </div>
+              <div fxLayout fxLayoutGap="5px" >
+                <p class="tickettec1"><strong>Category</strong></p>
+                <p class="tickettec">:</p>
+                <p class="tickettec">{{item.category}}</p>
+              </div>
+              <div fxLayout fxLayoutGap="5px" >
+                <p class="tickettec1"><strong>Agent</strong></p>
+                <p class="tickettec">:</p>
+                <p class="tickettec">{{item.openedBy}}</p>
+              </div>
+              <div fxLayout fxLayoutGap="5px" >
+                <p class="tickettec1"><strong>Technician</strong></p>
+                <p class="tickettec">:</p>
+                <p class="tickettec">{{item.displayName}}</p>
+              </div>
+              <!-- <div fxLayout fxLayoutGap="5px">
+                <p class="ticketPC1"><strong>Department</strong> </p>
+                <p class="ticketPC">:</p>
+                <p class="ticketPC">category</p>
+              </div>
+              <div fxLayout fxLayoutGap="auto">
+                <p class="ticketDate"><strong>Last modified on</strong>  : 12-06-19</p>
+                <div fxLayout fxLayoutGap="5px">
+                  <div class="statustag"><span>Status</span></div>
+                </div>
+              </div> -->
+            </mat-card-content>
+           </mat-card>
+           
+           </div>
+  
+       </div>
+       <div class="tab-categories"  *ngIf="id === 'assigned'">
+        <mat-form-field appearance="outline">
+          <mat-label>{{catagotriesL}}</mat-label>
+          <mat-select 
+          (selectionChange)="assignedCategoryClick($event.value)"
+          name="catId"
+          >
+            <mat-option *ngFor="let category of AssignedCategoryList" [value]="category.problemCatId">
+              {{category.category}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+         <!-- <mat-chip-list aria-label="Dog selection">
+           <mat-chip *ngFor="let category of AssignedCategoryList" (click)="assignedCategoryClick(category)">
+             {{category.category}}
+           </mat-chip>
+           <mat-chip (click)="refreshMe()">
+             All caterories
+           </mat-chip>
+         </mat-chip-list> -->
+       </div>
+       <div class="tabs_content" *ngIf="id === 'assigned'">
+        
+        <div *ngFor="let item of veiwIndexesAssigned; let i = index;" class="tabs_text" >
+          <mat-card (click)="openTicketDet2(item, item.userRole)"  class="{{item.userRole === 4 ? 'cardB' : item.userRole === 5 ? 'cardO' : item.userRole === 6 ? 'cardY': 'card'}}">
+            <div class="ticketDiv " >
+              <div *ngIf="item.openedById === userId" class="starDiv">
+                <span class="label"><i class="fa fa-star"></i></span>
+               </div>
+              <div class="ticketTop" fxLayout fxLayoutGap="auto">
+                <div fxLayout fxLayoutGap="5px">
+                  <p class="idClass1"><strong>ID</strong></p>
+                  <p class="idClass">:</p>
+                  <p class="idClass">{{item.ticketId}}</p>
+                </div>
+              <button (click)="onVert()" *ngIf="item.userRole === 5 || item.userRole === 4" class="Btn" mat-icon-button [matMenuTriggerFor]="menu"   >
+                <mat-icon class="icon">more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button class="Btn2"  mat-menu-item (click)="onTransferBtn(item)">{{transfer}}</button>
+                <button class="Btn2"  mat-menu-item (click)="onCloseBtn(item)">{{close}}</button>
+              </mat-menu>
+              </div>
+            </div>
+            
+            <mat-card-content>
+            
+              <div fxLayout fxLayoutGap="5px">
+                <p class="ticketDes1"><strong>Inquiry</strong></p>
+                <p class="ticketDes">:</p>
+                <p class="ticketDes">{{item.inquiry}}</p>
+              </div>
+              <div fxLayout fxLayoutGap="5px" >
+                <p class="tickettec1"><strong>Category</strong></p>
+                <p class="tickettec">:</p>
+                <p class="tickettec">{{item.category}}</p>
+              </div>
+              <div fxLayout fxLayoutGap="5px" >
+                <p class="tickettec1"><strong>Agent</strong></p>
+                <p class="tickettec">:</p>
+                <p class="tickettec">{{item.openedBy}}</p>
+              </div>
+              <div fxLayout fxLayoutGap="5px" >
+                <p class="tickettec1"><strong>Technician</strong></p>
+                <p class="tickettec">:</p>
+                <p class="tickettec">{{item.displayName}}</p>
+              </div>
+              <!-- <div fxLayout fxLayoutGap="5px">
+                <p class="ticketPC1"><strong>Department</strong> </p>
+                <p class="ticketPC">:</p>
+                <p class="ticketPC">category</p>
+              </div>
+              <div fxLayout fxLayoutGap="auto">
+                <p class="ticketDate"><strong>Last modified on</strong>  : 12-06-19</p>
+                <div fxLayout fxLayoutGap="5px">
+                  <div class="statustag"><span>Status</span></div>
+                </div>
+              </div> -->
+            </mat-card-content>
+           </mat-card>
+           
+           
+          
+        </div>
+  
+      </div>
+      <div class="tab-categories" *ngIf="id === 'closed'">
+        <mat-form-field appearance="outline">
+          <mat-label>{{catagotriesL}}</mat-label>
+          <mat-select 
+          (selectionChange)="ClosedCategoryClick($event.value)"
+          name="catId"
+          >
+            <mat-option *ngFor="let category of ClosedCategoryList" [value]="category.problemCatId">
+              {{category.category}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!-- <mat-chip-list aria-label="Dog selection">
+          <mat-chip *ngFor="let category of ClosedCategoryList" (click)="ClosedCategoryClick(category)">
+            {{category.category}}
+          </mat-chip>
+          <mat-chip (click)="refreshMe()">
+            All caterories
+          </mat-chip>
+        </mat-chip-list> -->
+      </div>
+      <div class="tabs_content" *ngIf="id === 'closed'">
+        <div *ngFor="let item of veiwIndexesClosed; let i = index;" class="tabs_text" >
+          <mat-card (click)="openTicketDet2(item, item.userRole)" class="{{item.userRole === 4 ? 'cardB' : item.userRole === 5 ? 'cardO' : item.userRole === 6 ? 'cardY': 'card'}}">
+            <div class="ticketDiv " >
+              <div *ngIf="item.openedById === userId" class="starDiv">
+                <span class="label"><i class="fa fa-star"></i></span>
+               </div>
+              <div class="ticketTop" fxLayout fxLayoutGap="auto">
+                <div fxLayout fxLayoutGap="5px">
+                  <p class="idClass1"><strong>ID</strong></p>
+                  <p class="idClass">:</p>
+                  <p class="idClass">{{item.ticketId}}</p>
+                </div>
+              <button (click)="onVert()" *ngIf="item.userRole != 6" class="Btn" mat-icon-button [matMenuTriggerFor]="menuclosedtick" >
+                <mat-icon class="icon">more_vert</mat-icon>
+              </button>
+              <mat-menu #menuclosedtick="matMenu">
+                <button class="Btn2"  mat-menu-item  (click)="onAssignedBtn(item)">{{assignedBtn}}</button>
+                <button class="Btn2"  mat-menu-item  (click)="onTransferBtn(item)">{{transfer}}</button>
+                <button class="Btn2"  mat-menu-item  (click)="onVerifyBtn(item)">{{verify}}</button>
+              </mat-menu>
+              </div>
+            </div>
+            
+            <mat-card-content>
+            
+              <div fxLayout fxLayoutGap="5px">
+                <p class="ticketDes1"><strong>Inquiry</strong></p>
+                <p class="ticketDes">:</p>
+                <p class="ticketDes">{{item.inquiry}}</p>
+              </div>
+              <div fxLayout fxLayoutGap="5px" >
+                <p class="tickettec1"><strong>Category</strong></p>
+                <p class="tickettec">:</p>
+                <p class="tickettec">{{item.category}}</p>
+              </div>
+              <div fxLayout fxLayoutGap="5px" >
+                <p class="tickettec1"><strong>Agent</strong></p>
+                <p class="tickettec">:</p>
+                <p class="tickettec">{{item.openedBy}}</p>
+              </div>
+              <div fxLayout fxLayoutGap="5px" >
+                <p class="tickettec1"><strong>Technician</strong></p>
+                <p class="tickettec">:</p>
+                <p class="tickettec">{{item.displayName}}</p>
+              </div>
+              <!-- <div fxLayout fxLayoutGap="5px">
+                <p class="ticketPC1"><strong>Department</strong> </p>
+                <p class="ticketPC">:</p>
+                <p class="ticketPC">category</p>
+              </div> -->
+              <!-- <div fxLayout fxLayoutGap="auto">
+                <p class="ticketDate"><strong>Last modified on</strong>  : 12-06-19</p>
+                <div fxLayout fxLayoutGap="5px">
+                  <div class="statustag"><span>Status</span></div>
+                </div>
+              </div> -->
+            </mat-card-content>
+           </mat-card>
+           
+           
+          
+        </div>
+  
+      </div>
+      <div class="tabs_content" *ngIf="id === 'verified'">
+        <div *ngFor="let item of indexesVerify; let i = index;" class="tabs_text">
+         
+         
+         <mat-card (click)="openTicketDet(item, item.userRole)" class="card">
+           <div class="ticketDiv " >
+            <div *ngIf="item.openedById === userId" class="starDiv">
+              <span class="label"><i class="fa fa-star"></i></span>
+             </div>
+             <div class="ticketTop" fxLayout fxLayoutGap="auto">
+               <div fxLayout fxLayoutGap="5px">
+                 <p class="idClass1"><strong>ID</strong></p>
+                 <p class="idClass">:</p>
+                 <p class="idClass">{{item.ticketId}}</p>
+               </div>
+             <!-- <button class="Btn" mat-icon-button  >
+               <mat-icon class="icon">more_vert</mat-icon>
+             </button> -->
+             </div>
+           </div>
+           
+           <mat-card-content>
+           
+             <div fxLayout fxLayoutGap="5px">
+               <p class="ticketDes1"><strong>Inquiry</strong></p>
+               <p class="ticketDes">:</p>
+               <p class="ticketDes">Complaint</p>
+             </div>
+             <div fxLayout fxLayoutGap="5px" >
+               <p class="tickettec1"><strong>Technician</strong></p>
+               <p class="tickettec">:</p>
+               <p class="tickettec">Hussam Abdalla</p>
+             </div>
+             <div fxLayout fxLayoutGap="5px">
+               <p class="ticketPC1"><strong>Department</strong> </p>
+               <p class="ticketPC">:</p>
+               <p class="ticketPC">category</p>
+             </div>
+             <div fxLayout fxLayoutGap="auto">
+               <p class="ticketDate"><strong>Last modified on</strong>  : 12-06-19</p>
+               <div fxLayout fxLayoutGap="5px">
+                 <div class="statustag"><span>Status</span></div>
+               </div>
+             </div>
+           </mat-card-content>
+          </mat-card>
+          
+          </div>
+ 
+      </div>
+     </div>
+     <div class="btnsCon" fxLayoutGap="10px">
+       <div *ngIf="!sortIsOn" (click)="onClickSort()" class="chImg" [matMenuTriggerFor]="sortmenu" ><img class="sfimg" src="../../../assets/images/svg/sort (6).png" alt=""></div>
+       <div *ngIf="sortIsOn" (click)="onClickSort()" class="chImg" [matMenuTriggerFor]="sortmenu" ><img class="sfimg" src="../../../assets/images/svg/sort (3).png" alt=""></div>
+       <mat-menu [hasBackdrop]="false"  #sortmenu="matMenu" yPosition="above">
+        <div class="sortfilter">
+          <div class="sortfilterRow">
+            <h5 class="sortfilterLabels" (click)="$event.stopPropagation()">Ticket no:</h5>
+            <div class="sortfilterOptions">
+              <div class="sortfilterOpt" fxLayoutGap="10px">
+                <h6>{{ascending}}</h6>
+                <mat-slide-toggle [(ngModel)]="ticketNoCheckedA" (change)="ticketNoSort('asc')" (click)="$event.stopPropagation();"></mat-slide-toggle>
+              </div>
+              <div class="sortfilterOpt" fxLayoutGap="10px">
+                <h6>{{descending}}</h6>
+                <mat-slide-toggle [(ngModel)]="ticketNoCheckedD" (change)="ticketNoSort('desc')" (click)="$event.stopPropagation();"></mat-slide-toggle>
+              </div>
+            </div>
+          </div>
+          <mat-divider class="sortfilterDivider"></mat-divider>
+          <div class="sortfilterRow">
+            <h5 class="sortfilterLabels" (click)="$event.stopPropagation()">Agent:</h5>
+            <div class="sortfilterOptions">
+              <div class="sortfilterOpt" fxLayoutGap="10px">
+                <h6>{{ascending}}</h6>
+                <mat-slide-toggle [(ngModel)]="agentCheckedA" (change)="agentSort('asc')" (click)="$event.stopPropagation();"></mat-slide-toggle>
+              </div>
+              <div class="sortfilterOpt" fxLayoutGap="10px">
+                <h6>{{descending}}</h6>
+                <mat-slide-toggle [(ngModel)]="agentCheckedD" (change)="agentSort('desc')" (click)="$event.stopPropagation();"></mat-slide-toggle>
+              </div>
+            </div>
+          </div>
+          <mat-divider class="sortfilterDivider"></mat-divider>
+          <div class="sortfilterRow">
+            <h5 class="sortfilterLabels" (click)="$event.stopPropagation()">Category:</h5>
+            <div class="sortfilterOptions">
+              <div class="sortfilterOpt" fxLayoutGap="10px">
+                <h6>{{ascending}}</h6>
+                <mat-slide-toggle [(ngModel)]="categoryCheckedA" (change)="categorySort('asc')" (click)="$event.stopPropagation();"></mat-slide-toggle>
+              </div>
+              <div class="sortfilterOpt" fxLayoutGap="10px">
+                <h6>{{descending}}</h6>
+                <mat-slide-toggle [(ngModel)]="categoryCheckedD" (change)="categorySort('desc')" (click)="$event.stopPropagation();"></mat-slide-toggle>
+              </div>
+            </div>
+          </div>
+          <mat-divider class="sortfilterDivider"></mat-divider>
+          <div class="sortfilterRow">
+            <h5 class="sortfilterLabels" (click)="$event.stopPropagation()">Creation:</h5>
+            <div class="sortfilterOptions">
+              <div class="sortfilterOpt" fxLayoutGap="10px">
+                <h6>{{ascending}}</h6>
+                <mat-slide-toggle [(ngModel)]="creationCheckedA" (change)="creationSort('asc')" (click)="$event.stopPropagation();"></mat-slide-toggle>
+              </div>
+              <div class="sortfilterOpt" fxLayoutGap="10px">
+                <h6>{{descending}}</h6>
+                <mat-slide-toggle [(ngModel)]="creationCheckedD" (change)="creationSort('desc')" (click)="$event.stopPropagation();"></mat-slide-toggle>
+              </div>
+            </div>
+          </div>
+          <div class="sortfilterBtns">
+            <button class="BtnC" (click)="onClearSort()"  mat-button color="warn" type="submit">{{clear}}</button>
+            <button class="BtnS" (click)="onApplySort()"  mat-button color="primary" type="submit">{{apply}}</button>
+          </div>
+        </div>
+      </mat-menu>
+       <!-- <div class="chImg" ><img class="sfimg" src="../../../assets/images/svg/sort (2).png" alt=""></div> -->
+       <!-- <div class="btnClass">
+        <div class="add_btnD"  (click)="onAdd()" ><mat-icon >add</mat-icon></div>
+      </div> -->
+      <div *ngIf="!filterIsOn" class="chImg" [matMenuTriggerFor]="filtermenu" ><img class="sfimg" src="../../../assets/images/svg/filter-filled-tool-symbol (3).png" alt=""></div>
+       <div *ngIf="filterIsOn" class="chImg" [matMenuTriggerFor]="filtermenu" ><img class="sfimg" src="../../../assets/images/svg/filter-filled-tool-symbol.png" alt=""></div>
+       <mat-menu [hasBackdrop]="false"  #filtermenu="matMenu" yPosition="above">
+        <div class="sortfilter">
+          <div class="sortfilterRow">
+            <h5 class="sortfilterLabels" (click)="$event.stopPropagation()">Ticket no:</h5>
+            <div class="sortfilterOptions">
+              <mat-form-field (click)="$event.stopPropagation()"  class="sortfilterInput" appearance="fill">
+                <mat-label>Ticket no</mat-label>
+                <input matInput type="number" (onChangeValue)="$event.stopPropagation()" [(ngModel)]="ticketNoFilter">
+                <button class="BtnX" *ngIf="ticketNoFilter" matSuffix mat-icon-button aria-label="Clear" (click)="ticketNoFilter=''">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+          </div>
+          <mat-divider class="sortfilterDivider"></mat-divider>
+          <div class="sortfilterRow">
+            <h5 class="sortfilterLabels" (click)="$event.stopPropagation()">{{agentL}}</h5>
+            <div class="sortfilterOptions">
+              <app-my-test-auto 
+              (click)="$event.stopPropagation()"
+              [refId]="'appuserid'" 
+              [refCondition]="'appuserid>1 and active=1 and deleted=0'" 
+              [refTable]="'appuser'" 
+              [refColumn]="'appusername'" 
+              [labelValue]="agent" 
+              [initialValue]="" 
+              [initialFilter]="filterInitial" 
+              (resultId)="onResults('agent', $event)"></app-my-test-auto>
+            
+            </div>
+          </div>
+          <mat-divider class="sortfilterDivider"></mat-divider>
+          <div class="sortfilterRow">
+            <h5 class="sortfilterLabels" (click)="$event.stopPropagation()">{{categoryL}}</h5>
+            
+              <div class="sortfilterOptions">
+                <app-my-test-auto 
+                (click)="$event.stopPropagation()"
+                [refId]="'problemcatid'" 
+                [refCondition]="'problemcatid>1 and active=1 and deleted=0'" 
+                [refTable]="'problemcat'" 
+                [refColumn]="'problem'" 
+                [labelValue]="category" 
+                [initialValue]="" 
+                [initialFilter]="filterInitial" 
+                (resultId)="onResults('category', $event)"></app-my-test-auto>
+              
+              </div>
+            
+          </div>
+          <mat-divider class="sortfilterDivider"></mat-divider>
+          <div class="sortfilterRow">
+            <h5 class="sortfilterLabels" (click)="$event.stopPropagation()">Creation:</h5>
+            <div class="sortfilterOptions">
+              <div class="sortfilterOpt" fxLayoutGap="10px">
+                <mat-form-field (click)="$event.stopPropagation()"  class="sortfilterInput2"  appearance="outline">
+                  <mat-label>{{ fromDate }}</mat-label>
+                  <input
+                    matInput
+                    [(ngModel)]="fromDateFilter"
+                    name="fromDate"
+                    (onChangeValue)="$event.stopPropagation()"
+                    (input)="onFromDateFilter($event)"
+                    type="date"
+                    placeholder="From date"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="sortfilterOpt" fxLayoutGap="10px">
+                <mat-form-field (click)="$event.stopPropagation()"  class="sortfilterInput2"  appearance="outline">
+                  <mat-label>{{ toDate }}</mat-label>
+                  <input
+                    matInput
+                    [(ngModel)]="toDateFilter"
+                    name="toDate"
+                    (onChangeValue)="$event.stopPropagation()"
+                    (input)="onToDateFilter($event)"
+                    type="date"
+                    placeholder="To date"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="sortfilterBtns">
+            <button class="BtnC" (click)="onClearFilter()"  mat-button color="warn" type="submit">{{clear}}</button>
+            <button class="BtnS" (click)="onApplyFilter()"  mat-button color="primary" type="submit">{{apply}}</button>
+          </div>
+        </div>
+      </mat-menu>
+       <!-- <div class="chImg" ><img class="sfimg" src="../../../assets/images/svg/filter-filled-tool-symbol (2).png" alt=""></div> -->
+     </div>
+  </div>
+
+  
+
+  <div class="ticketDets" *ngIf="showDetailsAll">
+    <div *ngIf="showDetails">
+      <div *ngIf="detActionsStatus === 6" fxLayout fxLayoutGap="20px" class="actions">
+        <h1 class="commentBtn" (click)="onNewComment()" ><mat-icon >add</mat-icon>Comment</h1>
+      <div class="img_profile">
+        <app-admin-card-upload [myFiles]="lFiles" (onUploadFinished)="uploadFinished($event)"
+                    
+                    >
+        </app-admin-card-upload>
+      </div>
+      </div>
+      <div>
+        <div *ngFor="let comment of comments" class="attach" >
+          
+          <!-- <img *ngIf="!showit" [src]="imagePathUrl"  alt="" width="100px" height="100px"> -->
+  
+          <mat-card class="commentedCard">
+            <div class="userComment">
+              
+              <div *ngIf="comment.commentType === 'TEXT'" fxLayout="column">
+                <h1 class="commentC">{{comment.displayName}}</h1>
+                <div class="textCom">
+                  <h1 class="commentC">{{comment.comment}}</h1>
+                </div>
+                <h4 class="commentDate">{{comment.crDate}}</h4>
+              </div>
+              <div *ngIf="comment.commentType === 'ATTACH'" fxLayout="column">
+                <h1 class="commentC">{{comment.displayName}}</h1>
+                <h1 class="commentC"><a class="links" href="{{comment.apiImagePath}}" target="_blank">attachment</a></h1>
+                <h4 class="commentDate">{{comment.crDate}}</h4>
+              </div>
+              
+            </div>
+            
+            
+          </mat-card>
+          
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ticketDets" *ngIf="showDetailsAll2">
+    <div *ngIf="showDetails2">
+      <div  fxLayout fxLayoutGap="20px" class="actions">
+        <h1 class="commentBtn" (click)="onNewComment()" ><mat-icon >add</mat-icon>Comment</h1>
+      <div class="img_profile">
+        <app-card-upload [myFiles]="lFiles" (onUploadFinished)="uploadFinished($event)"
+                    
+                    >
+        </app-card-upload>
+      </div>
+      </div>
+      <div>
+        <div *ngFor="let comment of comments" class="attach" >
+          
+          <!-- <img *ngIf="!showit" [src]="imagePathUrl"  alt="" width="100px" height="100px"> -->
+  
+          <mat-card class="commentedCard">
+            <div class="userComment">
+              
+              <div *ngIf="comment.commentType === 'TEXT'" fxLayout="column">
+                <h1 class="commentC">{{comment.displayName}}</h1>
+                <div class="textCom">
+                  <h1 class="commentC">{{comment.comment}}</h1>
+                </div>
+                <h4 class="commentDate">{{comment.crDate}}</h4>
+              </div>
+              <div *ngIf="comment.commentType === 'ATTACH'" fxLayout="column">
+                <h1 class="commentC">{{comment.displayName}}</h1>
+                <h1 class="commentC"><a class="links" href="{{comment.apiImagePath}}" target="_blank">attachment</a></h1>
+                <h4 class="commentDate">{{comment.crDate}}</h4>
+              </div>
+              
+            </div>
+            
+            
+          </mat-card>
+          
+          
+        </div>
+      </div>
+    </div>
+  </div>
+    
+        
+  
+  </section>

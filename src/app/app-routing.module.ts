@@ -49,6 +49,9 @@ import { NewClientComponent } from "./Ticketing/new-client/new-client.component"
 import { KnownClientComponent } from "./Ticketing/known-client/known-client.component";
 import { AppNotificationComponent } from "./Ticketing/appnotification/appnotification.component";
 import { ReportComponent } from "./report/report.component";
+import { DashboardModuleComponent } from "./Ticketing/dashboard-module/dashboard-module.component";
+import { DashboardDetailsComponent } from "./Ticketing/dashboard-module/dashboard-details/dashboard-details.component";
+import { AdminTicketComponent } from "./Ticketing/admin-ticket/ticket.component";
 
 
 const routes: Routes = [
@@ -83,6 +86,7 @@ const routes: Routes = [
       { path: "ProbTech", component: ProbTechComponent },
       { path: "UnDepartment", component: UnDepartmentComponent },
       { path: "Ticket", component: TicketComponent },
+      { path: "AdminTicket", component: AdminTicketComponent },
       { path: "UnCustomer", component: UnCustomerComponent },
       { path: "Policy", component: PolicyComponent },
       { path: "Endorsement", component: EndorsementComponent },
@@ -90,6 +94,8 @@ const routes: Routes = [
       { path: "Notification", component: AppNotificationComponent },
       { path: "Report", component: ReportComponent },
       { path: "CallCenter", component: CallCenterComponent },
+      { path: "Details", component: DashboardDetailsComponent },
+      { path: "Dashboard", component: DashboardModuleComponent},
       { path: "Custom", component: KnownClientComponent },
       { path: "TechnicianReport", component: ReportPageComponent },
       { path: ':id', component: NewClientComponent },

@@ -1,0 +1,41 @@
+
+<!-- <div class="section">
+  <div class="ques" mat-dialog-content>
+    
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button class="BtnC" (click)="onNoClick()">{{cancel}}</button>
+    <button mat-button class="BtnS" (click)="onYesClick()">{{submit}}</button>
+  </div>
+</div> -->
+
+<section class="section" [dir]="direction">
+  <div class="bigMain" fxLayout>
+    <h3 class="fontY">
+      {{ dialog_title  }} 
+    </h3>
+    <img (click)="onCancel()" class="cancel_Img" src="../../../../assets/images/svg/close.png" alt="">
+  </div>
+
+
+  <section class="sec">
+    <form fxLayout="column" fxLayoutGap="10px" class="Main" [dir]="direction"  >
+      <mat-form-field appearance="outline">
+        <mat-label>{{ tech }}</mat-label>
+        <mat-select matNativeControl  
+          [(ngModel)]="appUserId" [ngModelOptions]="{standalone: true}"
+          (selectionChange)="onChoosingTech($event.value)">
+          <mat-option *ngFor="let item of users" [value]="item.id">
+            {{item.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <h3 *ngIf="showNote">{{note}}</h3>
+    </form>
+  </section>
+  <div class="btn-container">
+    <button class="BtnC" (click)="onCancel()" mat-button color="warn" type="submit">{{cancel}}</button>
+    <button class="BtnS" (click)="onSubmit()" mat-button color="primary" type="submit">{{submit}}</button>
+  </div>
+</section>
+
